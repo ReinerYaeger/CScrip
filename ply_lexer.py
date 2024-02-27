@@ -4,19 +4,23 @@ from ply.yacc import yacc
 # --- Tokenizer
 
 # All tokens must be named in advance.
-tokens = ('IDENTIFIER', 'EQUAL_OP', 'ADD_OP', 'SUB_OP', 'MUL_OP', 'DIV_OP',
+tokens = ('IDENTIFIER', 'EQUAL_OP', 'EQUIVALENT_OP', 'ADD_OP', 'POSITIVE_OP','NEGATIVE_OP', 'SUB_OP', 'MUL_OP', 'DIV_OP',
           'LEFT_PAR_OP', 'RIGHT_PAR_OP', 'IF_STATEMENT', 'ELSE_STATEMENT',
           'WHILE_STATEMENT', 'FOR_STATEMENT', 'LEFT_CURL_OP', 'RIGHT_CURL_OP',
-          'TERM_STATEMENT', 'RIGHT_PAR_OP', 'IF_STATEMENT', 'ELSE_STATEMENT', 'ELSE_IF_STATEMENT,'
+          'FULL_STOP_STATEMENT', 'RIGHT_PAR_OP', 'IF_STATEMENT', 'ELSE_STATEMENT', 'ELSE_IF_STATEMENT,'
           'COLON_STATEMENT', 'SEMI_COLON_STATEMENT', 'SINGLE_QUOTES', 'DOUBLE_QUOTES',
-          'int_declaration', 'float_declaration', 'single_quotes', 'double_quotes',
-          'COLON_STATEMENT', 'SEMI_COLON_STATEMENT', 'SINGLE_QUOTES', 'DOUBLE_QUOTES',)
+          'INT_DECLARATION', 'FLOAT_DECLARATION', 'DOUBLE_DECLARATION', 'STRING_DECLARATION',
+          'CHARACTER_DECLARATION', 'BOOL_STATEMENT', 'VOID_STATEMENT', 'CLASS_STATEMENT',
+          'OBJECT_STATEMENT', 'STRUCT_STATEMENT' )
 
 # Ignored characters
 t_ignore = ' \t'
 
 # Token matching rules are written as regexs
-t_PLUS = r'\+'
+t_IDENTIFIER = r'[a-zA-Z_][a-zA-Z0-9_]*'
+t_EQUAL_OP =  r'\='
+t_EQUIVALENT_OP =  r'\=='
+t_ADD_OP = r'\++'
 t_MINUS = r'-'
 t_TIMES = r'\*'
 t_DIVIDE = r'/'
