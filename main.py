@@ -1,4 +1,5 @@
 import lexcial  # Assuming you have the 'lexical' module imported correctly
+import ply_lexer
 
 
 def main():
@@ -9,8 +10,8 @@ def main():
 
     # Lexer
     # Call the lexical and initialize it with the source code
-    lex = lexcial.Lexer(content)  # Pass the content as the source_code argument
-    tokens = lex.tokenize()
+    lex = ply_lexer.t_STRING_DECLARATION(content)  # Pass the content as the source_code argument
+    tokens = lex.input()
 
 
 if __name__ == "__main__":
