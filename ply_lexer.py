@@ -1,6 +1,5 @@
 import ply.lex as lex
 
-
 reserved = {
     'if': 'IF_STATEMENT',
     'then': 'THEN_STATEMENT',
@@ -29,7 +28,7 @@ reserved = {
 # All tokens must be named in advance.
 tokens = ([
               'EQUAL_OP', 'EQUIVALENT_OP', 'ADD_OP', 'POSITIVE_OP', 'NEGATIVE_OP',
-              'SUB_OP', 'MUL_OP', 'DIV_OP', 'LEFT_PAR_OP', 'RIGHT_PAR_OP','LEFT_CURL_OP', 'RIGHT_CURL_OP',
+              'SUB_OP', 'MUL_OP', 'DIV_OP', 'LEFT_PAR_OP', 'RIGHT_PAR_OP', 'LEFT_CURL_OP', 'RIGHT_CURL_OP',
               'FULL_STOP_STATEMENT', 'COLON_STATEMENT', 'SEMI_COLON_STATEMENT',
               'INT_DECLARATION', 'FLOAT_DECLARATION', 'DOUBLE_DECLARATION', 'STRING_DECLARATION',
               'CHARACTER_DECLARATION', 'SINGLE_QUOTES', 'DOUBLE_QUOTES', 'INT_LITERAL',
@@ -78,6 +77,14 @@ def t_FLOAT_LITERAL(t):
     r'\d+\.\d+'
     t.value = float(t.value)
     return t
+
+
+def t_eof(t):
+    more = input('...')
+    if more:
+        lexer.input(more)
+        return lexer.token()  # Return a single token
+    return None  # Return None to indicate end of input
 
 
 # Ignored token with an action associated with it
