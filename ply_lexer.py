@@ -1,40 +1,19 @@
 import ply.lex as lex
-
-reserved = {
-    'if': 'IF_STATEMENT',
-    'then': 'THEN_STATEMENT',
-    'else': 'ELSE_STATEMENT',
-    'while': 'WHILE_STATEMENT',
-    'for': 'FOR_STATEMENT',
-    'class': 'CLASS_STATEMENT',
-    'struct': 'STRUCT_STATEMENT',
-    'object': 'OBJECT_STATEMENT',
-    'void': 'VOID_STATEMENT',
-    'bool': 'BOOL_STATEMENT',
-    'elseif': 'ELSEIF_STATEMENT',
-    'string': 'STRING_STATEMENT',
-    'int': 'INT_STATEMENT',
-    'float': 'FLOAT_STATEMENT',
-    'double': 'DOUBLE_STATEMENT',
-    'char': 'CHARACTER_STATEMENT',
-    'true': 'TRUE_STATEMENT',
-    'false': 'FALSE_STATEMENT',
-    'do': 'DO_STATEMENT',
-    'print': 'PRINT_STATEMENT'
-}
+import re
 
 # --- Tokenizer
 
 # All tokens must be named in advance.
-tokens = ([
-              'EQUAL_OP', 'EQUIVALENT_OP', 'ADD_OP', 'POSITIVE_OP', 'NEGATIVE_OP',
-              'SUB_OP', 'MUL_OP', 'DIV_OP', 'LEFT_PAR_OP', 'RIGHT_PAR_OP', 'LEFT_CURL_OP', 'RIGHT_CURL_OP',
-              'FULL_STOP_STATEMENT', 'COLON_STATEMENT', 'SEMI_COLON_STATEMENT',
-              'INT_DECLARATION', 'FLOAT_DECLARATION', 'DOUBLE_DECLARATION', 'STRING_DECLARATION',
-              'CHARACTER_DECLARATION', 'SINGLE_QUOTES', 'DOUBLE_QUOTES', 'INT_LITERAL',
-              'IDENTIFIER'] + list(reserved.values()))
+tokens = (
+    'IF_STATEMENT', 'ELSE_STATEMENT', 'EQUAL_OP', 'EQUIVALENT_OP', 'ADD_OP', 'POSITIVE_OP', 'NEGATIVE_OP', 'SUB_OP',
+    'MUL_OP', 'DIV_OP', 'LEFT_PAR_OP', 'RIGHT_PAR_OP', 'WHILE_STATEMENT', 'FOR_STATEMENT', 'LEFT_CURL_OP',
+    'RIGHT_CURL_OP', 'FULL_STOP_STATEMENT', 'COLON_STATEMENT', 'SEMI_COLON_STATEMENT',
+    'INT_DECLARATION', 'FLOAT_DECLARATION', 'DOUBLE_DECLARATION', 'STRING_DECLARATION', 'CHARACTER_DECLARATION',
+    'BOOL_STATEMENT', 'VOID_STATEMENT', 'CLASS_STATEMENT', 'OBJECT_STATEMENT', 'STRUCT_STATEMENT', 'DO_STATEMENT',
+    'ELSEIF_STATEMENT', 'SINGLE_QUOTES', 'DOUBLE_QUOTES', 'INT_LITERAL', 'IDENTIFIER')
 
 # Ignored characters
+t_ignore = ' \t\n'
 t_EQUAL_OP = r'='
 t_EQUIVALENT_OP = r'=='
 t_ADD_OP = r'\+\+'
@@ -50,41 +29,68 @@ t_LEFT_CURL_OP = r'\}'
 t_FULL_STOP_STATEMENT = r'\.'
 t_COLON_STATEMENT = r'\:'
 t_SEMI_COLON_STATEMENT = r';'
+t_BOOL_STATEMENT = r'bool'
+t_VOID_STATEMENT = r'void'
+t_CLASS_STATEMENT = r'class'
+t_OBJECT_STATEMENT = r'object'
+t_STRUCT_STATEMENT = r'struct'
+t_DO_STATEMENT = r'do'
+t_ELSE_STATEMENT = r'else'
+t_WHILE_STATEMENT = r'while'
+t_FOR_STATEMENT = r'for'
 t_SINGLE_QUOTES = r'\''
 t_DOUBLE_QUOTES = r'\"'
+t_INT_LITERAL = r'\d+'
+t_ELSEIF_STATEMENT = r'elseif'
+t_IDENTIFIER = r'[a-zA-Z_][a-zA-Z0-9_]*'
+print()
+
+reserved = {
+    'if': 'IF',
+    'do': 'DO'
+}
+
 
 # A function can be used if there is an associated action.
 # Write the matching regex in the docstring.
 
-t_ignore = ' \t\n!'
-
-
-def t_IDENTIFIER(t):
-    r'[a-zA-Z_][a-zA-Z0-9_]*'
-    t.type = reserved.get(t.value, 'IDENTIFIER')  # Check for reserved words
-    return t
-
-
-def t_INT_LITERAL(t):
+def t_INT_DECLARATION(t):
     """Recognize integer declarations and convert them to integers."""
     r'\d+'
     t.value = int(t.value)
     return t
 
 
-def t_FLOAT_LITERAL(t):
+def t_FLOAT_DECLARATION(t):
     """Recognize Float declarations and convert them to Float."""
     r'\d+\.\d+'
     t.value = float(t.value)
     return t
 
 
-def t_eof(t):
-    more = input('...')
-    if more:
-        lexer.input(more)
-        return lexer.token()  # Return a single token
-    return None  # Return None to indicate end of input
+def t_STRING_DECLARATION(t):
+    """Recognize strings enclosed in double quotes."""
+    r'"[^"]*"'
+    t = t[1:-1]  # Remove quotes
+    return t
+
+
+def t_CHARACTER_DECLARATION(t):
+    """Recognize characters enclosed in single quotes."""
+    r"'.'"
+    t.value = t.value[1]  # Extract the character from within the quotes
+    return t
+
+
+def t_IF_STATEMENT(t):
+    """Recognize the 'if' keyword as an IF_STATEMENT."""
+    r'[if]'
+    if t.value.lower() == 'if':
+        t.type = 'IF_STATEMENT'
+    return t
+
+
+# Define other tokens...
 
 
 # Ignored token with an action associated with it
@@ -96,7 +102,7 @@ def t_newline(t):
 
 # Error handler for illegal characters
 def t_error(t):
-    print(f"Illegal character '{t.value[0]}'")
+    print(f'Illegal character {t.value[0]!r}')
     t.lexer.skip(1)
 
 
