@@ -1,101 +1,63 @@
 import ply.yacc as yacc
-
-from ply_lexer import tokens
+from ply_lexer import tokens, content
 
 # Symbol Table
 symbol_table = {}
 
 precedence = (
-    ('LEFT', 'INT'),
-    ('LEFT', 'IF'),
-    ('LEFT', 'ELSE'),
-    ('LEFT', 'PLUS', 'MINUS', 'MULTIPLE', 'DIVIDE'),
-    ('LEFT', 'WHILE'),
-    ('LEFT', 'WHILE')
+    ('left', 'ADD_OP', 'SUB_OP'),
+    ('left', 'MUL_OP', 'DIV_OP')
 )
 
 
 def p_program_definition(p):
-    """program: functon"""
+    """program : function"""
     p[0] = p[1]
 
 
 def p_function(p):
-    """function : TYPE IDENTIFIER '(' ')' '{' statements '}"""
+    """function : TYPE IDENTIFIER '(' ')' '{' statement '}'"""
     p[0] = ('function', p[1], p[2], p[7])
 
 
-def p_statements(p):
-    """statement : expression SEMICOLON
-                 | conditional
-                 | function_call"""
+def p_statement(p):
+    """statement : assignment_statement
+                 | expression"""
     p[0] = p[1]
+
+
+def p_assignment_statement(p):
+    """assignment_statement : IDENTIFIER EQUIVALENT_OP expression SEMI_COLON_STATEMENT"""
+    p[0] = ('EQUIVALENT_OP', p[1], p[3])
 
 
 def p_expression(p):
-    """expression : expression PLUS expression
-                  | expression MINUS expression
-                  | expression DIVIDE expression
-                  | expression MULTIPLE expression
-                  | PRINT '(' expression ')'
-                  | NUMBER"""
-    if len(p) == 4:
-        if p[1] == 'print':
-            p[0] = ('print', p[3])
-        else:
-            if p[2] == '+':
-                p[0] = p[1] + p[3]
-            elif p[2] == '-':
-                p[0] = p[1] - p[3]
-            elif p[2] == '*':
-                p[0] = p[1] * p[3]
-            elif p[2] == '/':
-                p[0] = p[1] / p[3]
-    else:
+    """expression : EXPRESSION
+                  | EXPRESSION ADD_OP EXPRESSION"""
+    if len(p) == 2:
         p[0] = p[1]
-
-
-def p_expr_uminus(p):
-    """expression : MINUS expression %prec UMINUS"""
-    p[0] = -p[2]
-
-
-def p_conditional(p):
-    """conditional : IF condition
-                   | IF statement
-                   | IF statement ELSE statement
-                   | WHILE condition
-                   | WHILE statement
-                   | Do statement WHILE condition"""
-    if p[1].lower() == 'if' and len(p) == 3:
-        p[0] = ('if', p[2], None)
-    elif p[1].lower() == 'if' and len(p) == 5:
-        p[0] = ('if-else', p[2], p[4])
-    elif p[1].lower() == 'while' and len(p) == 3:
-        p[0] = ('while', p[2], None)
-    elif p[1].lower() == 'while' and len(p) == 4:
-        p[0] = ('while', p[2], p[3])
-    elif p[1].lower() == 'do' and len(p) == 5:
-        p[0] = ('do-while', p[2], p[4])
-
-
-def p_condition(p):
-    """condition : TRUE
-                 | FALSE"""
-    p[0] = p[1]
-
-
-def p_function_call(p):
-    """function_call : IDENTIFIER '(' ')'
-                     | IDENTIFIER '(' INT ')'
-                     | IDENTIFIER '(' FLOAT ')'
-                     | IDENTIFIER '(' BOOL ')'
-                     | IDENTIFIER '(' STRING ')'
-                     | IDENTIFIER '(' CHAR ')'"""
-    if len(p) == 4:
-        p[0] = ('function_call', p[1], None)
     else:
-        p[0] = ('function_call', p[1], p[3])
+        if p[2] == '+':
+            p[0] = p[1] + p[3]
+
+
+# def p_expression(p):
+#     """expression : EXPRESSION ADD_OP EXPRESSION
+#                   | EXPRESSION SUB_OP EXPRESSION
+#                   | EXPRESSION MUL_OP EXPRESSION
+#                   | EXPRESSION DIV_OP EXPRESSION
+#                   | TERM"""
+#     if len(p) == 2:
+#         p[0] = p[1]
+#     else:
+#         if p[2] == '+':
+#             p[0] = p[1] + p[3]
+#         elif p[2] == '-':
+#             p[0] = p[1] - p[3]
+#         elif p[2] == '*':
+#             p[0] = p[1] * p[3]
+#         elif p[2] == '/':
+#             p[0] = p[1] / p[3]
 
 
 # Error handling
@@ -103,8 +65,14 @@ def p_error(p):
     print("Syntax error in input!")
 
 
+# Build the parser
 parser = yacc.yacc()
 
-# Test the parser with a list of tokens
-result = parser.parse(tokens)
-print(result)
+while True:
+    try:
+        print("Input content:", content)
+        result = parser.parse(content)
+        print(result)
+        break  # Exit the loop after parsing the content once
+    except EOFError:
+        break
