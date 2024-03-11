@@ -1,66 +1,50 @@
 import ply.yacc as yacc
-from ply_lexer import tokens, content
-
-# Symbol Table
-symbol_table = {}
-
-precedence = (
-    ('left', 'ADD_OP', 'SUB_OP'),
-    ('left', 'MUL_OP', 'DIV_OP')
-)
+from ply_lexer import lexer, tokens, content
 
 
-def p_program_definition(p):
-    """program : function"""
-    p[0] = p[1]
-
-
-def p_function(p):
-    """function : TYPE IDENTIFIER '(' ')' '{' statement '}'"""
-    p[0] = ('function', p[1], p[2], p[7])
-
-
-def p_statement(p):
-    """statement : assignment_statement
-                 | expression"""
-    p[0] = p[1]
-
-
-def p_assignment_statement(p):
-    """assignment_statement : IDENTIFIER EQUIVALENT_OP expression SEMI_COLON_STATEMENT"""
-    p[0] = ('EQUIVALENT_OP', p[1], p[3])
-
-
+# Grammar rules
 def p_expression(p):
-    """expression : EXPRESSION
-                  | EXPRESSION ADD_OP EXPRESSION"""
-    if len(p) == 2:
-        p[0] = p[1]
-    else:
+    """
+    expression : expression ADD_OP term
+               | expression SUB_OP term
+               | term
+    """
+    if len(p) == 4:
         if p[2] == '+':
             p[0] = p[1] + p[3]
+        else:  # p[2] == '-'
+            p[0] = p[1] - p[3]
+    else:
+        p[0] = p[1]
 
 
-# def p_expression(p):
-#     """expression : EXPRESSION ADD_OP EXPRESSION
-#                   | EXPRESSION SUB_OP EXPRESSION
-#                   | EXPRESSION MUL_OP EXPRESSION
-#                   | EXPRESSION DIV_OP EXPRESSION
-#                   | TERM"""
-#     if len(p) == 2:
-#         p[0] = p[1]
-#     else:
-#         if p[2] == '+':
-#             p[0] = p[1] + p[3]
-#         elif p[2] == '-':
-#             p[0] = p[1] - p[3]
-#         elif p[2] == '*':
-#             p[0] = p[1] * p[3]
-#         elif p[2] == '/':
-#             p[0] = p[1] / p[3]
+def p_term(p):
+    """
+    term : term MUL_OP factor
+         | term DIV_OP factor
+         | factor
+    """
+    if len(p) == 4:
+        if p[2] == '*':
+            p[0] = p[1] * p[3]
+        else:  # p[2] == '/'
+            p[0] = p[1] / p[3]
+    else:
+        p[0] = p[1]
 
 
-# Error handling
+def p_factor(p):
+    """
+    factor : NUMBER
+           | LEFT_PAR_OP expression RIGHT_PAR_OP
+    """
+    if len(p) == 4:
+        p[0] = p[2]
+    else:
+        p[0] = p[1]
+
+
+# Error rule for syntax errors
 def p_error(p):
     print("Syntax error in input!")
 
@@ -68,11 +52,12 @@ def p_error(p):
 # Build the parser
 parser = yacc.yacc()
 
-while True:
-    try:
-        print("Input content:", content)
-        result = parser.parse(content)
-        print(result)
-        break  # Exit the loop after parsing the content once
-    except EOFError:
-        break
+with open('test.lang', 'r') as file:
+    input_expr = file.read()
+
+# Tokenize input
+lexer.input(input_expr)
+
+# Parse input
+result = parser.parse(lexer=lexer)
+print("Result:", result)
