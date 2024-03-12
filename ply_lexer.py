@@ -29,8 +29,8 @@ tokens = [
              'LEFT_PAR_OP', 'RIGHT_PAR_OP', 'LEFT_CURL_OP', 'RIGHT_CURL_OP',
              'FULL_STOP_STATEMENT', 'COLON_STATEMENT', 'SEMI_COLON_STATEMENT',
              'MINUS', 'FLOAT_DECLARATION', 'DOUBLE_DECLARATION', 'STRING_DECLARATION',
-             'CHARACTER_DECLARATION', 'SINGLE_QUOTES', 'DOUBLE_QUOTES', 'INT_LITERAL',
-             'IDENTIFIER', 'ASSIGNMENT_STATEMENT', 'TERM', 'TYPE', 'EXPRESSION', 'NUMBER'
+             'CHARACTER_DECLARATION', 'SINGLE_QUOTES', 'FLOAT_LITERAL','DOUBLE_QUOTES', 'INT_LITERAL',
+             'IDENTIFIER', 'ASSIGNMENT_STATEMENT', 'TERM', 'TYPE', 'EXPRESSION',
          ] + list(reserved.values())
 
 # Regular expression rules for tokens
@@ -50,6 +50,7 @@ t_COLON_STATEMENT = r'\:'
 t_SEMI_COLON_STATEMENT = r';'
 t_SINGLE_QUOTES = r'\''
 t_DOUBLE_QUOTES = r'\"'
+t_STRING_STATEMENT = r'"[^"]*"'
 
 
 # Define regular expressions for other tokens (IDENTIFIER, INT_LITERAL, etc.)
@@ -89,15 +90,24 @@ def t_error(t):
     print(f"Illegal character '{t.value[0]}'")
     t.lexer.skip(1)
 
+def t_program_start(p):
 
-# Build the lexer
-lexer = lex.lex()
+def p_program_start(p):
+    ''''
+       program_start : function_declaration
+    '''
 
-# Now you can use the lexer object to tokenize input
-with open('test.lang', 'r') as file:
-    content = file.read()
-    lexer.input(content)
 
-# Iterate over the tokens produced by the lexer
-for token in lexer:
-    print(token)
+
+# # Build the lexer
+# lexer = lex.lex()
+# content = ""
+# # Now you can use the lexer object to tokenize input
+# with open('test.lang', 'r') as file:
+#     content = file.read()
+#     lexer.input(content)
+#
+# # Iterate over the tokens produced by the lexer
+#     for token in lexer:
+#         print(token)
+

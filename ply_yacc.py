@@ -5,10 +5,12 @@ from ply_lexer import lexer, tokens, content
 # Grammar rules
 def p_expression(p):
     """
-    expression : expression ADD_OP term
-               | expression SUB_OP term
+    expression : INT_LITERAL
+               | FLOAT_LITERAL
                | term
     """
+
+
     if len(p) == 4:
         if p[2] == '+':
             p[0] = p[1] + p[3]
@@ -52,7 +54,7 @@ def p_error(p):
 # Build the parser
 parser = yacc.yacc()
 
-with open('test.lang', 'r') as file:
+with open('test/test.lang', 'r') as file:
     input_expr = file.read()
 
 # Tokenize input
