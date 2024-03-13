@@ -1,12 +1,4 @@
-int main
-{
-    print "Hello World!"
-    if True
-    print Hello
-    do False
-    print "GoodBye"
+int main {
+ 5+5
+ return
 }
-
-for (int i ; i <=3 ; i++)
-
-for n in 100
