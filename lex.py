@@ -66,6 +66,10 @@ t_sub_op = r'-'
 t_expo_op = r'\*\*'
 t_mul_op = r'\*'
 t_div_op = r'/'
+t_less_or_eq_op = r'<='
+t_great_or_eq_op = r'>='
+t_less_op = r'<'
+t_great_op = r'>'
 t_left_par_op = r'\('
 t_right_par_op = r'\)'
 t_left_curl_op = r'\{'
@@ -82,10 +86,6 @@ t_comma_statement = r','
 t_colon_statement = r':'
 t_semi_colon_statement = r';'
 t_single_quotes = r'\''
-t_less_or_eq_op = r'<='
-t_great_or_eq_op = r'>='
-t_less_op = r'<'
-t_great_op = r'>'
 t_double_quotes = r'"'
 t_int_declaration = r'int'
 t_float_declaration = r'float'
@@ -118,8 +118,11 @@ lexer = lex.lex()
 content = ""
 
 precedence = (
-    ('left','add_op', 'sub_op'),
-    ('left','mul_op', 'div_op'),
+    ('nonassoc', 'left_par_op', 'right_par_op'),  # Parentheses
+    ('left', 'expo_op'),  # Exponents
+    ('left', 'mul_op', 'div_op'),  # Multiplication and Division
+    ('left', 'add_op', 'sub_op'),  # Addition and Subtraction
+    ('nonassoc', 'assign_op'),  # Assignment
 )
 
 
