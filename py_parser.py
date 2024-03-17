@@ -6,7 +6,7 @@ from lex import tokens, lexer
 
 def p_program_start(p):
     ''' program_start : program
-                      | arithmetic_statement
+                      | statement
                       | data_structure
                       '''
     p[0] = p[1]
@@ -15,25 +15,30 @@ def p_program_start(p):
 def p_data_structure(p):
     '''data_structure : class
                       | struct
-                      | list
+                      | list_structure
                       | array
                       | '''
+    p[0] = None
+
+
+def p_list_structure(p):
+    ''' list_structure : list'''
     p[0] = p[1]
 
 
 def p_empty(p):
     ''' empty : '''
-    p[0] = None
+    p[0] = 2
 
 
 def p_program(p):
     '''program : type_declaration main_statement left_curl_op statement right_curl_op
                | type_declaration main_statement left_par_op type_declaration identifier right_par_op left_curl_op statement right_curl_op
                '''
-    if len(p) == 6:
+    if len(p) <= 6:
         p[0] = (p[1], p[2], p[3], p[4], p[5])
     else:
-        p[0] = None
+        p[0] = 2
 
 
 def p_type_declaration(p):
@@ -61,6 +66,7 @@ def p_conditional_statement(p):
     '''conditional_statement : if_block
                                 | if_block elif_block else_block
                                 | if_block else_block
+                                | left_par_op inequalities right_par_op
                               | left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
                               '''
     if len(p) == 1:
@@ -71,6 +77,8 @@ def p_conditional_statement(p):
         p[0] = (p[1], p[2], p[3])
     elif len(p) > 8:
         p[0] = (p[1], p[2], p[4], p[5], p[6])
+    else:
+        print(f"There is an with the expected range: p[{str(len(p))}] was given")
 
 
 def p_if_block(p):
@@ -92,12 +100,26 @@ def p_elif_block(p):
 
 
 def p_inequalities(p):
-    '''inequalities :  inequalities_sym identifier
-                    | literal_or_identifier inequalities_sym  literal_or_identifier'''
-    if len(p) == 2:
-        p[0] = (p[1], p[2])
-    elif len(p) == 3:
-        p[0] = (p[1], p[2], p[3])
+    '''inequalities : literal_or_identifier inequalities_sym  literal_or_identifier'''
+
+    if len(p) == 4:
+        p[0] = (p[2], p[1], p[3])
+    else:
+        print(f"There is an with the expected range: p[{str(len(p))}] was given")
+
+
+def p_inequalities_sym(p):
+    '''inequalities_sym : equivalent_op
+                        | less_or_eq_op
+                        | great_or_eq_op
+                        | less_op
+                        | great_op
+                        | and
+                        | or
+                        | bool_literal
+                        | not_equal
+                        | '''
+    p[0] = p[1]
 
 
 def p_function_parameter(p):
@@ -122,19 +144,6 @@ def p_literal_or_identifier(p):
     p[0] = p[1]
 
 
-def p_inequalities_sym(p):
-    '''inequalities_sym : equivalent_op
-                        | less_or_eq_op
-                        | great_or_eq_op
-                        | less_op
-                        | great_op
-                        | and
-                        | or
-                        | bool_literal
-                        | '''
-    p[0] = p[1]
-
-
 def p_function_call_statement(p):
     '''function_call_statement : function_parameter  '''
     p[0] = p[1]
@@ -142,13 +151,13 @@ def p_function_call_statement(p):
 
 def p_loop_statement(p):
     '''loop_statement : while_statement inequalities left_curl_op statement right_curl_op
-                      | for_statement semi_colon_statement semi_colon_statement left_curl_op statement right_curl_op
+                      |  for_statement semi_colon_statement semi_colon_statement left_curl_op statement right_curl_op
                       | for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
                       '''
     if len(p) == 5:
-        p[0] = (p[1], p[2], p[4])
-    elif len(p) == 6:
-        p[0] = (p[1], p[5])
+        p[0] = (p[4])
+    if len(p) == 6:
+        p[0] = (p[1], p[2], p[3], p[4], p[5])
     elif len(p) == 9:
         p[0] = (p[1], p[2], p[4], p[6], p[8])
 
