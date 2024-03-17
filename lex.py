@@ -29,6 +29,9 @@ tokens = [
              'equivalent_op',
              'add_op',
              'sub_op',
+             'not_equal',
+             'and',
+             'or',
              'mul_op',
              'expo_op',
              'div_op',
@@ -51,14 +54,21 @@ tokens = [
              'double_literal',
              'string_literal',
              'bool_literal',
+             'elif_statement',
+             'question_op',
+             'list',
+             'array',
              'char_literal',
              'identifier',
+
          ] + list(reserved.values())
 
 # Regular expression rules for simple tokens
 
 t_class = r'class'
 # t_struct = r'struct'
+t_list = 'list'
+t_array = 'array'
 t_equivalent_op = r'=='
 t_assign_op = r'='
 t_add_op = r'\+'
@@ -68,13 +78,18 @@ t_mul_op = r'\*'
 t_div_op = r'/'
 t_less_or_eq_op = r'<='
 t_great_or_eq_op = r'>='
+t_and = r'\&\&'
+t_or = r'\|\|'
 t_less_op = r'<'
 t_great_op = r'>'
 t_left_par_op = r'\('
 t_right_par_op = r'\)'
 t_left_curl_op = r'\{'
 t_right_curl_op = r'\}'
+t_question_op = r'\?'
+t_not_equal = r'!='
 t_if_statement = r'if'
+t_elif_statement = r'elif'
 t_else_statement = r'else'
 t_while_statement = r'while'
 t_for_statement = r'for'
@@ -114,6 +129,7 @@ def t_error(t):
     print(f"Illegal character '{t.value[0]}'")
     t.lexer.skip(1)
 
+
 lexer = lex.lex()
 content = ""
 
@@ -125,14 +141,9 @@ precedence = (
     ('nonassoc', 'assign_op'),  # Assignment
 )
 
-
-
 # with open('test/test.lang', 'r') as file:
 #     content = file.read()
 #     lexer.input(content)
 #
 #     for token in lexer:
 #         print(token)
-
-
-

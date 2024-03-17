@@ -7,7 +7,17 @@ from lex import tokens, lexer
 def p_program_start(p):
     ''' program_start : program
                       | arithmetic_statement
+                      | data_structure
                       '''
+    p[0] = p[1]
+
+
+def p_data_structure(p):
+    '''data_structure : class
+                      | struct
+                      | list
+                      | array
+                      | '''
     p[0] = p[1]
 
 
@@ -48,13 +58,62 @@ def p_statement(p):
 
 
 def p_conditional_statement(p):
-    '''conditional_statement : empty'''
-    p[0] = p[1]
+    '''conditional_statement : if_block
+                                | if_block elif_block else_block
+                                | if_block else_block
+                              | left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
+                              '''
+    if len(p) == 1:
+        p[0] = (p[1])
+    elif len(p) == 2:
+        p[0] = (p[1], p[2])
+    elif len(p) == 3:
+        p[0] = (p[1], p[2], p[3])
+    elif len(p) > 8:
+        p[0] = (p[1], p[2], p[4], p[5], p[6])
+
+
+def p_if_block(p):
+    ''' if_block : if_statement inequalities_sym left_curl_op statement right_curl_op'''
+
+    p[0] = (p[1], p[2], p[4])
+
+
+def p_else_block(p):
+    '''else_block : if_block else_statement left_curl_op statement right_curl_op
+                 | elif_block  else_statement left_curl_op statement right_curl_op '''
+    p[0] = (p[1], p[2], p[3])
+
+
+def p_elif_block(p):
+    '''elif_block : if_block elif_statement inequalities_sym left_curl_op statement right_curl_op
+                    | elif_block'''
+    p[0] = (p[1], p[2], p[3], p[5])
 
 
 def p_inequalities(p):
     '''inequalities :  inequalities_sym identifier
                     | literal_or_identifier inequalities_sym  literal_or_identifier'''
+    if len(p) == 2:
+        p[0] = (p[1], p[2])
+    elif len(p) == 3:
+        p[0] = (p[1], p[2], p[3])
+
+
+def p_function_parameter(p):
+    ''' function_parameter  : literal_or_identifier
+                            | function_parameter_list
+                            | left_par_op function_parameter right_par_op
+                            '''
+    if len(p) == 2:
+        p[0] = p[1]
+    elif len(p) == 4:
+        p[0] = (p[1], p[2], p[3])
+
+
+def p_function_parameter_list(p):
+    ''' function_parameter_list : function_parameter comma_statement literal_or_identifier '''
+    p[0] = (p[1], p[2], p[3])
 
 
 def p_literal_or_identifier(p):
@@ -69,12 +128,15 @@ def p_inequalities_sym(p):
                         | great_or_eq_op
                         | less_op
                         | great_op
+                        | and
+                        | or
+                        | bool_literal
                         | '''
     p[0] = p[1]
 
 
 def p_function_call_statement(p):
-    '''function_call_statement : empty'''
+    '''function_call_statement : function_parameter  '''
     p[0] = p[1]
 
 
@@ -82,7 +144,13 @@ def p_loop_statement(p):
     '''loop_statement : while_statement inequalities left_curl_op statement right_curl_op
                       | for_statement semi_colon_statement semi_colon_statement left_curl_op statement right_curl_op
                       | for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
-                      | do_statement inequalities left_curl_op statement right_curl_op'''
+                      '''
+    if len(p) == 5:
+        p[0] = (p[1], p[2], p[4])
+    elif len(p) == 6:
+        p[0] = (p[1], p[5])
+    elif len(p) == 9:
+        p[0] = (p[1], p[2], p[4], p[6], p[8])
 
 
 def p_arithmetic_statement(p):
@@ -91,10 +159,11 @@ def p_arithmetic_statement(p):
 
 
 def p_arithmetic_expr(p):
-    '''arithmetic_expr : literal_or_identifier assign_op arithmetic_expr
+    '''arithmetic_expr : identifier assign_op arithmetic_expr
                        | arithmetic_expr arithmetic_op arithmetic_expr
                        | left_par_op arithmetic_expr right_par_op
-                       | literal_or_identifier'''
+                       | literal_or_identifier
+                       | identifier assign_op function_call_statement'''
     if len(p) == 4:  # Handle assignment
         p[0] = (p[2], p[1], p[3])
     elif len(p) == 2:
@@ -117,7 +186,6 @@ def p_data_literal(p):
     '''data_literal : int_literal
                     | float_literal
                     | double_literal
-                    | bool_literal
                     | char_literal
                     | string_literal'''
     p[0] = p[1]
