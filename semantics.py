@@ -1,5 +1,3 @@
-from py_parser import parser
-
 
 class Interpreter:
     def __init__(self):
@@ -96,9 +94,9 @@ class Interpreter:
                 value = str(parse_tree[1])
                 return value
 
-
-def evaluate_expression(self, expression):
-    if isinstance(expression, tuple):
-        return self.execute(expression)
-    elif isinstance(expression, int) or isinstance(expression, float) or isinstance(expression, str):
-        return expression
+    def evaluate_expression(self, expression):
+        if isinstance(expression, tuple):
+            return self.execute(expression)
+        elif isinstance(expression, int) or isinstance(expression, float) or isinstance(expression, str):
+            return expression
+        pass

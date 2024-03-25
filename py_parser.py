@@ -10,7 +10,7 @@ def p_program_start(p):
                       | statement
                       | data_structure
                       '''
-    p[0] = ('program_start', p[1])
+    p[0] = p[1]
 
 
 def p_data_structure(p):
@@ -19,7 +19,7 @@ def p_data_structure(p):
                       | list_structure
                       | array
                       | '''
-    p[0] = ('data_structure', p[1])
+    p[0] = (p[1])
 
 
 def p_list_structure(p):
@@ -120,7 +120,7 @@ def p_inequalities_sym(p):
                         | bool_literal
                         | not_equal
                         | '''
-    p[0] = ('inequalities_sym', p[1])
+    p[0] = (p[1])
 
 
 def p_function_parameter(p):
@@ -129,9 +129,9 @@ def p_function_parameter(p):
                             | left_par_op function_parameter right_par_op
                             '''
     if len(p) == 2:
-        p[0] = ('function_parameter', p[1])
+        p[0] = (p[1])
     elif len(p) == 4:
-        p[0] = ('function_parameter', p[1], p[2], p[3])
+        p[0] = (p[1], p[2], p[3])
 
 
 def p_function_parameter_list(p):
@@ -142,12 +142,12 @@ def p_function_parameter_list(p):
 def p_literal_or_identifier(p):
     '''literal_or_identifier : identifier
                              | data_literal'''
-    p[0] = ('literal_or_identifier', p[1])
+    p[0] = p[1]
 
 
 def p_function_call_statement(p):
     '''function_call_statement : function_parameter  '''
-    p[0] = ('literal_or_identifier', p[1])
+    p[0] = p[1]
 
 
 def p_loop_statement(p):
@@ -175,11 +175,11 @@ def p_arithmetic_expr(p):
                        | literal_or_identifier
                        | identifier assign_op function_call_statement'''
     if len(p) == 4:  # Handle assignment
-        p[0] = ('arithmetic_expr', p[2], p[1], p[3])
+        p[0] = p[2], p[1], p[3]
     elif len(p) == 2:
-        p[0] = ('arithmetic_expr', p[1])
+        p[0] = p[1]
     else:
-        p[0] = ('arithmetic_expr', p[2], p[1], p[3])
+        p[0] = p[2], p[1], p[3]
 
 
 def p_arithmetic_op(p):
@@ -189,7 +189,7 @@ def p_arithmetic_op(p):
                     | add_op
                      | sub_op
                      '''
-    p[0] = ('arithmetic_op', p[1])
+    p[0] = p[1]
 
 
 def p_data_literal(p):
