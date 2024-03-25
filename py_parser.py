@@ -2,6 +2,7 @@ import ply.yacc as yacc
 
 # Tokens from the lexer
 from lex import tokens, lexer
+from semantics import Interpreter
 
 
 def p_program_start(p):
@@ -9,7 +10,7 @@ def p_program_start(p):
                       | statement
                       | data_structure
                       '''
-    p[0] = p[1]
+    p[0] = ('program_start', p[1])
 
 
 def p_data_structure(p):
@@ -18,17 +19,17 @@ def p_data_structure(p):
                       | list_structure
                       | array
                       | '''
-    p[0] = None
+    p[0] = ('data_structure', p[1])
 
 
 def p_list_structure(p):
     ''' list_structure : list'''
-    p[0] = p[1]
+    p[0] = ('list_structure', p[1])
 
 
 def p_empty(p):
     ''' empty : '''
-    p[0] = 2
+    p[0] = ('empty', 2)
 
 
 def p_program(p):
@@ -36,9 +37,9 @@ def p_program(p):
                | type_declaration main_statement left_par_op type_declaration identifier right_par_op left_curl_op statement right_curl_op
                '''
     if len(p) <= 6:
-        p[0] = (p[1], p[2], p[3], p[4], p[5])
+        p[0] = ('program', p[1], p[2], p[3], p[4], p[5])
     else:
-        p[0] = 2
+        p[0] = ('program', p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9])
 
 
 def p_type_declaration(p):
@@ -47,7 +48,7 @@ def p_type_declaration(p):
                         | double_declaration
                         | string_declaration
                         | char_declaration'''
-    p[0] = p[1]
+    p[0] = ('type_declaration', p[1])
 
 
 def p_statement(p):
@@ -59,7 +60,7 @@ def p_statement(p):
                  | return_statement identifier
                  | return_statement
                  '''
-    p[0] = p[1]
+    p[0] = ('statement', p[1])
 
 
 def p_conditional_statement(p):
@@ -70,11 +71,11 @@ def p_conditional_statement(p):
                               | left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
                               '''
     if len(p) == 1:
-        p[0] = (p[1])
+        p[0] = ('conditional_statement', p[1])
     elif len(p) == 2:
-        p[0] = (p[1], p[2])
+        p[0] = ('conditional_statement', p[1], p[2])
     elif len(p) == 3:
-        p[0] = (p[1], p[2], p[3])
+        p[0] = ('conditional_statement', p[1], p[2], p[3])
     elif len(p) > 8:
         p[0] = (p[1], p[2], p[4], p[5], p[6])
     else:
@@ -84,26 +85,26 @@ def p_conditional_statement(p):
 def p_if_block(p):
     ''' if_block : if_statement inequalities_sym left_curl_op statement right_curl_op'''
 
-    p[0] = (p[1], p[2], p[4])
+    p[0] = ('if_block', p[1], p[2], p[4])
 
 
 def p_else_block(p):
     '''else_block : if_block else_statement left_curl_op statement right_curl_op
                  | elif_block  else_statement left_curl_op statement right_curl_op '''
-    p[0] = (p[1], p[2], p[3])
+    p[0] = ('else_block', p[1], p[2], p[4])
 
 
 def p_elif_block(p):
     '''elif_block : if_block elif_statement inequalities_sym left_curl_op statement right_curl_op
                     | elif_block'''
-    p[0] = (p[1], p[2], p[3], p[5])
+    p[0] = ('elif_block', p[1], p[2], p[3], p[5])
 
 
 def p_inequalities(p):
     '''inequalities : literal_or_identifier inequalities_sym  literal_or_identifier'''
 
     if len(p) == 4:
-        p[0] = (p[2], p[1], p[3])
+        p[0] = ('inequalities', p[2], p[1], p[3])
     else:
         print(f"There is an with the expected range: p[{str(len(p))}] was given")
 
@@ -119,7 +120,7 @@ def p_inequalities_sym(p):
                         | bool_literal
                         | not_equal
                         | '''
-    p[0] = p[1]
+    p[0] = ('inequalities_sym', p[1])
 
 
 def p_function_parameter(p):
@@ -128,9 +129,9 @@ def p_function_parameter(p):
                             | left_par_op function_parameter right_par_op
                             '''
     if len(p) == 2:
-        p[0] = p[1]
+        p[0] = ('function_parameter', p[1])
     elif len(p) == 4:
-        p[0] = (p[1], p[2], p[3])
+        p[0] = ('function_parameter', p[1], p[2], p[3])
 
 
 def p_function_parameter_list(p):
@@ -141,30 +142,30 @@ def p_function_parameter_list(p):
 def p_literal_or_identifier(p):
     '''literal_or_identifier : identifier
                              | data_literal'''
-    p[0] = p[1]
+    p[0] = ('literal_or_identifier', p[1])
 
 
 def p_function_call_statement(p):
     '''function_call_statement : function_parameter  '''
-    p[0] = p[1]
+    p[0] = ('literal_or_identifier', p[1])
 
 
 def p_loop_statement(p):
     '''loop_statement : while_statement inequalities left_curl_op statement right_curl_op
-                      |  for_statement semi_colon_statement semi_colon_statement left_curl_op statement right_curl_op
+                      |  for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
                       | for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
                       '''
     if len(p) == 5:
-        p[0] = (p[4])
+        p[0] = ('loop_statement', p[1], p[2], p[4])
     if len(p) == 6:
-        p[0] = (p[1], p[2], p[3], p[4], p[5])
+        p[0] = ('loop_statement', p[1], p[2], p[3], p[4], p[5])
     elif len(p) == 9:
-        p[0] = (p[1], p[2], p[4], p[6], p[8])
+        p[0] = ('loop_statement', p[1], p[2], p[4], p[6], p[8])
 
 
 def p_arithmetic_statement(p):
     '''arithmetic_statement : arithmetic_expr'''
-    p[0] = p[1]
+    p[0] = ('arithmetic_statement', p[1])
 
 
 def p_arithmetic_expr(p):
@@ -174,11 +175,11 @@ def p_arithmetic_expr(p):
                        | literal_or_identifier
                        | identifier assign_op function_call_statement'''
     if len(p) == 4:  # Handle assignment
-        p[0] = (p[2], p[1], p[3])
+        p[0] = ('arithmetic_expr', p[2], p[1], p[3])
     elif len(p) == 2:
-        p[0] = p[1]
+        p[0] = ('arithmetic_expr', p[1])
     else:
-        p[0] = (p[2], p[1], p[3])
+        p[0] = ('arithmetic_expr', p[2], p[1], p[3])
 
 
 def p_arithmetic_op(p):
@@ -188,7 +189,7 @@ def p_arithmetic_op(p):
                     | add_op
                      | sub_op
                      '''
-    p[0] = p[1]
+    p[0] = ('arithmetic_op', p[1])
 
 
 def p_data_literal(p):
@@ -207,6 +208,7 @@ def p_error(p):
 
 # Build the parser
 parser = yacc.yacc()
+interpreter = Interpreter()
 
 while True:
     try:
@@ -222,3 +224,4 @@ while True:
 
     result = parser.parse(s)
     print(result)
+    print("Interpreter result:", interpreter.evaluate_expression(result))
