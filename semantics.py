@@ -1,102 +1,164 @@
-
-class Interpreter:
-    def __init__(self):
-        self.variables = {}
-
-    def execute(self, parse_tree):
-        if parse_tree is None:
-            return None
-
-        input_entry = parse_tree[0]
-
-        if input_entry == 'program_start':
-            self.execute = (parse_tree[1])
-        elif input_entry == 'data_structure':
-            self.execute = (parse_tree[1])
-        elif input_entry == 'list_structure':
-            self.execute = (parse_tree[1])
-        elif input_entry == 'empty':
-            self.execute = (parse_tree[2])
-        elif input_entry == 'program':
-            if len(parse_tree) <= 6:
-                self.execute = (parse_tree[1][2][3][4][5])
+def semantic(p):
+    if isinstance(p, tuple):
+        if p[0] == 'program':
+            if len(p) == 6:
+                return semantic(p[1]), semantic(p[2]), semantic(p[3]), semantic(p[4]), semantic(p[5])
+            elif len(p) == 10:
+                return semantic(p[1]), p[2], p[3], semantic(p[4]), semantic(p[5]), p[6], p[7], p[8], semantic(p[9])
             else:
-                self.execute = (parse_tree[1][2][3][4][5][6][7][8][9])
-        elif input_entry == 'type_declaration':
-            self.execute = (parse_tree[1])
-        elif input_entry == 'statement':
-            self.execute == (parse_tree[1])
-        elif input_entry == 'conditional_statement':
-            if len(parse_tree) == 1:
-                self.execute = (parse_tree[1])
-            elif len(parse_tree) == 2:
-                self.execute = (parse_tree[1][2])
-            elif len(parse_tree) == 3:
-                self.execute = (parse_tree[1][2][3])
-            elif len(parse_tree) > 8:
-                self.execute = (parse_tree[1][2][4][5][6])
-        elif input_entry == 'if_block':
-            self.execute = (parse_tree[1][2][4])
-        elif input_entry == 'else_block':
-            self.execute = (parse_tree[1][2][4])
-        elif input_entry == 'elif_block':
-            self.execute = (parse_tree[1][2][3][5])
-        elif input_entry == 'inequalities':
-            if len(parse_tree) <= 4:
-                self.execute = (parse_tree[2][1][3])
-        elif input_entry == 'inequalities_sym':
-            self.execute = (parse_tree[1])
-        elif input_entry == 'function_parameter':
-            if len(parse_tree) == 2:
-                self.execute = (parse_tree[1])
+                print("Error: Unexpected structure for program production:", p)
+                return None
+        elif p[0] == 'conditional_statement':
+            if len(p) == 2:
+                return semantic(p[1])
+            elif len(p) == 4:
+                return semantic(p[1]), semantic(p[2]), semantic(p[3])
+            elif len(p) > 6:
+                return semantic(p[1]), semantic(p[2]), semantic(p[4]), semantic(p[5]), semantic(p[6])
             else:
-                self.execute = (parse_tree[1][2][3])
-        elif input_entry == 'function_parameter_list':
-            self.execute = (parse_tree[1])
-        elif input_entry == 'loop_statement':
-            if len(parse_tree) == 5:
-                self.execute = (parse_tree[1][2][4])
-            elif len(parse_tree) == 6:
-                self.execute = (parse_tree[1][2][3][4][5])
-            elif len(parse_tree) == 9:
-                self.excute = (parse_tree[1][2][4][6][8])
-        elif input_entry == 'arithmetic_statement':
-            self.execute = (parse_tree[1])
-        elif input_entry == 'arithmetic_expr':
-            left_operand, right_operand = parse_tree[1], parse_tree[3]
-            if parse_tree[2] == 'mul_op':
-                return self.execute(left_operand) * self.execute(right_operand)
-            elif parse_tree[2] == 'div_op':
-                return self.execute(left_operand) / self.execute(right_operand)
-            elif parse_tree[2] == 'add_op':
-                return self.execute(left_operand) + self.execute(right_operand)
-            elif parse_tree[2] == 'sub_op':
-                return self.execute(left_operand) - self.execute(right_operand)
-            elif parse_tree[2] == 'expo_op':
-                return self.execute(left_operand) ** self.execute(right_operand)
-            if len(parse_tree) == 4:
-                self.execute = (parse_tree[2][1][3])
-            elif len(parse_tree) == 2:
-                self.execute = (parse_tree[1])
-        elif input_entry == 'arithmetic_op':
-            self.execute = (parse_tree[1])
-        elif input_entry == 'data_literal':
-            if parse_tree[1] == 'int_literal':
-                value = int(parse_tree[1])
-                return value
-            elif parse_tree[1] == 'float_literal':
-                value = float(parse_tree[1])
-                return value
-            elif parse_tree[1] == 'char_literal':
-                value = str(parse_tree[1])
-                return value
-            elif parse_tree[1] == 'string_literal':
-                value = str(parse_tree[1])
-                return value
+                print("Error: Unexpected structure for conditional_statement production:", p)
+                return None
+        elif p[0] == 'if_block':
+            if_statement = p[1]
+            condition = p[2]
+            statement = p[4]
+            if isinstance(condition, tuple) and condition[0] == 'inequalities':
+                operator = condition[1]
+                left_operand = condition[2]
+                right_operand = condition[3]
+                condition_result = None
+                if operator == '<':
+                    condition_result = left_operand < right_operand
+                elif operator == '>':
+                    condition_result = left_operand > right_operand
+                elif operator == '<=':
+                    condition_result = left_operand <= right_operand
+                elif operator == '>=':
+                    condition_result = left_operand >= right_operand
+                elif operator == '==':
+                    condition_result = left_operand == right_operand
+                elif operator == '!=':
+                    condition_result = left_operand != right_operand
+                else:
+                    print("Error: Unsupported comparison operator:", operator)
+                    return None
+                if condition_result:
+                    return semantic(statement)
+                else:
+                    return None
+            else:
+                print("Error: Invalid condition in if block:", condition)
+                return None
+        elif p[0] == 'else_block':
+            if len(p) == 4:
+                # Handle the case of if_block with else statement
+                if_block = semantic(p[1])
+                else_statement = p[2]
+                statement = p[3]
+                # Check if if_block evaluated to None
+                if if_block is None:
+                    # Evaluate else statement
+                    return semantic(statement)
+                else:
+                    # If if_block is not None, return its result
+                    return if_block
+            else:
+                print("Error: Unexpected structure for else_block production:", p)
+                return None
+        elif p[0] == 'elif_block':
+            # Handle elif_block production
+            elif_statement = p[1]
+            condition = p[2]
+            statement = p[3]
 
-    def evaluate_expression(self, expression):
-        if isinstance(expression, tuple):
-            return self.execute(expression)
-        elif isinstance(expression, int) or isinstance(expression, float) or isinstance(expression, str):
-            return expression
-        pass
+            # Ensure condition is a tuple and its first element is 'inequalities'
+            if isinstance(condition, tuple) and condition[0] == 'inequalities':
+                operator = condition[1]
+                left_operand = condition[2]
+                right_operand = condition[3]
+
+                # Evaluate the condition based on the operator
+                if operator == '>':
+                    condition_result = left_operand > right_operand
+                elif operator == '<':
+                    condition_result = left_operand < right_operand
+                # Add other comparison operators as needed
+
+                # Execute the statement if the condition is true
+                if condition_result:
+                    return semantic(statement)
+                else:
+                    return None  # Condition is false, return None
+            else:
+                print("Error: Invalid condition in elif block:", condition)
+                return None
+        elif p[0] == 'function_parameter':
+            # Handle function_parameter
+            if len(p) == 2:
+                return semantic(p[1])
+            elif len(p) == 4:
+                return p[1], semantic(p[2]), p[3]
+            else:
+                print("Error: Unexpected structure for function_parameter production:", p)
+                return None
+        elif p[0] == 'function_parameter_list':
+            return semantic(p[1]), semantic(p[2]), semantic(p[3])
+        elif p[0] == 'loop_statement':
+            loop_type = p[1]  # Get the type of loop (while, for, etc.)
+            condition = p[2]  # Get the loop condition
+            statement = p[4]  # Get the loop body statement
+            # Check if the condition is a tuple representing an inequality
+            if isinstance(condition, tuple) and condition[0] == 'inequalities':
+                operator = condition[1]  # Get the inequality operator
+                left_operand = condition[2]  # Get the left operand
+                right_operand = condition[3]  # Get the right operand
+                # Evaluate the condition based on the operator
+                if operator == '<':
+                    condition_result = left_operand < right_operand
+                elif operator == '>':
+                    condition_result = left_operand > right_operand
+                elif operator == '<=':
+                    condition_result = left_operand <= right_operand
+                elif operator == '>=':
+                    condition_result = left_operand >= right_operand
+                elif operator == '==':
+                    condition_result = left_operand == right_operand
+                elif operator == '!=':
+                    condition_result = left_operand != right_operand
+                else:
+                    print("Error: Unsupported comparison operator:", operator)
+                    return None
+                if condition_result:
+                    return semantic(statement)  # Evaluate the loop body statement
+                else:
+                    return None  # Condition is false, return None
+            else:
+                print("Error: Invalid condition in loop statement:", condition)
+                return None
+        elif p[0] == '=':
+            variable = p[1]  # Get the variable name
+            value = semantic(p[2])  # Get the value of the arithmetic expression
+            print("Assigning", value, "to", variable)
+            return variable, '=', value
+        elif len(p) == 2:  # Literal or identifier
+            return semantic(p[1])
+        elif p[0] == '+':
+            left_operand = semantic(p[1])
+            right_operand = semantic(p[2])
+            if isinstance(left_operand, (int, float)) and isinstance(right_operand, (int, float)):
+                return left_operand + right_operand
+            else:
+                print("Error: Non-numeric operands for addition:", left_operand, right_operand)
+                return None
+        elif p[0] == '-':
+            left_operand = semantic(p[1])
+            right_operand = semantic(p[2])
+            if isinstance(left_operand, (int, float)) and isinstance(right_operand, (int, float)):
+                return left_operand - right_operand
+            else:
+                print("Error: Non-numeric operands for addition:", left_operand, right_operand)
+                return None
+        print("Error: Unsupported operator:", p[0])
+        return None
+    else:
+        return p

@@ -3,6 +3,7 @@ import ply.lex as lex
 reserved = {
     'if': 'if_statement',
     'else': 'else_statement',
+    'elif': 'elif_statement',
     'while': 'while_statement',
     'do': 'do_statement',
     'for': 'for_statement',
@@ -14,14 +15,15 @@ reserved = {
     'break': 'break_statement',
     'return': 'return_statement',
     'bool': 'bool_declaration',
-    'class': 'class',
+    'Class': 'class',
     'struct': 'struct',
-    'main': 'main_statement',
+    'main': 'main_statement',  # Add 'main' as a reserved keyword
     'goto': 'goto_statement',
     'True': 'true_literal',
     'False': 'false_literal',
     'in': 'in_statement',
 }
+
 
 # List of token names
 tokens = [
@@ -54,7 +56,6 @@ tokens = [
              'double_literal',
              'string_literal',
              'bool_literal',
-             'elif_statement',
              'question_op',
              'list',
              'array',
@@ -107,12 +108,17 @@ t_float_declaration = r'float'
 t_double_declaration = r'double'
 t_string_declaration = r'string'
 t_char_declaration = r'char'
-t_int_literal = r'\d+'
 t_float_literal = r'(\.\d+)?.\d+f'
 t_double_literal = r'\d+\.\d+'
 t_string_literal = r'\'[^\']*\'|\"[^\"]*\"'
 t_char_literal = r'[\'a-zA-Z\']'
 t_identifier = r'[a-zA-Z_][a-zA-Z_\d+]*'
+
+
+def t_int_literal(t):
+    r'\d+'
+    t.value = int(t.value)  # Convert the token value to an integer
+    return t
 
 
 def t_reserved(t):
@@ -132,14 +138,6 @@ def t_error(t):
 
 lexer = lex.lex()
 content = ""
-
-precedence = (
-    ('nonassoc', 'left_par_op', 'right_par_op'),  # Parentheses
-    ('left', 'expo_op'),  # Exponents
-    ('left', 'mul_op', 'div_op'),  # Multiplication and Division
-    ('left', 'add_op', 'sub_op'),  # Addition and Subtraction
-    ('nonassoc', 'assign_op'),  # Assignment
-)
 
 # with open('test/test.lang', 'r') as file:
 #     content = file.read()
