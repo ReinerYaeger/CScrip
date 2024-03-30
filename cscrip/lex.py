@@ -138,6 +138,7 @@ def t_error(t):
 lexer = lex.lex()
 content = ""
 
+
 # with open('test/test.lang', 'r') as file:
 #     content = file.read()
 #     lexer.input(content)

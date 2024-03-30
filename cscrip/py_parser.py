@@ -1,7 +1,7 @@
 import ply.yacc as yacc
 
 # Tokens from the lexer
-from lex import lexer
+from lex import tokens, lexer
 # from ply_semantics import semantic_node
 from semantics import semantic
 
