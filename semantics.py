@@ -104,36 +104,41 @@ def semantic(p):
         elif p[0] == 'function_parameter_list':
             return semantic(p[1]), semantic(p[2]), semantic(p[3])
         elif p[0] == 'loop_statement':
-            loop_type = p[1]  # Get the type of loop (while, for, etc.)
-            condition = p[2]  # Get the loop condition
-            statement = p[4]  # Get the loop body statement
-            # Check if the condition is a tuple representing an inequality
-            if isinstance(condition, tuple) and condition[0] == 'inequalities':
-                operator = condition[1]  # Get the inequality operator
-                left_operand = condition[2]  # Get the left operand
-                right_operand = condition[3]  # Get the right operand
-                # Evaluate the condition based on the operator
-                if operator == '<':
-                    condition_result = left_operand < right_operand
-                elif operator == '>':
-                    condition_result = left_operand > right_operand
-                elif operator == '<=':
-                    condition_result = left_operand <= right_operand
-                elif operator == '>=':
-                    condition_result = left_operand >= right_operand
-                elif operator == '==':
-                    condition_result = left_operand == right_operand
-                elif operator == '!=':
-                    condition_result = left_operand != right_operand
+            # Handle loop_statement
+            if len(p) == 6:  # While loop without inequalities
+                return p[1], semantic(p[2]), p[3], semantic(p[4]), p[5]
+            elif len(p) == 9:  # For loop with inequalities
+                condition = p[2]  # Get the loop condition
+                statement = p[4]
+                if isinstance(condition, tuple) and condition[0] == 'inequalities':
+                    operator = condition[1]
+                    left_operand = condition[2]
+                    right_operand = condition[3]
+                    condition_result = None
+                    if operator == '<':
+                        condition_result = left_operand < right_operand
+                    elif operator == '>':
+                        condition_result = left_operand > right_operand
+                    elif operator == '<=':
+                        condition_result = left_operand <= right_operand
+                    elif operator == '>=':
+                        condition_result = left_operand >= right_operand
+                    elif operator == '==':
+                        condition_result = left_operand == right_operand
+                    elif operator == '!=':
+                        condition_result = left_operand != right_operand
+                    else:
+                        print("Error: Unsupported comparison operator:", operator)
+                        return None
+                    if condition_result:
+                        return semantic(statement)
+                    else:
+                        return None  # Condition is false, return None
                 else:
-                    print("Error: Unsupported comparison operator:", operator)
+                    print("Error: Invalid condition in loop statement:", condition)
                     return None
-                if condition_result:
-                    return semantic(statement)  # Evaluate the loop body statement
-                else:
-                    return None  # Condition is false, return None
             else:
-                print("Error: Invalid condition in loop statement:", condition)
+                print("Error: Unexpected structure for loop_statement production:", p)
                 return None
         elif p[0] == '=':
             variable = p[1]  # Get the variable name
@@ -160,5 +165,5 @@ def semantic(p):
                 return None
         print("Error: Unsupported operator:", p[0])
         return None
-    else:
+    elif isinstance(p, int) or isinstance(p, float) or isinstance(p, str):
         return p
