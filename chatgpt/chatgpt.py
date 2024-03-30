@@ -2,7 +2,7 @@ import os
 
 import openai
 from dotenv import load_dotenv
-
+import json
 from openai import OpenAI
 
 load_dotenv()
@@ -23,4 +23,5 @@ while True:
     if user_input.lower() in ["exit", "quit", "bye"]:
         break
     response = cscrip_chatgpt(user_input)
-    print("Chatbot: ",response)
+    print("Chatbot: ", response)
+    print(json.dumps(response))
