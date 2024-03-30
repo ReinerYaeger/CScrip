@@ -5,6 +5,18 @@
     <title>Title</title>
 </head>
 <body>
-
+    <div id="container">
+        <div id="input-area">
+            <textarea id="input-text" placeholder="Enter your code here"></textarea>
+            <button onclick="compileCode()">Compile</button>
+        </div>
+        <div id="output-area">
+            <textarea id="output-text" readonly></textarea>
+        </div>
+        <div id="prompt-area">
+            <textarea id="prompt-text" placeholder="ChatGPT prompt"></textarea>
+            <button onclick="sendPrompt()">Send</button>
+        </div>
+    </div>
 </body>
 </html>
