@@ -22,6 +22,7 @@ reserved = {
     'True': 'true_literal',
     'False': 'false_literal',
     'in': 'in_statement',
+    'print': 'print_statement'
 }
 
 # List of token names
