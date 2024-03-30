@@ -1,5 +1,3 @@
-import ply.lex as lex
-
 reserved = {
     'if': 'IF_STATEMENT',
     'then': 'THEN_STATEMENT',
@@ -29,7 +27,7 @@ tokens = [
              'LEFT_PAR_OP', 'RIGHT_PAR_OP', 'LEFT_CURL_OP', 'RIGHT_CURL_OP',
              'FULL_STOP_STATEMENT', 'COLON_STATEMENT', 'SEMI_COLON_STATEMENT',
              'MINUS', 'FLOAT_DECLARATION', 'DOUBLE_DECLARATION', 'STRING_DECLARATION',
-             'CHARACTER_DECLARATION', 'SINGLE_QUOTES', 'FLOAT_LITERAL','DOUBLE_QUOTES', 'INT_LITERAL',
+             'CHARACTER_DECLARATION', 'SINGLE_QUOTES', 'FLOAT_LITERAL', 'DOUBLE_QUOTES', 'INT_LITERAL',
              'IDENTIFIER', 'ASSIGNMENT_STATEMENT', 'TERM', 'TYPE', 'EXPRESSION',
          ] + list(reserved.values())
 
@@ -90,14 +88,14 @@ def t_error(t):
     print(f"Illegal character '{t.value[0]}'")
     t.lexer.skip(1)
 
+
 def t_program_start(p):
+
 
 def p_program_start(p):
     ''''
        program_start : function_declaration
     '''
-
-
 
 # # Build the lexer
 # lexer = lex.lex()
@@ -110,4 +108,3 @@ def p_program_start(p):
 # # Iterate over the tokens produced by the lexer
 #     for token in lexer:
 #         print(token)
-

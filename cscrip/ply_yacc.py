@@ -1,5 +1,6 @@
 import ply.yacc as yacc
-from ply_lexer import lexer, tokens, content
+
+from ply_lexer import lexer
 
 
 # Grammar rules
@@ -9,7 +10,6 @@ def p_expression(p):
                | FLOAT_LITERAL
                | term
     """
-
 
     if len(p) == 4:
         if p[2] == '+':

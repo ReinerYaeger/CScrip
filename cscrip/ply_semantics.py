@@ -1,6 +1,3 @@
-from py_parser import parser
-
-
 def __init__(self):
     self.variables = {}
 

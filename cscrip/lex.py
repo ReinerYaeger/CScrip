@@ -24,7 +24,6 @@ reserved = {
     'in': 'in_statement',
 }
 
-
 # List of token names
 tokens = [
              'assign_op',
