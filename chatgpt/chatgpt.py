@@ -15,13 +15,5 @@ def cscrip_chatgpt(prompt):
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}]
     )
-    return responses.choices[0].message.content
+    return responses.choices[0].message['content']
 
-
-while True:
-    user_input = input("You: ")
-    if user_input.lower() in ["exit", "quit", "bye"]:
-        break
-    response = cscrip_chatgpt(user_input)
-    print("Chatbot: ", response)
-    print(json.dumps(response))
