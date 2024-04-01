@@ -106,10 +106,38 @@ def semantic(p):
         elif p[0] == 'loop_statement':
             # Handle loop_statement
             if len(p) == 6:  # While loop without inequalities
-                return p[1], semantic(p[2]), p[3], semantic(p[4]), p[5]
+                condition = p[2]
+                statement = p[4]
+                if isinstance(condition, tuple) and condition[0] == 'inequalities':
+                    operator = condition[1]
+                    left_operand = condition[2]
+                    right_operand = condition[3]
+                    condition_result = None
+                    if operator == '<':
+                        condition_result = left_operand < right_operand
+                    elif operator == '>':
+                        condition_result = left_operand > right_operand
+                    elif operator == '<=':
+                        condition_result = left_operand <= right_operand
+                    elif operator == '>=':
+                        condition_result = left_operand >= right_operand
+                    elif operator == '==':
+                        condition_result = left_operand == right_operand
+                    elif operator == '!=':
+                        condition_result = left_operand != right_operand
+                    else:
+                        print("Error: Unsupported comparison operator:", operator)
+                        return None
+                    if condition_result:
+                        return semantic(statement)
+                    else:
+                        return None  # Condition is false, return None
+                else:
+                    print("Error: Invalid condition in loop statement:", condition)
+                    return None
             elif len(p) == 9:  # For loop with inequalities
                 condition = p[2]  # Get the loop condition
-                statement = p[4]
+                statement = p[8]
                 if isinstance(condition, tuple) and condition[0] == 'inequalities':
                     operator = condition[1]
                     left_operand = condition[2]
@@ -144,7 +172,7 @@ def semantic(p):
             variable = p[1]  # Get the variable name
             value = semantic(p[2])  # Get the value of the arithmetic expression
             print("Assigning", value, "to", variable)
-            return variable, '=', value
+            return value
         elif len(p) == 2:  # Literal or identifier
             return semantic(p[1])
         elif p[0] == '+':

@@ -16,8 +16,6 @@ def index(request):
 def process_prompt(request):
     if request.method == 'POST':
         prompt_text = request.POST.get('prompt', '')
-        # Process prompt_text using chatgpt.py
-        # Import and call functions from chatgpt.py as needed
         response_text = cscrip_chatgpt(prompt_text)
         return JsonResponse({'output': response_text})
     else:
