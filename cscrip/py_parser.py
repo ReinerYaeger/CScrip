@@ -2,8 +2,7 @@ import ply.yacc as yacc
 
 # Tokens from the lexer
 from lex import tokens, lexer
-# from ply_semantics import semantic_node
-from semantics import semantic
+from ply_semantics import semantic_node
 
 precedence = (
     ('nonassoc', 'left_par_op', 'right_par_op'),  # Parentheses
@@ -12,6 +11,8 @@ precedence = (
     ('left', 'add_op', 'sub_op'),  # Addition and Subtraction
     ('nonassoc', 'assign_op'),  # Assignment
 )
+
+symbol_table = {}
 
 
 def p_program_start(p):
@@ -34,7 +35,7 @@ def p_data_structure(p):
 
 def p_list_structure(p):
     ''' list_structure : list'''
-    p[0] = ('list_structure', p[1])
+    p[0] = p[1]
 
 
 def p_program(p):
@@ -42,9 +43,15 @@ def p_program(p):
                | type_declaration main_statement left_par_op type_declaration identifier right_par_op left_curl_op statement right_curl_op
                '''
     if len(p) <= 6:
-        p[0] = ('program', p[1], p[2], p[3], p[4], p[5])
+        p[0] = ('program',p[1], p[2], p[3], p[4], p[5])
+        # Update symbol table with variable name and type
+        if p[1][1] not in symbol_table:
+            symbol_table[p[1][1]] = p[1][0]
     else:
-        p[0] = ('program', p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9])
+        p[0] = (p[1], p[2], p[3], p[4], p[5], p[6], p[7], p[8], p[9])
+        # Update symbol table with variable name and type
+        if p[1][1] not in symbol_table:
+            symbol_table[p[1][1]] = p[1][0]
 
 
 def p_type_declaration(p):
@@ -162,11 +169,11 @@ def p_loop_statement(p):
                       | for_statement semi_colon_statement semi_colon_statement left_curl_op statement right_curl_op
                       '''
     if len(p) == 5:
-        p[0] = ('loop_statement', p[1], p[2], p[4])
+        p[0] = (p[1], p[2], p[4])
     if len(p) == 6:
-        p[0] = ('loop_statement', p[1], p[2], p[3], p[4], p[5])
+        p[0] = (p[1], p[2], p[3], p[4], p[5])
     elif len(p) == 9:
-        p[0] = ('loop_statement', p[1], p[2], p[4], p[6], p[8])
+        p[0] = (p[1], p[2], p[4], p[6], p[8])
 
 
 def p_arithmetic_statement(p):
@@ -181,11 +188,13 @@ def p_arithmetic_expr(p):
                        | literal_or_identifier
                        | identifier assign_op function_call_statement'''
     if len(p) == 4:  # Handle assignment
-        p[0] = (p[2], p[1], p[3])  # Return a tuple representing the assignment operation
+        p[0] = ('arithmetic_expr', p[2], p[1], p[3])
+        if p[1] not in symbol_table:
+            symbol_table[p[1]] = None
     elif len(p) == 2:
         p[0] = p[1]
     else:
-        p[0] = p[2], p[1], p[3]  # Construct an arithmetic expression tuple
+        p[0] = p[2], p[1], p[3]
 
 
 def p_arithmetic_op(p):
@@ -236,5 +245,5 @@ while True:
     print("Parsed expression:", parsed_expression)
 
     # Pass the root node of the parse tree to the semantic analysis function
-    ast = semantic(parsed_expression)
+    ast = semantic_node(parsed_expression, symbol_table)
     print("Interpreter result:", ast)
