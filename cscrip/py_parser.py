@@ -78,7 +78,6 @@ def p_statement(p):
 def p_conditional_statement(p):
     '''conditional_statement : if_block
                                 | if_block elif_block
-                                | if_block elif_block else_block
                                 | if_block else_block
                                 | left_par_op inequalities right_par_op
                               | left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
@@ -139,7 +138,6 @@ def p_function_parameter(p):
     ''' function_parameter  : literal_or_identifier
                             | function_parameter_list
                             | left_par_op function_parameter right_par_op
-                            |left_par_op right_par_op
                             '''
     if len(p) == 2:
         p[0] = (p[1])
@@ -159,14 +157,14 @@ def p_literal_or_identifier(p):
 
 
 def p_function_call_statement(p):
-    '''function_call_statement : identifier left_par_op function_parameter  right_par_op '''
+    '''function_call_statement : function_parameter  '''
     p[0] = p[1]
 
 
 def p_loop_statement(p):
     '''loop_statement : while_statement inequalities left_curl_op statement right_curl_op
+                      |  for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
                       | for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
-                      | for_statement semi_colon_statement semi_colon_statement left_curl_op statement right_curl_op
                       '''
     if len(p) == 5:
         p[0] = (p[1], p[2], p[4])
