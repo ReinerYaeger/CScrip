@@ -1,0 +1,52 @@
+// main function
+
+int main {
+    return 0
+}
+
+int main (int x) {
+    return 0
+}
+
+// function
+//call
+fiz(x)
+fiz()
+
+
+// Control Structures
+
+if x > 5{
+    return x
+}
+
+
+if x>3{
+    return x
+}elif x<5{
+    return x
+}
+
+
+if x>3{
+    return x
+}else{
+    return x
+}
+
+if x>3{
+    return x
+}elif x<5{
+    return x
+}else{
+    return x
+}
+(x>5)?{return x: return 5}
+
+// LoopStatements
+
+while x>5 {
+    x = +1
+    }
+
+for  x=5;
