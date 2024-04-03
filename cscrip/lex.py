@@ -17,7 +17,7 @@ reserved = {
     'bool': 'bool_declaration',
     'Class': 'class',
     'struct': 'struct',
-    'main': 'main_statement',  # Add 'main' as a reserved keyword
+    'main': 'main_statement',
     'goto': 'goto_statement',
     'True': 'true_literal',
     'False': 'false_literal',
@@ -41,6 +41,8 @@ tokens = [
              'right_par_op',
              'left_curl_op',
              'right_curl_op',
+             'left_square_op',
+             'right_square_op',
              'full_stop_statement',
              'comma_statement',
              'colon_statement',
@@ -60,6 +62,8 @@ tokens = [
              'list',
              'array',
              'char_literal',
+             'increment',
+             'decrement',
              'identifier',
 
          ] + list(reserved.values())
@@ -70,6 +74,8 @@ t_class = r'class'
 # t_struct = r'struct'
 t_list = 'list'
 t_array = 'array'
+t_increment = r'\+\+'
+t_decrement = r'--'
 t_equivalent_op = r'=='
 t_assign_op = r'='
 t_add_op = r'\+'
@@ -87,6 +93,8 @@ t_left_par_op = r'\('
 t_right_par_op = r'\)'
 t_left_curl_op = r'\{'
 t_right_curl_op = r'\}'
+t_left_square_op = r'\['
+t_right_square_op = r'\]'
 t_question_op = r'\?'
 t_not_equal = r'!='
 t_if_statement = r'if'
@@ -138,7 +146,6 @@ def t_error(t):
 
 lexer = lex.lex()
 content = ""
-
 
 # with open('test/test.lang', 'r') as file:
 #     content = file.read()

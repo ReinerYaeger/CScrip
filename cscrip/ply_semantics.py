@@ -4,10 +4,6 @@ def semantic_node(p, symbol_table):
             return semantic_program(p, symbol_table)
         elif p[0] == 'conditional_statement':
             return semantic_conditional(p, symbol_table)
-        elif p[0] == 'if_block':
-            return semantic_if_block(p, symbol_table)
-        elif p[0] == 'else_block':
-            return semantic_else_block(p, symbol_table)
         elif p[0] == 'elif_block':
             return semantic_elif_block(p, symbol_table)
         elif p[0] == 'function_parameter':
@@ -21,8 +17,11 @@ def semantic_node(p, symbol_table):
         else:
             print("Error: Unable to analyze parse tree:", p)
             return None
-    elif isinstance(p, (int, float, str)):
+    elif isinstance(p, (int, float)):
         return p
+    elif isinstance(p, str):
+        if p in symbol_table:  # Variable lookup
+            return symbol_table[p]
     else:
         return "Error: Unexpected type in parse tree:", type(p)
 
@@ -38,12 +37,19 @@ def semantic_program(p, symbol_table):
 
 
 def semantic_conditional(p, symbol_table):
+    print("Processing:", p)
     if isinstance(p, tuple):
-        if len(p) == 1:
-            return semantic_conditional(p[1], symbol_table)
-        elif len(p) == 2:
-            return semantic_conditional(p[1], symbol_table), semantic_conditional(p[2], symbol_table)
+        if len(p) == 2:
+            semantic = semantic_if_block(p[1], symbol_table)
+            return semantic
         elif len(p) == 3:
+            if_statement = semantic_if_block(p[1], symbol_table)
+            if not if_statement:
+                semantic = semantic_else_block(p[2], symbol_table)
+                return semantic
+            else:
+                return if_statement
+        elif len(p) == 4:
             return (semantic_conditional(p[1], symbol_table), semantic_conditional(p[2], symbol_table),
                     semantic_conditional(p[3], symbol_table))
         elif len(p) > 8:
@@ -78,11 +84,10 @@ def semantic_if_block(p, symbol_table):
                 condition_result = left_operand != right_operand
             else:
                 return "Error: Unsupported comparison operator:", operator
-
             if condition_result:
-                return semantic_if_block(statement, symbol_table)
+                return semantic_node(statement, symbol_table)
             else:
-                return "Error: Unsupported Statement", False
+                return False
         else:
             return "Error: Invalid condition in if block:", condition
     else:
@@ -91,14 +96,8 @@ def semantic_if_block(p, symbol_table):
 
 def semantic_else_block(p, symbol_table):
     if isinstance(p, tuple):
-        if len(p) == 4:
-            if_statement = semantic_if_block(p[1], symbol_table)
-            else_statement = p[2]
-            statement = p[4]
-            if if_statement is False:
-                return semantic_elif_block(statement, symbol_table)
-            else:
-                return if_statement
+        statement = p[2]
+        return semantic_node(statement, symbol_table)  # Return the evaluated result of the else block
     else:
         return "Error: Unexpected structure for else_block production:", p
 
@@ -153,9 +152,11 @@ def semantic_arithmetic_statement(p, symbol_table):
 
 def semantic_loop_statement(p, symbol_table):
     if isinstance(p, tuple):
-        if len(p) == 5:
+        print("Processing:", p)
+        if len(p) < 5:
+            while_statement = p[1]
             condition = p[2]
-            statement = p[4]
+            statement = p[3]
             if isinstance(condition, tuple) and condition[0] == 'inequalities':
                 operator = condition[1]
                 left_operand = condition[2]
@@ -177,31 +178,42 @@ def semantic_loop_statement(p, symbol_table):
                     print("Error: Unsupported comparison operator:", operator)
                     return None
                 if condition_result:
-                    return semantic_loop_statement(statement, symbol_table)
+                    return semantic_node(statement, symbol_table)
                 else:
                     return "Error: Unsupported Statement"
             else:
                 return "Error: Invalid condition in loop_statement:", condition
-        elif len(p) == 6:
+        elif len(p) <= 5:
+            for_statement = p[1]
             arithmetic_statement = p[2]
+            statement = p[4]
+            initialization = semantic_arithmetic_expr(arithmetic_statement, symbol_table)
+            if initialization:
+                # Execute the loop body exactly once
+                result = semantic_arithmetic_expr(statement, symbol_table)
+                return result
+        elif len(p) <= 10:  # For loop with inequalities
+            for_statements = p[1]
+            arithmetic_statements = semantic_arithmetic_expr(p[2], symbol_table)
+            conditions = p[3]
             statement = p[5]
+            increment_decrement = p[4]  # Increment/decrement statement
 
-            initialization = semantic_arithmetic_statement(arithmetic_statement, symbol_table)
-            result_loop = None
-            while initialization:
-                result_loop = semantic_loop_statement(statement, symbol_table)
-                initialization = semantic_node(p[4], symbol_table)
-            return result_loop
-        elif len(p) == 9:  # For loop with inequalities
-            initialization = p[1]
-            condition = p[2]  # Get the loop condition
-            arithmetic_statement = p[6]
-            statement = p[8]
-            if isinstance(condition, tuple) and condition[0] == 'inequalities':
-                operator = condition[1]
-                left_operand = condition[2]
-                right_operand = condition[3]
+            print("For Statements:", for_statements)
+            print("Conditions:", conditions)
+            print("Arithmetic Statements:", arithmetic_statements)
+            print("Statement:", statement)
+            print("Increment/Decrement:", increment_decrement)
+
+            if isinstance(conditions, tuple) and conditions[0] == 'inequalities':
+                operator = conditions[1]
+                left_operand = semantic_node(conditions[2], symbol_table)
+                right_operand = semantic_node(conditions[3], symbol_table)
+                print("Left operand:", left_operand)
+                print("Right operand:", right_operand)
                 condition_result = None
+
+                # Evaluate condition
                 if operator == '<':
                     condition_result = left_operand < right_operand
                 elif operator == '>':
@@ -217,17 +229,19 @@ def semantic_loop_statement(p, symbol_table):
                 else:
                     print("Error: Unsupported comparison operator:", operator)
                     return None
+                print(condition_result)
                 if condition_result:
-                    initialization = semantic_arithmetic_statement(arithmetic_statement, symbol_table)
+                    # Initialize loop
+                    initialization = semantic_arithmetic_expr(increment_decrement, symbol_table)
                     result_loop = None
                     while initialization:
-                        result_loop = semantic_loop_statement(statement, symbol_table)
-                        initialization = semantic_node(p[7], symbol_table)
-                    return result_loop
-                else:
-                    return None  # Condition is false, return None
+                        print("Looping")
+                        # Execute loop body
+                        return semantic_node(statement, symbol_table)
+                initialization = semantic_loop_statement(conditions, symbol_table)
+                return None  # Condition is false, return None
             else:
-                print("Error: Invalid condition in loop statement:", condition)
+                print("Error: Invalid condition in loop statement:", conditions)
                 return None
     else:
         return "Error: Unexpected structure for loop production:", p
@@ -236,15 +250,14 @@ def semantic_loop_statement(p, symbol_table):
 def semantic_arithmetic_expr(p, symbol_table):
     print("Processing:", p)
     if isinstance(p, tuple):
-        if len(p) <= 4:
-            assign_op = p[1]
-            if assign_op == '=':
-                variable = p[2]
-                value = p[3]
-                print("Assigning", value, "to", variable)
-                symbol_table[variable] = value
-                return value
-        elif len(p) == 2:
+        assign_op = p[1]
+        if assign_op == '=':
+            variable = p[2]
+            value = semantic_node(p[3], symbol_table)
+            print("Assigning", value, "to", variable)
+            symbol_table[variable] = value
+            return value
+        if len(p) == 2:
             if isinstance(p[0], str) or isinstance(p[0], int):
                 if p[0] in symbol_table:
                     return symbol_table[p[0]]
@@ -253,38 +266,61 @@ def semantic_arithmetic_expr(p, symbol_table):
                     return None
             else:
                 return semantic_arithmetic_expr(p[0], symbol_table)
-        else:
-            left_operand = semantic_arithmetic_expr(p[1], symbol_table)
-            right_operand = semantic_arithmetic_expr(p[2], symbol_table)
-            print("Left operand:", left_operand)
-            print("Right operand:", right_operand)
-            if p[0] == '+':
-                result = left_operand + right_operand
-                print("Result of addition:", result)
-                return result
-            elif p[0] == '-':
-                result = left_operand - right_operand
-                print("Result of subtraction:", result)
-                return result
-            elif p[0] == '*':
-                result = left_operand * right_operand
-                print("Result of multiplication:", result)
-                return result
-            elif p[0] == '/':
-                if right_operand != 0:
-                    result = left_operand / right_operand
-                    print("Result of division:", result)
-                    return result
-                else:
-                    print("Error: Unable to divide by zero.")
-                    return None
-            elif p[0] == '**':
-                result = left_operand ** right_operand
-                print("Result of exponentiation:", result)
-                return result
+        elif p[1] == '+':
+            left_operand = semantic_node(p[2], symbol_table)
+            right_operand = semantic_node(p[3], symbol_table)
+            if isinstance(left_operand, (int, float)) and isinstance(right_operand, (int, float)):
+                return left_operand + right_operand
             else:
-                print("Error: Invalid operation:", p[0])
+                print("Error: Non-numeric operands for addition:", left_operand, right_operand)
                 return None
+        elif p[1] == '-':
+            left_operand = semantic_node(p[2], symbol_table)
+            right_operand = semantic_node(p[3], symbol_table)
+            if isinstance(left_operand, (int, float)) and isinstance(right_operand, (int, float)):
+                return left_operand - right_operand
+            else:
+                print("Error: Non-numeric operands for addition:", left_operand, right_operand)
+                return None
+        elif p[1] == '*':
+            left_operand = semantic_node(p[2], symbol_table)
+            right_operand = semantic_node(p[3], symbol_table)
+            if isinstance(left_operand, (int, float)) and isinstance(right_operand, (int, float)):
+                return left_operand * right_operand
+            else:
+                print("Error: Non-numeric operands for addition:", left_operand, right_operand)
+                return None
+        elif p[1] == '/':
+            left_operand = semantic_node(p[0], symbol_table)
+            right_operand = semantic_node(p[1], symbol_table)
+            if isinstance(left_operand, (int, float)) and isinstance(right_operand, (int, float)):
+                if left_operand != 0:
+                    return left_operand / right_operand
+                else:
+                    print("Error: Unable to divide by zero:", left_operand)
+            else:
+                print("Error: Non-numeric operands for addition:", left_operand, right_operand)
+                return None
+        elif p[1] == '**':
+            left_operand = semantic_node(p[2], symbol_table)
+            right_operand = semantic_node(p[3], symbol_table)
+            if isinstance(left_operand, (int, float)) and isinstance(right_operand, (int, float)):
+                return left_operand ** right_operand
+            else:
+                print("Error: Non-numeric operands for addition:", left_operand, right_operand)
+                return None
+        elif p[2] in ('--', '++'):
+            variable = p[1]
+            if variable in symbol_table:
+                if p[2] == '--':
+                    symbol_table[variable] -= 1
+                elif p[2] == '++':
+                    symbol_table[variable] += 1
+                return symbol_table[variable]
+            else:
+                return f"Error: Variable '{variable}' not defined"
+        print("Error: Unsupported operator:", p[0])
+        return None
     else:
         print("Error: Unexpected structure for arithmetic_expr production:", p)
         return None

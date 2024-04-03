@@ -38,12 +38,17 @@ def p_list_structure(p):
     p[0] = p[1]
 
 
+# def p_list(p):
+#     ''' list : type_declaration identifier left_square_op statement right_square_op'''
+#     p[0] = p[1], p[2], p[3], p[4], p[5]
+
+
 def p_program(p):
     '''program : type_declaration main_statement left_curl_op statement right_curl_op
                | type_declaration main_statement left_par_op type_declaration identifier right_par_op left_curl_op statement right_curl_op
                '''
     if len(p) <= 6:
-        p[0] = ('program',p[1], p[2], p[3], p[4], p[5])
+        p[0] = ('program', p[1], p[2], p[3], p[4], p[5])
         # Update symbol table with variable name and type
         if p[1][1] not in symbol_table:
             symbol_table[p[1][1]] = p[1][0]
@@ -83,9 +88,9 @@ def p_conditional_statement(p):
                               | left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
                             '''
     if len(p) == 2:
-        p[0] = p[1]
+        p[0] = ('conditional_statement', p[1])
     elif len(p) == 3:
-        p[0] = p[1], p[2]
+        p[0] = ('conditional_statement', p[1], p[2])
     elif len(p) == 4:
         p[0] = p[1], p[2], p[3]
     elif len(p) > 8:
@@ -103,7 +108,7 @@ def p_if_block(p):
 def p_else_block(p):
     '''else_block : else_statement left_curl_op statement right_curl_op
                   '''
-    p[0] = p[1], p[3]
+    p[0] = ('else_block', p[1], p[3])
 
 
 def p_elif_block(p):
@@ -137,12 +142,12 @@ def p_inequalities_sym(p):
 def p_function_parameter(p):
     ''' function_parameter  : literal_or_identifier
                             | function_parameter_list
-                            | left_par_op function_parameter right_par_op
+                            | literal_or_identifier left_par_op function_parameter right_par_op
                             '''
     if len(p) == 2:
         p[0] = (p[1])
-    elif len(p) == 4:
-        p[0] = (p[1], p[2], p[3])
+    elif len(p) == 5:
+        p[0] = (p[1], p[2], p[3], p[4])
 
 
 def p_function_parameter_list(p):
@@ -163,20 +168,29 @@ def p_function_call_statement(p):
 
 def p_loop_statement(p):
     '''loop_statement : while_statement inequalities left_curl_op statement right_curl_op
-                      |  for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
+                      | for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
                       | for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
                       '''
-    if len(p) == 5:
-        p[0] = (p[1], p[2], p[4])
     if len(p) == 6:
-        p[0] = (p[1], p[2], p[3], p[4], p[5])
-    elif len(p) == 9:
-        p[0] = (p[1], p[2], p[4], p[6], p[8])
+        p[0] = ('loop_statement', p[1], p[2], p[4])
+    elif len(p) == 7:
+        p[0] = ('loop_statement', p[1], p[2], p[3], p[5], p[6])
+    elif len(p) == 10:
+        p[0] = ('loop_statement', p[1], p[2], p[4], p[6], p[8])
+    else:
+        print("Invalid loop statement")
 
 
 def p_arithmetic_statement(p):
-    '''arithmetic_statement : arithmetic_expr'''
+    '''arithmetic_statement : arithmetic_expr
+                            | unary_op'''
     p[0] = p[1]
+
+
+def p_unary_op(p):
+    '''unary_op : identifier increment
+                | identifier decrement'''
+    p[0] = ('unary_op', p[1], p[2])
 
 
 def p_arithmetic_expr(p):
@@ -190,7 +204,7 @@ def p_arithmetic_expr(p):
         if p[1] not in symbol_table:
             symbol_table[p[1]] = None
     elif len(p) == 2:
-        p[0] = p[1]
+        p[0] = (p[1])
     else:
         p[0] = p[2], p[1], p[3]
 
