@@ -76,6 +76,7 @@ def p_statement(p):
                  | break_statement
                  | return_statement identifier
                  | return_statement
+                 | function_statement
                  '''
     p[0] = p[1]
 
@@ -139,20 +140,19 @@ def p_inequalities_sym(p):
     p[0] = (p[1])
 
 
+def p_function_declaration_statement(p):
+    '''function_declaration_statement : literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op'''
+    p[0] = p[1], p[2], p[3], p[4], p[5], p[6], p[7]
+
+
 def p_function_parameter(p):
     ''' function_parameter  : literal_or_identifier
-                            | function_parameter_list
-                            | literal_or_identifier left_par_op function_parameter right_par_op
+                            | literal_or_identifier comma_statement function_parameter
                             '''
     if len(p) == 2:
         p[0] = (p[1])
-    elif len(p) == 5:
-        p[0] = (p[1], p[2], p[3], p[4])
-
-
-def p_function_parameter_list(p):
-    ''' function_parameter_list : function_parameter comma_statement literal_or_identifier '''
-    p[0] = (p[1], p[2], p[3])
+    elif len(p) == 3:
+        p[0] = (p[1], p[2], p[3])
 
 
 def p_literal_or_identifier(p):
@@ -162,7 +162,7 @@ def p_literal_or_identifier(p):
 
 
 def p_function_call_statement(p):
-    '''function_call_statement : function_parameter  '''
+    '''function_call_statement : literal_or_identifier left_par_op function_parameter right_par_op  '''
     p[0] = p[1]
 
 
