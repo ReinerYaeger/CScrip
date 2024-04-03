@@ -137,13 +137,61 @@ def semantic_elif_block(p, symbol_table):
         return "Error: Unexpected structure for elif_block production:", p
 
 
-def semantic_function_parameter_list(p, symbol_table):
+def semantic_function_declaration_statement(p, symbol_table):
     if isinstance(p, tuple):
-        return (semantic_function_parameter_list(p[1], symbol_table), semantic_function_parameter_list(p[2],
-                                                                                                       symbol_table),
-                semantic_function_parameter_list(p[3], symbol_table))
+        function_name = p[1]
+        parameters = p[3]
+        statements = semantic_function_parameter(p[6], symbol_table)
+        if function_name in symbol_table:
+            return f"Error: Function '{function_name}' is already defined."
+        symbol_table[function_name] = ('function', parameters, statements)
+        return function_name
+
+
+def semantic_function_parameter(p, symbol_table):
+    if len(p) == 2:
+        # Single parameter case
+        if p[1] not in symbol_table:
+            symbol_table[p[1]] = None  # Add parameter to symbol table with None value
+        return (p[1],)
+    elif len(p) == 4:
+        first_parameter = p[1]
+        remaining_parameters = p[3]
+        if isinstance(remaining_parameters, tuple):
+            # Concatenate parameters
+            parameters = (first_parameter,) + remaining_parameters
+            # Update symbol table with each parameter
+            for param in parameters:
+                if param not in symbol_table:
+                    symbol_table[param] = None  # Add parameter to symbol table with None value
+            return parameters
+        else:
+            # Two parameters case
+            if first_parameter not in symbol_table:
+                symbol_table[first_parameter] = None
+            if remaining_parameters not in symbol_table:
+                symbol_table[remaining_parameters] = None
+            return first_parameter, remaining_parameters
     else:
-        return "Error: Unexpected structure for function_parameter_list production:", p
+        return None  # Invalid syntax
+
+
+def semantic_function_call_statement(p, symbol_table):
+    function_name = p[1]  # Get the name of the function being called
+    parameters = p[3]  # Get the parameters passed to the function
+    # Check if the function exists in the symbol table
+    if function_name in symbol_table:
+        # Retrieve the function from the symbol table
+        function = symbol_table[function_name]
+        # Check if the function is callable (e.g., a function object)
+        if callable(function):
+            # Call the function with the provided parameters
+            result = function(*parameters)
+            return result
+        else:
+            return f"Error: '{function_name}' is not callable."
+    else:
+        return f"Error: Function '{function_name}' is not defined."
 
 
 def semantic_arithmetic_statement(p, symbol_table):
@@ -152,7 +200,6 @@ def semantic_arithmetic_statement(p, symbol_table):
 
 def semantic_loop_statement(p, symbol_table):
     if isinstance(p, tuple):
-        print("Processing:", p)
         if len(p) < 5:
             while_statement = p[1]
             condition = p[2]
@@ -198,19 +245,10 @@ def semantic_loop_statement(p, symbol_table):
             conditions = p[3]
             statement = p[5]
             increment_decrement = p[4]  # Increment/decrement statement
-
-            print("For Statements:", for_statements)
-            print("Conditions:", conditions)
-            print("Arithmetic Statements:", arithmetic_statements)
-            print("Statement:", statement)
-            print("Increment/Decrement:", increment_decrement)
-
             if isinstance(conditions, tuple) and conditions[0] == 'inequalities':
                 operator = conditions[1]
                 left_operand = semantic_node(conditions[2], symbol_table)
                 right_operand = semantic_node(conditions[3], symbol_table)
-                print("Left operand:", left_operand)
-                print("Right operand:", right_operand)
                 condition_result = None
 
                 # Evaluate condition
@@ -229,17 +267,33 @@ def semantic_loop_statement(p, symbol_table):
                 else:
                     print("Error: Unsupported comparison operator:", operator)
                     return None
-                print(condition_result)
-                if condition_result:
-                    # Initialize loop
-                    initialization = semantic_arithmetic_expr(increment_decrement, symbol_table)
-                    result_loop = None
-                    while initialization:
-                        print("Looping")
+                results = []
+                while condition_result:  # Use a while loop to repeat until condition is False
+                    if condition_result:
                         # Execute loop body
-                        return semantic_node(statement, symbol_table)
-                initialization = semantic_loop_statement(conditions, symbol_table)
-                return None  # Condition is false, return None
+                        result = semantic_node(statement, symbol_table)
+                        results.append(result)
+                    # Evaluate increment/decrement statement
+                    semantic_arithmetic_expr(increment_decrement, symbol_table)
+                    # Re-evaluate condition
+                    left_operand = semantic_node(conditions[2], symbol_table)
+                    right_operand = semantic_node(conditions[3], symbol_table)
+                    if operator == '<':
+                        condition_result = left_operand < right_operand
+                    elif operator == '>':
+                        condition_result = left_operand > right_operand
+                    elif operator == '<=':
+                        condition_result = left_operand <= right_operand
+                    elif operator == '>=':
+                        condition_result = left_operand >= right_operand
+                    elif operator == '==':
+                        condition_result = left_operand == right_operand
+                    elif operator == '!=':
+                        condition_result = left_operand != right_operand
+                    else:
+                        print("Error: Unsupported comparison operator:", operator)
+                        return None
+                return ', '.join(map(str, results))
             else:
                 print("Error: Invalid condition in loop statement:", conditions)
                 return None
@@ -248,14 +302,13 @@ def semantic_loop_statement(p, symbol_table):
 
 
 def semantic_arithmetic_expr(p, symbol_table):
-    print("Processing:", p)
     if isinstance(p, tuple):
         assign_op = p[1]
         if assign_op == '=':
             variable = p[2]
             value = semantic_node(p[3], symbol_table)
-            print("Assigning", value, "to", variable)
             symbol_table[variable] = value
+            print("Assigning", value, "to", variable)
             return value
         if len(p) == 2:
             if isinstance(p[0], str) or isinstance(p[0], int):
@@ -324,3 +377,30 @@ def semantic_arithmetic_expr(p, symbol_table):
     else:
         print("Error: Unexpected structure for arithmetic_expr production:", p)
         return None
+
+
+def semantic_return_statement(p, symbol_table):
+    if isinstance(p, tuple):
+        # Assuming p represents a return statement tuple
+        if p[0] == 'return':
+            value = p[1]
+            if isinstance(value, str):
+                # If the value is a variable name
+                if value in symbol_table:
+                    return symbol_table[value]
+                else:
+                    print(f"Error: Variable '{value}' not defined.")
+                    return None
+            else:
+                # If the value is an arithmetic expression
+                return semantic_arithmetic_expr(value, symbol_table)
+        else:
+            print("Error: Invalid return statement.")
+            return None
+    else:
+        print("Error: Invalid return statement structure.")
+        return None
+
+
+def semantic_break_statement():
+    return "break"
