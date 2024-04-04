@@ -2,7 +2,7 @@ import ply.yacc as yacc
 
 # Tokens from the lexer
 from lex import tokens, lexer
-from ply_semantics import semantic_node
+from ply_semantics import semantic_node, semantic_break_statement
 
 precedence = (
     ('nonassoc', 'left_par_op', 'right_par_op'),  # Parentheses
@@ -13,6 +13,7 @@ precedence = (
 )
 
 symbol_table = {}
+loop_stack = []
 
 
 def p_program_start(p):
@@ -36,11 +37,6 @@ def p_data_structure(p):
 def p_list_structure(p):
     ''' list_structure : list'''
     p[0] = p[1]
-
-
-# def p_list(p):
-#     ''' list : type_declaration identifier left_square_op statement right_square_op'''
-#     p[0] = p[1], p[2], p[3], p[4], p[5]
 
 
 def p_program(p):
@@ -73,12 +69,18 @@ def p_statement(p):
                  | conditional_statement
                  | loop_statement
                  | arithmetic_statement
-                 | break_statement
+                 | break_state
                  | return_state
                  | function_declaration_statement
                  | printed_statement
                  '''
     p[0] = p[1]
+
+
+def p_break_statement(p):
+    '''break_state : break_statement'''
+    p[0] = ('break_statement',)
+    semantic_break_statement(p, loop_stack)
 
 
 def p_printed_statement(p):

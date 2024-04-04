@@ -4,8 +4,6 @@ def semantic_node(p, symbol_table):
             return semantic_program(p, symbol_table)
         elif p[0] == 'conditional_statement':
             return semantic_conditional(p, symbol_table)
-        elif p[0] == 'elif_block':
-            return semantic_elif_block(p, symbol_table)
         elif p[0] == 'function_declaration_statement':
             return semantic_function_declaration_statement(p, symbol_table)
         elif p[0] == 'function_call_statement':
@@ -49,13 +47,20 @@ def semantic_conditional(p, symbol_table):
         elif len(p) == 3:
             if_statement = semantic_if_block(p[1], symbol_table)
             if not if_statement:
-                semantic = semantic_else_block(p[2], symbol_table)
-                return semantic
+                block_body = p[2][0]
+                conditions = p[2]
+                if block_body == 'else_block':
+                    semantic = semantic_else_block(conditions, symbol_table)
+                    return semantic
+                elif block_body == 'elif_block':
+                    semantics = semantic_elif_block(conditions, block_body)
+                    return semantics
+            else:
+                semantics = semantic_elif_block(p[2], symbol_table)
+                return semantics
         elif len(p) <= 4:
             if_statement = semantic_if_block(p[1], symbol_table)
-            if if_statement or not if_statement:
-                semantic = semantic_elif_block(p[2], symbol_table)
-                return semantic
+            return if_statement
         elif len(p) > 8:
             return (semantic_conditional(p[1], symbol_table), semantic_conditional(p[2], symbol_table),
                     semantic_conditional(p[3], symbol_table), semantic_conditional(p[4], symbol_table),
@@ -110,7 +115,7 @@ def semantic_elif_block(p, symbol_table):
     if isinstance(p, tuple):
         elif_statement = p[1]
         condition = p[2]
-        statement = p[4]
+        statement = p[3]
         condition_result = None
         if isinstance(condition, tuple) and condition[0] == 'inequalities':
             operator = condition[1]
@@ -132,7 +137,7 @@ def semantic_elif_block(p, symbol_table):
             else:
                 return "Error: Unsupported comparison operator:", operator
             if condition:
-                return semantic_else_block(statement, symbol_table)
+                return semantic_node(statement, symbol_table)
             else:
                 return "Error: Unsupported Statement"
         else:
@@ -405,8 +410,15 @@ def semantic_return_statement(p, symbol_table):
         return None
 
 
-def semantic_break_statement():
-    return "break"
+def semantic_break_statement(p, loop_stack):
+    # Check if there are any loops to break out of
+    if loop_stack:
+        # Pop the loop from the stack to signify a break out of the innermost loop
+        loop_stack.pop()
+    else:
+        # If there are no loops to break out of, raise an error
+        raise SyntaxError("Break statement used outside of loop")
+
 
 
 def semantic_print_statement(p, symbol_table):
@@ -431,4 +443,3 @@ def semantic_print_statement(p, symbol_table):
             return printed_content.strip('"')
     else:
         print("Error: Invalid printed statement syntax.")
-
