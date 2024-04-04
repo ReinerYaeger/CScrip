@@ -74,11 +74,16 @@ def p_statement(p):
                  | loop_statement
                  | arithmetic_statement
                  | break_statement
-                 | return_statement identifier
-                 | return_statement
-                 | function_statement
+                 | return_state
+                 | function_declaration_statement
                  '''
     p[0] = p[1]
+
+
+def p_return_statement(p):
+    '''return_state : return_statement literal_or_identifier
+                    | return_statement statement'''
+    p[0] = ('return_statement', p[1], p[2])
 
 
 def p_conditional_statement(p):
@@ -142,7 +147,7 @@ def p_inequalities_sym(p):
 
 def p_function_declaration_statement(p):
     '''function_declaration_statement : literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op'''
-    p[0] = p[1], p[2], p[3], p[4], p[5], p[6], p[7]
+    p[0] = ('function_declaration_statement', p[1], p[2], p[3], p[4], p[5], p[6], p[7])
 
 
 def p_function_parameter(p):
@@ -163,7 +168,7 @@ def p_literal_or_identifier(p):
 
 def p_function_call_statement(p):
     '''function_call_statement : literal_or_identifier left_par_op function_parameter right_par_op  '''
-    p[0] = p[1]
+    p[0] = ('function_call_statement', p[1], p[2], p[3], p[4])
 
 
 def p_loop_statement(p):

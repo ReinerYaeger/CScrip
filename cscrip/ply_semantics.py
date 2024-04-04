@@ -6,14 +6,16 @@ def semantic_node(p, symbol_table):
             return semantic_conditional(p, symbol_table)
         elif p[0] == 'elif_block':
             return semantic_elif_block(p, symbol_table)
-        elif p[0] == 'function_parameter':
-            return semantic_function_parameter_list(p, symbol_table)
-        elif p[0] == 'function_parameter_list':
-            return semantic_function_parameter_list(p, symbol_table)
+        elif p[0] == 'function_declaration_statement':
+            return semantic_function_declaration_statement(p, symbol_table)
+        elif p[0] == 'function_call_statement':
+            return semantic_function_call_statement(p, symbol_table)
         elif p[0] == 'loop_statement':
             return semantic_loop_statement(p, symbol_table)
         elif p[0] == 'arithmetic_expr':
             return semantic_arithmetic_expr(p, symbol_table)
+        elif p[0] == 'return_statement':
+            return semantic_return_statement(p, symbol_table)
         else:
             print("Error: Unable to analyze parse tree:", p)
             return None
@@ -47,8 +49,11 @@ def semantic_conditional(p, symbol_table):
             if not if_statement:
                 semantic = semantic_else_block(p[2], symbol_table)
                 return semantic
-            else:
-                return if_statement
+            elif p[0] == "elif_block":
+                elif_statement = semantic_elif_block(p[1], symbol_table)
+                if not elif_statement:
+                    semantic = semantic_else_block(p[2], symbol_table)
+                    return semantic
         elif len(p) == 4:
             return (semantic_conditional(p[1], symbol_table), semantic_conditional(p[2], symbol_table),
                     semantic_conditional(p[3], symbol_table))
@@ -140,23 +145,24 @@ def semantic_elif_block(p, symbol_table):
 def semantic_function_declaration_statement(p, symbol_table):
     if isinstance(p, tuple):
         function_name = p[1]
-        parameters = p[3]
-        statements = semantic_function_parameter(p[6], symbol_table)
+        parameters = semantic_function_parameter(p[3], symbol_table)
+        statements = p[6]
         if function_name in symbol_table:
             return f"Error: Function '{function_name}' is already defined."
-        symbol_table[function_name] = ('function', parameters, statements)
-        return function_name
+        # Store the function object directly in the symbol table
+        symbol_table[function_name] = (function_name, parameters, statements)
 
 
 def semantic_function_parameter(p, symbol_table):
-    if len(p) == 2:
+    if len(p) == 1:
         # Single parameter case
-        if p[1] not in symbol_table:
-            symbol_table[p[1]] = None  # Add parameter to symbol table with None value
-        return (p[1],)
+        variable = p[0]
+        if variable not in symbol_table:
+            symbol_table[variable] = None  # Add parameter to symbol table with None value
+        return variable
     elif len(p) == 4:
-        first_parameter = p[1]
-        remaining_parameters = p[3]
+        first_parameter = p[0]
+        remaining_parameters = p[2]
         if isinstance(remaining_parameters, tuple):
             # Concatenate parameters
             parameters = (first_parameter,) + remaining_parameters
@@ -177,21 +183,20 @@ def semantic_function_parameter(p, symbol_table):
 
 
 def semantic_function_call_statement(p, symbol_table):
-    function_name = p[1]  # Get the name of the function being called
-    parameters = p[3]  # Get the parameters passed to the function
-    # Check if the function exists in the symbol table
-    if function_name in symbol_table:
-        # Retrieve the function from the symbol table
-        function = symbol_table[function_name]
-        # Check if the function is callable (e.g., a function object)
-        if callable(function):
-            # Call the function with the provided parameters
-            result = function(*parameters)
-            return result
+    if len(p) == 5:
+        function_name = p[1]  # Get the name of the function being called
+        parameters = p[3]  # Get the semantic interpretation of parameters
+        # Check if the function exists in the symbol table
+        if function_name in symbol_table:
+            # Retrieve the function information from the symbol table
+            function_info = symbol_table[function_name]
+            if callable(function_info[0]):
+                result = function_info[0](*parameters)
+                return result
         else:
-            return f"Error: '{function_name}' is not callable."
+            return f"Error: Function '{function_name}' is not defined."
     else:
-        return f"Error: Function '{function_name}' is not defined."
+        return "Error: Invalid function call statement syntax."
 
 
 def semantic_arithmetic_statement(p, symbol_table):
@@ -381,22 +386,17 @@ def semantic_arithmetic_expr(p, symbol_table):
 
 def semantic_return_statement(p, symbol_table):
     if isinstance(p, tuple):
-        # Assuming p represents a return statement tuple
-        if p[0] == 'return':
-            value = p[1]
-            if isinstance(value, str):
-                # If the value is a variable name
-                if value in symbol_table:
-                    return symbol_table[value]
-                else:
-                    print(f"Error: Variable '{value}' not defined.")
-                    return None
+        value = p[2]
+        if isinstance(value, str):
+            # If the value is a variable name
+            if value in symbol_table:
+                return symbol_table[value]
             else:
-                # If the value is an arithmetic expression
-                return semantic_arithmetic_expr(value, symbol_table)
+                print(f"Error: Variable '{value}' not defined.")
+                return None
         else:
-            print("Error: Invalid return statement.")
-            return None
+            # If the value is an arithmetic expression
+            return semantic_arithmetic_expr(value, symbol_table)
     else:
         print("Error: Invalid return statement structure.")
         return None
