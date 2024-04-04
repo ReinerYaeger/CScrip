@@ -17,3 +17,6 @@ def cscrip_chatgpt(prompt):
     )
     return responses.choices[0].message.content
 
+
+def chat():
+    return None

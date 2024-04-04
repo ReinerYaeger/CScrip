@@ -49,11 +49,6 @@ def semantic_conditional(p, symbol_table):
             if not if_statement:
                 semantic = semantic_else_block(p[2], symbol_table)
                 return semantic
-            elif p[0] == "elif_block":
-                elif_statement = semantic_elif_block(p[1], symbol_table)
-                if not elif_statement:
-                    semantic = semantic_else_block(p[2], symbol_table)
-                    return semantic
         elif len(p) == 4:
             return (semantic_conditional(p[1], symbol_table), semantic_conditional(p[2], symbol_table),
                     semantic_conditional(p[3], symbol_table))
@@ -190,8 +185,12 @@ def semantic_function_call_statement(p, symbol_table):
         if function_name in symbol_table:
             # Retrieve the function information from the symbol table
             function_info = symbol_table[function_name]
-            if callable(function_info[0]):
-                result = function_info[0](*parameters)
+            functions = function_info[0]
+            if not callable(functions):
+
+                return "Hello"
+            else:
+                result = function_info(**parameters)
                 return result
         else:
             return f"Error: Function '{function_name}' is not defined."
@@ -404,3 +403,27 @@ def semantic_return_statement(p, symbol_table):
 
 def semantic_break_statement():
     return "break"
+
+
+def semantic_print_statement(p, symbol_table):
+    if len(p) == 4:
+        printed_content = p[2]
+        if printed_content in symbol_table:
+            value = symbol_table[printed_content]
+            return value
+        else:
+            return printed_content.strip('"')
+    elif len(p) == 5:
+        printed_content = p[2]
+        printed_variable = p[4]
+        if printed_content in symbol_table:
+            value = symbol_table[printed_content]
+            return str(value) + ', '
+        elif printed_variable in symbol_table:  # Corrected elif condition
+            values = symbol_table[printed_variable]
+            return values
+        else:
+            return printed_content.strip('"')
+    else:
+        print("Error: Invalid printed statement syntax.")
+
