@@ -76,8 +76,18 @@ def p_statement(p):
                  | break_statement
                  | return_state
                  | function_declaration_statement
+                 | printed_statement
                  '''
     p[0] = p[1]
+
+
+def p_printed_statement(p):
+    '''printed_statement : print_statement literal_or_identifier
+                         | print_statement literal_or_identifier comma_statement identifier'''
+    if len(p) == 3:
+        p[0] = ('printed_statement', p[1], p[2])
+    elif len(p) == 5:
+        p[0] = ('printed_statement', p[1], p[2], p[3], p[4])
 
 
 def p_return_statement(p):
@@ -128,7 +138,7 @@ def p_inequalities(p):
     if len(p) == 4:
         p[0] = ('inequalities', p[2], p[1], p[3])
     else:
-        print(f"There is an with the expected range: p[{str(len(p))}] was given")
+        return f"There is an with the expected range: p[{str(len(p))}] was given"
 
 
 def p_inequalities_sym(p):
@@ -183,7 +193,7 @@ def p_loop_statement(p):
     elif len(p) == 10:
         p[0] = ('loop_statement', p[1], p[2], p[4], p[6], p[8])
     else:
-        print("Invalid loop statement")
+        return "Invalid loop statement"
 
 
 def p_arithmetic_statement(p):
@@ -240,7 +250,7 @@ def p_empty(p):
 
 def p_error(p):
     '''error : empty'''
-    print("Syntax error in input!")
+    return "Syntax error in input!"
 
 
 # Build the parser

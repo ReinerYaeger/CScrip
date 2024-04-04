@@ -16,6 +16,8 @@ def semantic_node(p, symbol_table):
             return semantic_arithmetic_expr(p, symbol_table)
         elif p[0] == 'return_statement':
             return semantic_return_statement(p, symbol_table)
+        elif p[0] == 'printed_statement':
+            return semantic_print_statement(p, symbol_table)
         else:
             print("Error: Unable to analyze parse tree:", p)
             return None
@@ -49,9 +51,11 @@ def semantic_conditional(p, symbol_table):
             if not if_statement:
                 semantic = semantic_else_block(p[2], symbol_table)
                 return semantic
-        elif len(p) == 4:
-            return (semantic_conditional(p[1], symbol_table), semantic_conditional(p[2], symbol_table),
-                    semantic_conditional(p[3], symbol_table))
+        elif len(p) <= 4:
+            if_statement = semantic_if_block(p[1], symbol_table)
+            if if_statement or not if_statement:
+                semantic = semantic_elif_block(p[2], symbol_table)
+                return semantic
         elif len(p) > 8:
             return (semantic_conditional(p[1], symbol_table), semantic_conditional(p[2], symbol_table),
                     semantic_conditional(p[3], symbol_table), semantic_conditional(p[4], symbol_table),
@@ -406,7 +410,7 @@ def semantic_break_statement():
 
 
 def semantic_print_statement(p, symbol_table):
-    if len(p) == 4:
+    if len(p) <= 4:
         printed_content = p[2]
         if printed_content in symbol_table:
             value = symbol_table[printed_content]
@@ -416,12 +420,13 @@ def semantic_print_statement(p, symbol_table):
     elif len(p) == 5:
         printed_content = p[2]
         printed_variable = p[4]
-        if printed_content in symbol_table:
-            value = symbol_table[printed_content]
-            return str(value) + ', '
-        elif printed_variable in symbol_table:  # Corrected elif condition
-            values = symbol_table[printed_variable]
-            return values
+        if printed_variable in symbol_table:
+            value = symbol_table[printed_variable]
+            if isinstance(value, int):
+                values = str(value)
+            else:
+                values = value
+            return printed_content + ', ' + values
         else:
             return printed_content.strip('"')
     else:
