@@ -18,14 +18,13 @@ def index(request):
 
 
 async def compile(request):
-
     if request.method == 'POST':
         code = request.POST.get('code', '')
         content = compiler(code)
 
         serialized_data = {'content': content}
         return JsonResponse({'output': serialized_data})
-    return JsonResponse({'Not Error ': 'One Two Three'})
+    return JsonResponse({'error': 'Invalid request method'})
 
 
 async def process_prompt(request):
