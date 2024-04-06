@@ -136,14 +136,18 @@ def t_reserved(t):
     return t
 
 
-t_ignore = ' \t\n'
+t_ignore = ' \t'
+
+
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
 
 
 # Error handling rule
 def t_error(t):
     print(f"Illegal character '{t.value[0]}'")
-    t.lexer.skip(1)
-
+    t.lexer.skip(1)  # Skip the illegal character
 
 # lexer = lex.lex()
 # content = ""
