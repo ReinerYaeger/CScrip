@@ -1,8 +1,8 @@
 import ply.yacc as yacc
 
 # Tokens from the lexer
-from lex import tokens, lexer
-from ply_semantics import semantic_node, semantic_break_statement
+# from lex import tokens, lexer
+from .ply_semantics import semantic_node, semantic_break_statement
 
 precedence = (
     ('nonassoc', 'left_par_op', 'right_par_op'),  # Parentheses
@@ -114,7 +114,7 @@ def p_conditional_statement(p):
     elif len(p) > 8:
         p[0] = p[1], p[2], p[4], p[5], p[6]
     else:
-        print(f"There is an with the expected range: p[{str(len(p))}] was given")
+        return f"There is an with the expected range: p[{str(len(p))}] was given"
 
 
 def p_if_block(p):
@@ -255,24 +255,24 @@ def p_error(p):
     return "Syntax error in input!"
 
 
-# Build the parser
-parser = yacc.yacc()
-
-while True:
-    try:
-        s = input(">>>  ")
-    except EOFError:
-        break
-    if not s:
-        continue
-
-    lexer.input(s)
-    for token in lexer:
-        print(token)
-
-    parsed_expression = parser.parse(s)
-    print("Parsed expression:", parsed_expression)
-
-    # Pass the root node of the parse tree to the semantic analysis function
-    ast = semantic_node(parsed_expression, symbol_table)
-    print("Interpreter result:", ast)
+# # Build the parser
+# parser = yacc.yacc()
+#
+# while True:
+#     try:
+#         s = input(">>>  ")
+#     except EOFError:
+#         break
+#     if not s:
+#         continue
+#
+#     lexer.input(s)
+#     for token in lexer:
+#         print(token)
+#
+#     parsed_expression = parser.parse(s)
+#     print("Parsed expression:", parsed_expression)
+#
+#     # Pass the root node of the parse tree to the semantic analysis function
+#     ast = semantic_node(parsed_expression, symbol_table)
+#     print("Interpreter result:", ast)

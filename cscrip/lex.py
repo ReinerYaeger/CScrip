@@ -145,8 +145,8 @@ def t_error(t):
     t.lexer.skip(1)
 
 
-lexer = lex.lex()
-content = ""
+# lexer = lex.lex()
+# content = ""
 
 # with open('test/test.lang', 'r') as file:
 #     content = file.read()

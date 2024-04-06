@@ -3,11 +3,9 @@ import json
 from django.shortcuts import render
 from django.http import JsonResponse
 from httpcore import Response
-
-
+from .cscrip_complier import compiler
+import cscrip
 from chatgpt.chatgpt import custom_chat
-from asgiref.sync import sync_to_async
-import os
 
 
 # Create your views here.
@@ -17,6 +15,17 @@ def index(request):
 
     }
     return render(request, "index.html", context)
+
+
+async def compile(request):
+
+    if request.method == 'POST':
+        code = request.POST.get('code', '')
+        content = compiler(code)
+
+        serialized_data = {'content': content}
+        return JsonResponse({'output': serialized_data})
+    return JsonResponse({'Not Error ': 'One Two Three'})
 
 
 async def process_prompt(request):

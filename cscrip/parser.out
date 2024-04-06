@@ -1,1 +1,3013 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    bool_declaration
+    do_statement
+    double_quotes
+    false_literal
+    full_stop_statement
+    goto_statement
+    in_statement
+    left_square_op
+    right_square_op
+    single_quotes
+    true_literal
+
+Grammar
+
+Rule 0     S' -> program_start
+Rule 1     program_start -> program
+Rule 2     program_start -> statement
+Rule 3     program_start -> data_structure
+Rule 4     data_structure -> class
+Rule 5     data_structure -> struct
+Rule 6     data_structure -> list_structure
+Rule 7     data_structure -> array
+Rule 8     data_structure -> empty
+Rule 9     list_structure -> list
+Rule 10    program -> type_declaration main_statement left_curl_op statement right_curl_op
+Rule 11    program -> type_declaration main_statement left_par_op type_declaration identifier right_par_op left_curl_op statement right_curl_op
+Rule 12    type_declaration -> int_declaration
+Rule 13    type_declaration -> float_declaration
+Rule 14    type_declaration -> double_declaration
+Rule 15    type_declaration -> string_declaration
+Rule 16    type_declaration -> char_declaration
+Rule 17    statement -> function_call_statement
+Rule 18    statement -> conditional_statement
+Rule 19    statement -> loop_statement
+Rule 20    statement -> arithmetic_statement
+Rule 21    statement -> break_state
+Rule 22    statement -> return_state
+Rule 23    statement -> function_declaration_statement
+Rule 24    statement -> printed_statement
+Rule 25    break_state -> break_statement
+Rule 26    printed_statement -> print_statement literal_or_identifier
+Rule 27    printed_statement -> print_statement literal_or_identifier comma_statement identifier
+Rule 28    return_state -> return_statement literal_or_identifier
+Rule 29    return_state -> return_statement statement
+Rule 30    conditional_statement -> if_block
+Rule 31    conditional_statement -> if_block elif_block
+Rule 32    conditional_statement -> if_block else_block
+Rule 33    conditional_statement -> left_par_op inequalities right_par_op
+Rule 34    conditional_statement -> left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
+Rule 35    if_block -> if_statement inequalities left_curl_op statement right_curl_op
+Rule 36    else_block -> else_statement left_curl_op statement right_curl_op
+Rule 37    elif_block -> elif_statement inequalities left_curl_op statement right_curl_op
+Rule 38    inequalities -> literal_or_identifier inequalities_sym literal_or_identifier
+Rule 39    inequalities_sym -> equivalent_op
+Rule 40    inequalities_sym -> less_or_eq_op
+Rule 41    inequalities_sym -> great_or_eq_op
+Rule 42    inequalities_sym -> less_op
+Rule 43    inequalities_sym -> great_op
+Rule 44    inequalities_sym -> and
+Rule 45    inequalities_sym -> or
+Rule 46    inequalities_sym -> bool_literal
+Rule 47    inequalities_sym -> not_equal
+Rule 48    inequalities_sym -> <empty>
+Rule 49    function_declaration_statement -> literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op
+Rule 50    function_parameter -> literal_or_identifier
+Rule 51    function_parameter -> literal_or_identifier comma_statement function_parameter
+Rule 52    literal_or_identifier -> identifier
+Rule 53    literal_or_identifier -> data_literal
+Rule 54    function_call_statement -> literal_or_identifier left_par_op function_parameter right_par_op
+Rule 55    loop_statement -> while_statement inequalities left_curl_op statement right_curl_op
+Rule 56    loop_statement -> for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
+Rule 57    loop_statement -> for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
+Rule 58    arithmetic_statement -> arithmetic_expr
+Rule 59    arithmetic_statement -> unary_op
+Rule 60    unary_op -> identifier increment
+Rule 61    unary_op -> identifier decrement
+Rule 62    arithmetic_expr -> identifier assign_op arithmetic_expr
+Rule 63    arithmetic_expr -> arithmetic_expr arithmetic_op arithmetic_expr
+Rule 64    arithmetic_expr -> left_par_op arithmetic_expr right_par_op
+Rule 65    arithmetic_expr -> literal_or_identifier
+Rule 66    arithmetic_expr -> identifier assign_op function_call_statement
+Rule 67    arithmetic_op -> expo_op
+Rule 68    arithmetic_op -> mul_op
+Rule 69    arithmetic_op -> div_op
+Rule 70    arithmetic_op -> add_op
+Rule 71    arithmetic_op -> sub_op
+Rule 72    data_literal -> int_literal
+Rule 73    data_literal -> float_literal
+Rule 74    data_literal -> double_literal
+Rule 75    data_literal -> char_literal
+Rule 76    data_literal -> string_literal
+Rule 77    empty -> <empty>
+
+Terminals, with rules where they appear
+
+add_op               : 70
+and                  : 44
+array                : 7
+assign_op            : 62 66
+bool_declaration     : 
+bool_literal         : 46
+break_statement      : 25
+char_declaration     : 16
+char_literal         : 75
+class                : 4
+colon_statement      : 34
+comma_statement      : 27 51
+decrement            : 61
+div_op               : 69
+do_statement         : 
+double_declaration   : 14
+double_literal       : 74
+double_quotes        : 
+elif_statement       : 37
+else_statement       : 36
+equivalent_op        : 39
+error                : 
+expo_op              : 67
+false_literal        : 
+float_declaration    : 13
+float_literal        : 73
+for_statement        : 56 57
+full_stop_statement  : 
+goto_statement       : 
+great_op             : 43
+great_or_eq_op       : 41
+identifier           : 11 27 52 60 61 62 66
+if_statement         : 35
+in_statement         : 
+increment            : 60
+int_declaration      : 12
+int_literal          : 72
+left_curl_op         : 10 11 34 35 36 37 49 55 56 57
+left_par_op          : 11 33 34 49 54 64
+left_square_op       : 
+less_op              : 42
+less_or_eq_op        : 40
+list                 : 9
+main_statement       : 10 11
+mul_op               : 68
+not_equal            : 47
+or                   : 45
+print_statement      : 26 27
+question_op          : 34
+return_statement     : 28 29
+right_curl_op        : 10 11 34 35 36 37 49 55 56 57
+right_par_op         : 11 33 34 49 54 64
+right_square_op      : 
+semi_colon_statement : 56 57 57
+single_quotes        : 
+string_declaration   : 15
+string_literal       : 76
+struct               : 5
+sub_op               : 71
+true_literal         : 
+while_statement      : 55
+
+Nonterminals, with rules where they appear
+
+arithmetic_expr      : 58 62 63 63 64
+arithmetic_op        : 63
+arithmetic_statement : 20 56 57 57
+break_state          : 21
+conditional_statement : 18
+data_literal         : 53
+data_structure       : 3
+elif_block           : 31
+else_block           : 32
+empty                : 8
+function_call_statement : 17 66
+function_declaration_statement : 23
+function_parameter   : 49 51 54
+if_block             : 30 31 32
+inequalities         : 33 34 35 37 55 57
+inequalities_sym     : 38
+list_structure       : 6
+literal_or_identifier : 26 27 28 38 38 49 50 51 54 65
+loop_statement       : 19
+printed_statement    : 24
+program              : 1
+program_start        : 0
+return_state         : 22
+statement            : 2 10 11 29 34 34 35 36 37 49 55 56 57
+type_declaration     : 10 11 11
+unary_op             : 59
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program_start
+    (1) program_start -> . program
+    (2) program_start -> . statement
+    (3) program_start -> . data_structure
+    (10) program -> . type_declaration main_statement left_curl_op statement right_curl_op
+    (11) program -> . type_declaration main_statement left_par_op type_declaration identifier right_par_op left_curl_op statement right_curl_op
+    (17) statement -> . function_call_statement
+    (18) statement -> . conditional_statement
+    (19) statement -> . loop_statement
+    (20) statement -> . arithmetic_statement
+    (21) statement -> . break_state
+    (22) statement -> . return_state
+    (23) statement -> . function_declaration_statement
+    (24) statement -> . printed_statement
+    (4) data_structure -> . class
+    (5) data_structure -> . struct
+    (6) data_structure -> . list_structure
+    (7) data_structure -> . array
+    (8) data_structure -> . empty
+    (12) type_declaration -> . int_declaration
+    (13) type_declaration -> . float_declaration
+    (14) type_declaration -> . double_declaration
+    (15) type_declaration -> . string_declaration
+    (16) type_declaration -> . char_declaration
+    (54) function_call_statement -> . literal_or_identifier left_par_op function_parameter right_par_op
+    (30) conditional_statement -> . if_block
+    (31) conditional_statement -> . if_block elif_block
+    (32) conditional_statement -> . if_block else_block
+    (33) conditional_statement -> . left_par_op inequalities right_par_op
+    (34) conditional_statement -> . left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
+    (55) loop_statement -> . while_statement inequalities left_curl_op statement right_curl_op
+    (56) loop_statement -> . for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
+    (57) loop_statement -> . for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
+    (58) arithmetic_statement -> . arithmetic_expr
+    (59) arithmetic_statement -> . unary_op
+    (25) break_state -> . break_statement
+    (28) return_state -> . return_statement literal_or_identifier
+    (29) return_state -> . return_statement statement
+    (49) function_declaration_statement -> . literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op
+    (26) printed_statement -> . print_statement literal_or_identifier
+    (27) printed_statement -> . print_statement literal_or_identifier comma_statement identifier
+    (9) list_structure -> . list
+    (77) empty -> .
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (35) if_block -> . if_statement inequalities left_curl_op statement right_curl_op
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (60) unary_op -> . identifier increment
+    (61) unary_op -> . identifier decrement
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    class           shift and go to state 16
+    struct          shift and go to state 17
+    array           shift and go to state 19
+    int_declaration shift and go to state 21
+    float_declaration shift and go to state 22
+    double_declaration shift and go to state 23
+    string_declaration shift and go to state 24
+    char_declaration shift and go to state 25
+    left_par_op     shift and go to state 6
+    while_statement shift and go to state 28
+    for_statement   shift and go to state 29
+    break_statement shift and go to state 32
+    return_statement shift and go to state 33
+    print_statement shift and go to state 34
+    list            shift and go to state 35
+    $end            reduce using rule 77 (empty -> .)
+    identifier      shift and go to state 7
+    if_statement    shift and go to state 37
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    program_start                  shift and go to state 1
+    program                        shift and go to state 2
+    statement                      shift and go to state 3
+    data_structure                 shift and go to state 4
+    type_declaration               shift and go to state 5
+    function_call_statement        shift and go to state 8
+    conditional_statement          shift and go to state 9
+    loop_statement                 shift and go to state 10
+    arithmetic_statement           shift and go to state 11
+    break_state                    shift and go to state 12
+    return_state                   shift and go to state 13
+    function_declaration_statement shift and go to state 14
+    printed_statement              shift and go to state 15
+    list_structure                 shift and go to state 18
+    empty                          shift and go to state 20
+    literal_or_identifier          shift and go to state 26
+    if_block                       shift and go to state 27
+    arithmetic_expr                shift and go to state 30
+    unary_op                       shift and go to state 31
+    data_literal                   shift and go to state 36
+
+state 1
+
+    (0) S' -> program_start .
+
+
+
+state 2
+
+    (1) program_start -> program .
+
+    $end            reduce using rule 1 (program_start -> program .)
+
+
+state 3
+
+    (2) program_start -> statement .
+
+    $end            reduce using rule 2 (program_start -> statement .)
+
+
+state 4
+
+    (3) program_start -> data_structure .
+
+    $end            reduce using rule 3 (program_start -> data_structure .)
+
+
+state 5
+
+    (10) program -> type_declaration . main_statement left_curl_op statement right_curl_op
+    (11) program -> type_declaration . main_statement left_par_op type_declaration identifier right_par_op left_curl_op statement right_curl_op
+
+    main_statement  shift and go to state 43
+
+
+state 6
+
+    (33) conditional_statement -> left_par_op . inequalities right_par_op
+    (34) conditional_statement -> left_par_op . inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
+    (64) arithmetic_expr -> left_par_op . arithmetic_expr right_par_op
+    (38) inequalities -> . literal_or_identifier inequalities_sym literal_or_identifier
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    identifier      shift and go to state 48
+    left_par_op     shift and go to state 44
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    inequalities                   shift and go to state 45
+    arithmetic_expr                shift and go to state 46
+    literal_or_identifier          shift and go to state 47
+    data_literal                   shift and go to state 36
+
+state 7
+
+    (52) literal_or_identifier -> identifier .
+    (62) arithmetic_expr -> identifier . assign_op arithmetic_expr
+    (66) arithmetic_expr -> identifier . assign_op function_call_statement
+    (60) unary_op -> identifier . increment
+    (61) unary_op -> identifier . decrement
+
+    left_par_op     reduce using rule 52 (literal_or_identifier -> identifier .)
+    expo_op         reduce using rule 52 (literal_or_identifier -> identifier .)
+    mul_op          reduce using rule 52 (literal_or_identifier -> identifier .)
+    div_op          reduce using rule 52 (literal_or_identifier -> identifier .)
+    add_op          reduce using rule 52 (literal_or_identifier -> identifier .)
+    sub_op          reduce using rule 52 (literal_or_identifier -> identifier .)
+    $end            reduce using rule 52 (literal_or_identifier -> identifier .)
+    right_curl_op   reduce using rule 52 (literal_or_identifier -> identifier .)
+    colon_statement reduce using rule 52 (literal_or_identifier -> identifier .)
+    assign_op       shift and go to state 49
+    increment       shift and go to state 50
+    decrement       shift and go to state 51
+
+
+state 8
+
+    (17) statement -> function_call_statement .
+
+    $end            reduce using rule 17 (statement -> function_call_statement .)
+    right_curl_op   reduce using rule 17 (statement -> function_call_statement .)
+    colon_statement reduce using rule 17 (statement -> function_call_statement .)
+
+
+state 9
+
+    (18) statement -> conditional_statement .
+
+    $end            reduce using rule 18 (statement -> conditional_statement .)
+    right_curl_op   reduce using rule 18 (statement -> conditional_statement .)
+    colon_statement reduce using rule 18 (statement -> conditional_statement .)
+
+
+state 10
+
+    (19) statement -> loop_statement .
+
+    $end            reduce using rule 19 (statement -> loop_statement .)
+    right_curl_op   reduce using rule 19 (statement -> loop_statement .)
+    colon_statement reduce using rule 19 (statement -> loop_statement .)
+
+
+state 11
+
+    (20) statement -> arithmetic_statement .
+
+    $end            reduce using rule 20 (statement -> arithmetic_statement .)
+    right_curl_op   reduce using rule 20 (statement -> arithmetic_statement .)
+    colon_statement reduce using rule 20 (statement -> arithmetic_statement .)
+
+
+state 12
+
+    (21) statement -> break_state .
+
+    $end            reduce using rule 21 (statement -> break_state .)
+    right_curl_op   reduce using rule 21 (statement -> break_state .)
+    colon_statement reduce using rule 21 (statement -> break_state .)
+
+
+state 13
+
+    (22) statement -> return_state .
+
+    $end            reduce using rule 22 (statement -> return_state .)
+    right_curl_op   reduce using rule 22 (statement -> return_state .)
+    colon_statement reduce using rule 22 (statement -> return_state .)
+
+
+state 14
+
+    (23) statement -> function_declaration_statement .
+
+    $end            reduce using rule 23 (statement -> function_declaration_statement .)
+    right_curl_op   reduce using rule 23 (statement -> function_declaration_statement .)
+    colon_statement reduce using rule 23 (statement -> function_declaration_statement .)
+
+
+state 15
+
+    (24) statement -> printed_statement .
+
+    $end            reduce using rule 24 (statement -> printed_statement .)
+    right_curl_op   reduce using rule 24 (statement -> printed_statement .)
+    colon_statement reduce using rule 24 (statement -> printed_statement .)
+
+
+state 16
+
+    (4) data_structure -> class .
+
+    $end            reduce using rule 4 (data_structure -> class .)
+
+
+state 17
+
+    (5) data_structure -> struct .
+
+    $end            reduce using rule 5 (data_structure -> struct .)
+
+
+state 18
+
+    (6) data_structure -> list_structure .
+
+    $end            reduce using rule 6 (data_structure -> list_structure .)
+
+
+state 19
+
+    (7) data_structure -> array .
+
+    $end            reduce using rule 7 (data_structure -> array .)
+
+
+state 20
+
+    (8) data_structure -> empty .
+
+    $end            reduce using rule 8 (data_structure -> empty .)
+
+
+state 21
+
+    (12) type_declaration -> int_declaration .
+
+    main_statement  reduce using rule 12 (type_declaration -> int_declaration .)
+    identifier      reduce using rule 12 (type_declaration -> int_declaration .)
+
+
+state 22
+
+    (13) type_declaration -> float_declaration .
+
+    main_statement  reduce using rule 13 (type_declaration -> float_declaration .)
+    identifier      reduce using rule 13 (type_declaration -> float_declaration .)
+
+
+state 23
+
+    (14) type_declaration -> double_declaration .
+
+    main_statement  reduce using rule 14 (type_declaration -> double_declaration .)
+    identifier      reduce using rule 14 (type_declaration -> double_declaration .)
+
+
+state 24
+
+    (15) type_declaration -> string_declaration .
+
+    main_statement  reduce using rule 15 (type_declaration -> string_declaration .)
+    identifier      reduce using rule 15 (type_declaration -> string_declaration .)
+
+
+state 25
+
+    (16) type_declaration -> char_declaration .
+
+    main_statement  reduce using rule 16 (type_declaration -> char_declaration .)
+    identifier      reduce using rule 16 (type_declaration -> char_declaration .)
+
+
+state 26
+
+    (54) function_call_statement -> literal_or_identifier . left_par_op function_parameter right_par_op
+    (49) function_declaration_statement -> literal_or_identifier . left_par_op function_parameter right_par_op left_curl_op statement right_curl_op
+    (65) arithmetic_expr -> literal_or_identifier .
+
+    left_par_op     shift and go to state 52
+    expo_op         reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    mul_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    div_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    add_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    sub_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    $end            reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    right_curl_op   reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    colon_statement reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+
+
+state 27
+
+    (30) conditional_statement -> if_block .
+    (31) conditional_statement -> if_block . elif_block
+    (32) conditional_statement -> if_block . else_block
+    (37) elif_block -> . elif_statement inequalities left_curl_op statement right_curl_op
+    (36) else_block -> . else_statement left_curl_op statement right_curl_op
+
+    $end            reduce using rule 30 (conditional_statement -> if_block .)
+    right_curl_op   reduce using rule 30 (conditional_statement -> if_block .)
+    colon_statement reduce using rule 30 (conditional_statement -> if_block .)
+    elif_statement  shift and go to state 55
+    else_statement  shift and go to state 56
+
+    elif_block                     shift and go to state 53
+    else_block                     shift and go to state 54
+
+state 28
+
+    (55) loop_statement -> while_statement . inequalities left_curl_op statement right_curl_op
+    (38) inequalities -> . literal_or_identifier inequalities_sym literal_or_identifier
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    identifier      shift and go to state 59
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    inequalities                   shift and go to state 57
+    literal_or_identifier          shift and go to state 58
+    data_literal                   shift and go to state 36
+
+state 29
+
+    (56) loop_statement -> for_statement . arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
+    (57) loop_statement -> for_statement . arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
+    (58) arithmetic_statement -> . arithmetic_expr
+    (59) arithmetic_statement -> . unary_op
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (60) unary_op -> . identifier increment
+    (61) unary_op -> . identifier decrement
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    identifier      shift and go to state 61
+    left_par_op     shift and go to state 44
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    arithmetic_statement           shift and go to state 60
+    arithmetic_expr                shift and go to state 30
+    unary_op                       shift and go to state 31
+    literal_or_identifier          shift and go to state 62
+    data_literal                   shift and go to state 36
+
+state 30
+
+    (58) arithmetic_statement -> arithmetic_expr .
+    (63) arithmetic_expr -> arithmetic_expr . arithmetic_op arithmetic_expr
+    (67) arithmetic_op -> . expo_op
+    (68) arithmetic_op -> . mul_op
+    (69) arithmetic_op -> . div_op
+    (70) arithmetic_op -> . add_op
+    (71) arithmetic_op -> . sub_op
+
+    $end            reduce using rule 58 (arithmetic_statement -> arithmetic_expr .)
+    semi_colon_statement reduce using rule 58 (arithmetic_statement -> arithmetic_expr .)
+    right_curl_op   reduce using rule 58 (arithmetic_statement -> arithmetic_expr .)
+    colon_statement reduce using rule 58 (arithmetic_statement -> arithmetic_expr .)
+    left_curl_op    reduce using rule 58 (arithmetic_statement -> arithmetic_expr .)
+    expo_op         shift and go to state 64
+    mul_op          shift and go to state 65
+    div_op          shift and go to state 66
+    add_op          shift and go to state 67
+    sub_op          shift and go to state 68
+
+    arithmetic_op                  shift and go to state 63
+
+state 31
+
+    (59) arithmetic_statement -> unary_op .
+
+    $end            reduce using rule 59 (arithmetic_statement -> unary_op .)
+    semi_colon_statement reduce using rule 59 (arithmetic_statement -> unary_op .)
+    right_curl_op   reduce using rule 59 (arithmetic_statement -> unary_op .)
+    colon_statement reduce using rule 59 (arithmetic_statement -> unary_op .)
+    left_curl_op    reduce using rule 59 (arithmetic_statement -> unary_op .)
+
+
+state 32
+
+    (25) break_state -> break_statement .
+
+    $end            reduce using rule 25 (break_state -> break_statement .)
+    right_curl_op   reduce using rule 25 (break_state -> break_statement .)
+    colon_statement reduce using rule 25 (break_state -> break_statement .)
+
+
+state 33
+
+    (28) return_state -> return_statement . literal_or_identifier
+    (29) return_state -> return_statement . statement
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (17) statement -> . function_call_statement
+    (18) statement -> . conditional_statement
+    (19) statement -> . loop_statement
+    (20) statement -> . arithmetic_statement
+    (21) statement -> . break_state
+    (22) statement -> . return_state
+    (23) statement -> . function_declaration_statement
+    (24) statement -> . printed_statement
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+    (54) function_call_statement -> . literal_or_identifier left_par_op function_parameter right_par_op
+    (30) conditional_statement -> . if_block
+    (31) conditional_statement -> . if_block elif_block
+    (32) conditional_statement -> . if_block else_block
+    (33) conditional_statement -> . left_par_op inequalities right_par_op
+    (34) conditional_statement -> . left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
+    (55) loop_statement -> . while_statement inequalities left_curl_op statement right_curl_op
+    (56) loop_statement -> . for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
+    (57) loop_statement -> . for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
+    (58) arithmetic_statement -> . arithmetic_expr
+    (59) arithmetic_statement -> . unary_op
+    (25) break_state -> . break_statement
+    (28) return_state -> . return_statement literal_or_identifier
+    (29) return_state -> . return_statement statement
+    (49) function_declaration_statement -> . literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op
+    (26) printed_statement -> . print_statement literal_or_identifier
+    (27) printed_statement -> . print_statement literal_or_identifier comma_statement identifier
+    (35) if_block -> . if_statement inequalities left_curl_op statement right_curl_op
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (60) unary_op -> . identifier increment
+    (61) unary_op -> . identifier decrement
+
+    identifier      shift and go to state 7
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+    left_par_op     shift and go to state 6
+    while_statement shift and go to state 28
+    for_statement   shift and go to state 29
+    break_statement shift and go to state 32
+    return_statement shift and go to state 33
+    print_statement shift and go to state 34
+    if_statement    shift and go to state 37
+
+    literal_or_identifier          shift and go to state 69
+    statement                      shift and go to state 70
+    data_literal                   shift and go to state 36
+    function_call_statement        shift and go to state 8
+    conditional_statement          shift and go to state 9
+    loop_statement                 shift and go to state 10
+    arithmetic_statement           shift and go to state 11
+    break_state                    shift and go to state 12
+    return_state                   shift and go to state 13
+    function_declaration_statement shift and go to state 14
+    printed_statement              shift and go to state 15
+    if_block                       shift and go to state 27
+    arithmetic_expr                shift and go to state 30
+    unary_op                       shift and go to state 31
+
+state 34
+
+    (26) printed_statement -> print_statement . literal_or_identifier
+    (27) printed_statement -> print_statement . literal_or_identifier comma_statement identifier
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    identifier      shift and go to state 59
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    literal_or_identifier          shift and go to state 71
+    data_literal                   shift and go to state 36
+
+state 35
+
+    (9) list_structure -> list .
+
+    $end            reduce using rule 9 (list_structure -> list .)
+
+
+state 36
+
+    (53) literal_or_identifier -> data_literal .
+
+    left_par_op     reduce using rule 53 (literal_or_identifier -> data_literal .)
+    expo_op         reduce using rule 53 (literal_or_identifier -> data_literal .)
+    mul_op          reduce using rule 53 (literal_or_identifier -> data_literal .)
+    div_op          reduce using rule 53 (literal_or_identifier -> data_literal .)
+    add_op          reduce using rule 53 (literal_or_identifier -> data_literal .)
+    sub_op          reduce using rule 53 (literal_or_identifier -> data_literal .)
+    $end            reduce using rule 53 (literal_or_identifier -> data_literal .)
+    equivalent_op   reduce using rule 53 (literal_or_identifier -> data_literal .)
+    less_or_eq_op   reduce using rule 53 (literal_or_identifier -> data_literal .)
+    great_or_eq_op  reduce using rule 53 (literal_or_identifier -> data_literal .)
+    less_op         reduce using rule 53 (literal_or_identifier -> data_literal .)
+    great_op        reduce using rule 53 (literal_or_identifier -> data_literal .)
+    and             reduce using rule 53 (literal_or_identifier -> data_literal .)
+    or              reduce using rule 53 (literal_or_identifier -> data_literal .)
+    bool_literal    reduce using rule 53 (literal_or_identifier -> data_literal .)
+    not_equal       reduce using rule 53 (literal_or_identifier -> data_literal .)
+    identifier      reduce using rule 53 (literal_or_identifier -> data_literal .)
+    int_literal     reduce using rule 53 (literal_or_identifier -> data_literal .)
+    float_literal   reduce using rule 53 (literal_or_identifier -> data_literal .)
+    double_literal  reduce using rule 53 (literal_or_identifier -> data_literal .)
+    char_literal    reduce using rule 53 (literal_or_identifier -> data_literal .)
+    string_literal  reduce using rule 53 (literal_or_identifier -> data_literal .)
+    right_par_op    reduce using rule 53 (literal_or_identifier -> data_literal .)
+    semi_colon_statement reduce using rule 53 (literal_or_identifier -> data_literal .)
+    right_curl_op   reduce using rule 53 (literal_or_identifier -> data_literal .)
+    colon_statement reduce using rule 53 (literal_or_identifier -> data_literal .)
+    comma_statement reduce using rule 53 (literal_or_identifier -> data_literal .)
+    left_curl_op    reduce using rule 53 (literal_or_identifier -> data_literal .)
+
+
+state 37
+
+    (35) if_block -> if_statement . inequalities left_curl_op statement right_curl_op
+    (38) inequalities -> . literal_or_identifier inequalities_sym literal_or_identifier
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    identifier      shift and go to state 59
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    inequalities                   shift and go to state 72
+    literal_or_identifier          shift and go to state 58
+    data_literal                   shift and go to state 36
+
+state 38
+
+    (72) data_literal -> int_literal .
+
+    left_par_op     reduce using rule 72 (data_literal -> int_literal .)
+    expo_op         reduce using rule 72 (data_literal -> int_literal .)
+    mul_op          reduce using rule 72 (data_literal -> int_literal .)
+    div_op          reduce using rule 72 (data_literal -> int_literal .)
+    add_op          reduce using rule 72 (data_literal -> int_literal .)
+    sub_op          reduce using rule 72 (data_literal -> int_literal .)
+    $end            reduce using rule 72 (data_literal -> int_literal .)
+    equivalent_op   reduce using rule 72 (data_literal -> int_literal .)
+    less_or_eq_op   reduce using rule 72 (data_literal -> int_literal .)
+    great_or_eq_op  reduce using rule 72 (data_literal -> int_literal .)
+    less_op         reduce using rule 72 (data_literal -> int_literal .)
+    great_op        reduce using rule 72 (data_literal -> int_literal .)
+    and             reduce using rule 72 (data_literal -> int_literal .)
+    or              reduce using rule 72 (data_literal -> int_literal .)
+    bool_literal    reduce using rule 72 (data_literal -> int_literal .)
+    not_equal       reduce using rule 72 (data_literal -> int_literal .)
+    identifier      reduce using rule 72 (data_literal -> int_literal .)
+    int_literal     reduce using rule 72 (data_literal -> int_literal .)
+    float_literal   reduce using rule 72 (data_literal -> int_literal .)
+    double_literal  reduce using rule 72 (data_literal -> int_literal .)
+    char_literal    reduce using rule 72 (data_literal -> int_literal .)
+    string_literal  reduce using rule 72 (data_literal -> int_literal .)
+    right_par_op    reduce using rule 72 (data_literal -> int_literal .)
+    semi_colon_statement reduce using rule 72 (data_literal -> int_literal .)
+    right_curl_op   reduce using rule 72 (data_literal -> int_literal .)
+    colon_statement reduce using rule 72 (data_literal -> int_literal .)
+    comma_statement reduce using rule 72 (data_literal -> int_literal .)
+    left_curl_op    reduce using rule 72 (data_literal -> int_literal .)
+
+
+state 39
+
+    (73) data_literal -> float_literal .
+
+    left_par_op     reduce using rule 73 (data_literal -> float_literal .)
+    expo_op         reduce using rule 73 (data_literal -> float_literal .)
+    mul_op          reduce using rule 73 (data_literal -> float_literal .)
+    div_op          reduce using rule 73 (data_literal -> float_literal .)
+    add_op          reduce using rule 73 (data_literal -> float_literal .)
+    sub_op          reduce using rule 73 (data_literal -> float_literal .)
+    $end            reduce using rule 73 (data_literal -> float_literal .)
+    equivalent_op   reduce using rule 73 (data_literal -> float_literal .)
+    less_or_eq_op   reduce using rule 73 (data_literal -> float_literal .)
+    great_or_eq_op  reduce using rule 73 (data_literal -> float_literal .)
+    less_op         reduce using rule 73 (data_literal -> float_literal .)
+    great_op        reduce using rule 73 (data_literal -> float_literal .)
+    and             reduce using rule 73 (data_literal -> float_literal .)
+    or              reduce using rule 73 (data_literal -> float_literal .)
+    bool_literal    reduce using rule 73 (data_literal -> float_literal .)
+    not_equal       reduce using rule 73 (data_literal -> float_literal .)
+    identifier      reduce using rule 73 (data_literal -> float_literal .)
+    int_literal     reduce using rule 73 (data_literal -> float_literal .)
+    float_literal   reduce using rule 73 (data_literal -> float_literal .)
+    double_literal  reduce using rule 73 (data_literal -> float_literal .)
+    char_literal    reduce using rule 73 (data_literal -> float_literal .)
+    string_literal  reduce using rule 73 (data_literal -> float_literal .)
+    right_par_op    reduce using rule 73 (data_literal -> float_literal .)
+    semi_colon_statement reduce using rule 73 (data_literal -> float_literal .)
+    right_curl_op   reduce using rule 73 (data_literal -> float_literal .)
+    colon_statement reduce using rule 73 (data_literal -> float_literal .)
+    comma_statement reduce using rule 73 (data_literal -> float_literal .)
+    left_curl_op    reduce using rule 73 (data_literal -> float_literal .)
+
+
+state 40
+
+    (74) data_literal -> double_literal .
+
+    left_par_op     reduce using rule 74 (data_literal -> double_literal .)
+    expo_op         reduce using rule 74 (data_literal -> double_literal .)
+    mul_op          reduce using rule 74 (data_literal -> double_literal .)
+    div_op          reduce using rule 74 (data_literal -> double_literal .)
+    add_op          reduce using rule 74 (data_literal -> double_literal .)
+    sub_op          reduce using rule 74 (data_literal -> double_literal .)
+    $end            reduce using rule 74 (data_literal -> double_literal .)
+    equivalent_op   reduce using rule 74 (data_literal -> double_literal .)
+    less_or_eq_op   reduce using rule 74 (data_literal -> double_literal .)
+    great_or_eq_op  reduce using rule 74 (data_literal -> double_literal .)
+    less_op         reduce using rule 74 (data_literal -> double_literal .)
+    great_op        reduce using rule 74 (data_literal -> double_literal .)
+    and             reduce using rule 74 (data_literal -> double_literal .)
+    or              reduce using rule 74 (data_literal -> double_literal .)
+    bool_literal    reduce using rule 74 (data_literal -> double_literal .)
+    not_equal       reduce using rule 74 (data_literal -> double_literal .)
+    identifier      reduce using rule 74 (data_literal -> double_literal .)
+    int_literal     reduce using rule 74 (data_literal -> double_literal .)
+    float_literal   reduce using rule 74 (data_literal -> double_literal .)
+    double_literal  reduce using rule 74 (data_literal -> double_literal .)
+    char_literal    reduce using rule 74 (data_literal -> double_literal .)
+    string_literal  reduce using rule 74 (data_literal -> double_literal .)
+    right_par_op    reduce using rule 74 (data_literal -> double_literal .)
+    semi_colon_statement reduce using rule 74 (data_literal -> double_literal .)
+    right_curl_op   reduce using rule 74 (data_literal -> double_literal .)
+    colon_statement reduce using rule 74 (data_literal -> double_literal .)
+    comma_statement reduce using rule 74 (data_literal -> double_literal .)
+    left_curl_op    reduce using rule 74 (data_literal -> double_literal .)
+
+
+state 41
+
+    (75) data_literal -> char_literal .
+
+    left_par_op     reduce using rule 75 (data_literal -> char_literal .)
+    expo_op         reduce using rule 75 (data_literal -> char_literal .)
+    mul_op          reduce using rule 75 (data_literal -> char_literal .)
+    div_op          reduce using rule 75 (data_literal -> char_literal .)
+    add_op          reduce using rule 75 (data_literal -> char_literal .)
+    sub_op          reduce using rule 75 (data_literal -> char_literal .)
+    $end            reduce using rule 75 (data_literal -> char_literal .)
+    equivalent_op   reduce using rule 75 (data_literal -> char_literal .)
+    less_or_eq_op   reduce using rule 75 (data_literal -> char_literal .)
+    great_or_eq_op  reduce using rule 75 (data_literal -> char_literal .)
+    less_op         reduce using rule 75 (data_literal -> char_literal .)
+    great_op        reduce using rule 75 (data_literal -> char_literal .)
+    and             reduce using rule 75 (data_literal -> char_literal .)
+    or              reduce using rule 75 (data_literal -> char_literal .)
+    bool_literal    reduce using rule 75 (data_literal -> char_literal .)
+    not_equal       reduce using rule 75 (data_literal -> char_literal .)
+    identifier      reduce using rule 75 (data_literal -> char_literal .)
+    int_literal     reduce using rule 75 (data_literal -> char_literal .)
+    float_literal   reduce using rule 75 (data_literal -> char_literal .)
+    double_literal  reduce using rule 75 (data_literal -> char_literal .)
+    char_literal    reduce using rule 75 (data_literal -> char_literal .)
+    string_literal  reduce using rule 75 (data_literal -> char_literal .)
+    right_par_op    reduce using rule 75 (data_literal -> char_literal .)
+    semi_colon_statement reduce using rule 75 (data_literal -> char_literal .)
+    right_curl_op   reduce using rule 75 (data_literal -> char_literal .)
+    colon_statement reduce using rule 75 (data_literal -> char_literal .)
+    comma_statement reduce using rule 75 (data_literal -> char_literal .)
+    left_curl_op    reduce using rule 75 (data_literal -> char_literal .)
+
+
+state 42
+
+    (76) data_literal -> string_literal .
+
+    left_par_op     reduce using rule 76 (data_literal -> string_literal .)
+    expo_op         reduce using rule 76 (data_literal -> string_literal .)
+    mul_op          reduce using rule 76 (data_literal -> string_literal .)
+    div_op          reduce using rule 76 (data_literal -> string_literal .)
+    add_op          reduce using rule 76 (data_literal -> string_literal .)
+    sub_op          reduce using rule 76 (data_literal -> string_literal .)
+    $end            reduce using rule 76 (data_literal -> string_literal .)
+    equivalent_op   reduce using rule 76 (data_literal -> string_literal .)
+    less_or_eq_op   reduce using rule 76 (data_literal -> string_literal .)
+    great_or_eq_op  reduce using rule 76 (data_literal -> string_literal .)
+    less_op         reduce using rule 76 (data_literal -> string_literal .)
+    great_op        reduce using rule 76 (data_literal -> string_literal .)
+    and             reduce using rule 76 (data_literal -> string_literal .)
+    or              reduce using rule 76 (data_literal -> string_literal .)
+    bool_literal    reduce using rule 76 (data_literal -> string_literal .)
+    not_equal       reduce using rule 76 (data_literal -> string_literal .)
+    identifier      reduce using rule 76 (data_literal -> string_literal .)
+    int_literal     reduce using rule 76 (data_literal -> string_literal .)
+    float_literal   reduce using rule 76 (data_literal -> string_literal .)
+    double_literal  reduce using rule 76 (data_literal -> string_literal .)
+    char_literal    reduce using rule 76 (data_literal -> string_literal .)
+    string_literal  reduce using rule 76 (data_literal -> string_literal .)
+    right_par_op    reduce using rule 76 (data_literal -> string_literal .)
+    semi_colon_statement reduce using rule 76 (data_literal -> string_literal .)
+    right_curl_op   reduce using rule 76 (data_literal -> string_literal .)
+    colon_statement reduce using rule 76 (data_literal -> string_literal .)
+    comma_statement reduce using rule 76 (data_literal -> string_literal .)
+    left_curl_op    reduce using rule 76 (data_literal -> string_literal .)
+
+
+state 43
+
+    (10) program -> type_declaration main_statement . left_curl_op statement right_curl_op
+    (11) program -> type_declaration main_statement . left_par_op type_declaration identifier right_par_op left_curl_op statement right_curl_op
+
+    left_curl_op    shift and go to state 73
+    left_par_op     shift and go to state 74
+
+
+state 44
+
+    (64) arithmetic_expr -> left_par_op . arithmetic_expr right_par_op
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    identifier      shift and go to state 48
+    left_par_op     shift and go to state 44
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    arithmetic_expr                shift and go to state 46
+    literal_or_identifier          shift and go to state 62
+    data_literal                   shift and go to state 36
+
+state 45
+
+    (33) conditional_statement -> left_par_op inequalities . right_par_op
+    (34) conditional_statement -> left_par_op inequalities . right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
+
+    right_par_op    shift and go to state 75
+
+
+state 46
+
+    (64) arithmetic_expr -> left_par_op arithmetic_expr . right_par_op
+    (63) arithmetic_expr -> arithmetic_expr . arithmetic_op arithmetic_expr
+    (67) arithmetic_op -> . expo_op
+    (68) arithmetic_op -> . mul_op
+    (69) arithmetic_op -> . div_op
+    (70) arithmetic_op -> . add_op
+    (71) arithmetic_op -> . sub_op
+
+    right_par_op    shift and go to state 76
+    expo_op         shift and go to state 64
+    mul_op          shift and go to state 65
+    div_op          shift and go to state 66
+    add_op          shift and go to state 67
+    sub_op          shift and go to state 68
+
+    arithmetic_op                  shift and go to state 63
+
+state 47
+
+    (38) inequalities -> literal_or_identifier . inequalities_sym literal_or_identifier
+    (65) arithmetic_expr -> literal_or_identifier .
+    (39) inequalities_sym -> . equivalent_op
+    (40) inequalities_sym -> . less_or_eq_op
+    (41) inequalities_sym -> . great_or_eq_op
+    (42) inequalities_sym -> . less_op
+    (43) inequalities_sym -> . great_op
+    (44) inequalities_sym -> . and
+    (45) inequalities_sym -> . or
+    (46) inequalities_sym -> . bool_literal
+    (47) inequalities_sym -> . not_equal
+    (48) inequalities_sym -> .
+
+    right_par_op    reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    expo_op         reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    mul_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    div_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    add_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    sub_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    equivalent_op   shift and go to state 78
+    less_or_eq_op   shift and go to state 79
+    great_or_eq_op  shift and go to state 80
+    less_op         shift and go to state 81
+    great_op        shift and go to state 82
+    and             shift and go to state 83
+    or              shift and go to state 84
+    bool_literal    shift and go to state 85
+    not_equal       shift and go to state 86
+    identifier      reduce using rule 48 (inequalities_sym -> .)
+    int_literal     reduce using rule 48 (inequalities_sym -> .)
+    float_literal   reduce using rule 48 (inequalities_sym -> .)
+    double_literal  reduce using rule 48 (inequalities_sym -> .)
+    char_literal    reduce using rule 48 (inequalities_sym -> .)
+    string_literal  reduce using rule 48 (inequalities_sym -> .)
+
+    inequalities_sym               shift and go to state 77
+
+state 48
+
+    (62) arithmetic_expr -> identifier . assign_op arithmetic_expr
+    (66) arithmetic_expr -> identifier . assign_op function_call_statement
+    (52) literal_or_identifier -> identifier .
+
+    assign_op       shift and go to state 49
+    equivalent_op   reduce using rule 52 (literal_or_identifier -> identifier .)
+    less_or_eq_op   reduce using rule 52 (literal_or_identifier -> identifier .)
+    great_or_eq_op  reduce using rule 52 (literal_or_identifier -> identifier .)
+    less_op         reduce using rule 52 (literal_or_identifier -> identifier .)
+    great_op        reduce using rule 52 (literal_or_identifier -> identifier .)
+    and             reduce using rule 52 (literal_or_identifier -> identifier .)
+    or              reduce using rule 52 (literal_or_identifier -> identifier .)
+    bool_literal    reduce using rule 52 (literal_or_identifier -> identifier .)
+    not_equal       reduce using rule 52 (literal_or_identifier -> identifier .)
+    identifier      reduce using rule 52 (literal_or_identifier -> identifier .)
+    int_literal     reduce using rule 52 (literal_or_identifier -> identifier .)
+    float_literal   reduce using rule 52 (literal_or_identifier -> identifier .)
+    double_literal  reduce using rule 52 (literal_or_identifier -> identifier .)
+    char_literal    reduce using rule 52 (literal_or_identifier -> identifier .)
+    string_literal  reduce using rule 52 (literal_or_identifier -> identifier .)
+    right_par_op    reduce using rule 52 (literal_or_identifier -> identifier .)
+    expo_op         reduce using rule 52 (literal_or_identifier -> identifier .)
+    mul_op          reduce using rule 52 (literal_or_identifier -> identifier .)
+    div_op          reduce using rule 52 (literal_or_identifier -> identifier .)
+    add_op          reduce using rule 52 (literal_or_identifier -> identifier .)
+    sub_op          reduce using rule 52 (literal_or_identifier -> identifier .)
+    left_par_op     reduce using rule 52 (literal_or_identifier -> identifier .)
+    $end            reduce using rule 52 (literal_or_identifier -> identifier .)
+    semi_colon_statement reduce using rule 52 (literal_or_identifier -> identifier .)
+    right_curl_op   reduce using rule 52 (literal_or_identifier -> identifier .)
+    colon_statement reduce using rule 52 (literal_or_identifier -> identifier .)
+    left_curl_op    reduce using rule 52 (literal_or_identifier -> identifier .)
+
+
+state 49
+
+    (62) arithmetic_expr -> identifier assign_op . arithmetic_expr
+    (66) arithmetic_expr -> identifier assign_op . function_call_statement
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (54) function_call_statement -> . literal_or_identifier left_par_op function_parameter right_par_op
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    identifier      shift and go to state 48
+    left_par_op     shift and go to state 44
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    arithmetic_expr                shift and go to state 87
+    function_call_statement        shift and go to state 88
+    literal_or_identifier          shift and go to state 89
+    data_literal                   shift and go to state 36
+
+state 50
+
+    (60) unary_op -> identifier increment .
+
+    $end            reduce using rule 60 (unary_op -> identifier increment .)
+    semi_colon_statement reduce using rule 60 (unary_op -> identifier increment .)
+    right_curl_op   reduce using rule 60 (unary_op -> identifier increment .)
+    colon_statement reduce using rule 60 (unary_op -> identifier increment .)
+    left_curl_op    reduce using rule 60 (unary_op -> identifier increment .)
+
+
+state 51
+
+    (61) unary_op -> identifier decrement .
+
+    $end            reduce using rule 61 (unary_op -> identifier decrement .)
+    semi_colon_statement reduce using rule 61 (unary_op -> identifier decrement .)
+    right_curl_op   reduce using rule 61 (unary_op -> identifier decrement .)
+    colon_statement reduce using rule 61 (unary_op -> identifier decrement .)
+    left_curl_op    reduce using rule 61 (unary_op -> identifier decrement .)
+
+
+state 52
+
+    (54) function_call_statement -> literal_or_identifier left_par_op . function_parameter right_par_op
+    (49) function_declaration_statement -> literal_or_identifier left_par_op . function_parameter right_par_op left_curl_op statement right_curl_op
+    (50) function_parameter -> . literal_or_identifier
+    (51) function_parameter -> . literal_or_identifier comma_statement function_parameter
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    identifier      shift and go to state 59
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    literal_or_identifier          shift and go to state 90
+    function_parameter             shift and go to state 91
+    data_literal                   shift and go to state 36
+
+state 53
+
+    (31) conditional_statement -> if_block elif_block .
+
+    $end            reduce using rule 31 (conditional_statement -> if_block elif_block .)
+    right_curl_op   reduce using rule 31 (conditional_statement -> if_block elif_block .)
+    colon_statement reduce using rule 31 (conditional_statement -> if_block elif_block .)
+
+
+state 54
+
+    (32) conditional_statement -> if_block else_block .
+
+    $end            reduce using rule 32 (conditional_statement -> if_block else_block .)
+    right_curl_op   reduce using rule 32 (conditional_statement -> if_block else_block .)
+    colon_statement reduce using rule 32 (conditional_statement -> if_block else_block .)
+
+
+state 55
+
+    (37) elif_block -> elif_statement . inequalities left_curl_op statement right_curl_op
+    (38) inequalities -> . literal_or_identifier inequalities_sym literal_or_identifier
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    identifier      shift and go to state 59
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    inequalities                   shift and go to state 92
+    literal_or_identifier          shift and go to state 58
+    data_literal                   shift and go to state 36
+
+state 56
+
+    (36) else_block -> else_statement . left_curl_op statement right_curl_op
+
+    left_curl_op    shift and go to state 93
+
+
+state 57
+
+    (55) loop_statement -> while_statement inequalities . left_curl_op statement right_curl_op
+
+    left_curl_op    shift and go to state 94
+
+
+state 58
+
+    (38) inequalities -> literal_or_identifier . inequalities_sym literal_or_identifier
+    (39) inequalities_sym -> . equivalent_op
+    (40) inequalities_sym -> . less_or_eq_op
+    (41) inequalities_sym -> . great_or_eq_op
+    (42) inequalities_sym -> . less_op
+    (43) inequalities_sym -> . great_op
+    (44) inequalities_sym -> . and
+    (45) inequalities_sym -> . or
+    (46) inequalities_sym -> . bool_literal
+    (47) inequalities_sym -> . not_equal
+    (48) inequalities_sym -> .
+
+    equivalent_op   shift and go to state 78
+    less_or_eq_op   shift and go to state 79
+    great_or_eq_op  shift and go to state 80
+    less_op         shift and go to state 81
+    great_op        shift and go to state 82
+    and             shift and go to state 83
+    or              shift and go to state 84
+    bool_literal    shift and go to state 85
+    not_equal       shift and go to state 86
+    identifier      reduce using rule 48 (inequalities_sym -> .)
+    int_literal     reduce using rule 48 (inequalities_sym -> .)
+    float_literal   reduce using rule 48 (inequalities_sym -> .)
+    double_literal  reduce using rule 48 (inequalities_sym -> .)
+    char_literal    reduce using rule 48 (inequalities_sym -> .)
+    string_literal  reduce using rule 48 (inequalities_sym -> .)
+
+    inequalities_sym               shift and go to state 77
+
+state 59
+
+    (52) literal_or_identifier -> identifier .
+
+    equivalent_op   reduce using rule 52 (literal_or_identifier -> identifier .)
+    less_or_eq_op   reduce using rule 52 (literal_or_identifier -> identifier .)
+    great_or_eq_op  reduce using rule 52 (literal_or_identifier -> identifier .)
+    less_op         reduce using rule 52 (literal_or_identifier -> identifier .)
+    great_op        reduce using rule 52 (literal_or_identifier -> identifier .)
+    and             reduce using rule 52 (literal_or_identifier -> identifier .)
+    or              reduce using rule 52 (literal_or_identifier -> identifier .)
+    bool_literal    reduce using rule 52 (literal_or_identifier -> identifier .)
+    not_equal       reduce using rule 52 (literal_or_identifier -> identifier .)
+    identifier      reduce using rule 52 (literal_or_identifier -> identifier .)
+    int_literal     reduce using rule 52 (literal_or_identifier -> identifier .)
+    float_literal   reduce using rule 52 (literal_or_identifier -> identifier .)
+    double_literal  reduce using rule 52 (literal_or_identifier -> identifier .)
+    char_literal    reduce using rule 52 (literal_or_identifier -> identifier .)
+    string_literal  reduce using rule 52 (literal_or_identifier -> identifier .)
+    comma_statement reduce using rule 52 (literal_or_identifier -> identifier .)
+    $end            reduce using rule 52 (literal_or_identifier -> identifier .)
+    right_curl_op   reduce using rule 52 (literal_or_identifier -> identifier .)
+    colon_statement reduce using rule 52 (literal_or_identifier -> identifier .)
+    right_par_op    reduce using rule 52 (literal_or_identifier -> identifier .)
+    left_curl_op    reduce using rule 52 (literal_or_identifier -> identifier .)
+    semi_colon_statement reduce using rule 52 (literal_or_identifier -> identifier .)
+
+
+state 60
+
+    (56) loop_statement -> for_statement arithmetic_statement . semi_colon_statement left_curl_op statement right_curl_op
+    (57) loop_statement -> for_statement arithmetic_statement . semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
+
+    semi_colon_statement shift and go to state 95
+
+
+state 61
+
+    (62) arithmetic_expr -> identifier . assign_op arithmetic_expr
+    (66) arithmetic_expr -> identifier . assign_op function_call_statement
+    (60) unary_op -> identifier . increment
+    (61) unary_op -> identifier . decrement
+    (52) literal_or_identifier -> identifier .
+
+    assign_op       shift and go to state 49
+    increment       shift and go to state 50
+    decrement       shift and go to state 51
+    expo_op         reduce using rule 52 (literal_or_identifier -> identifier .)
+    mul_op          reduce using rule 52 (literal_or_identifier -> identifier .)
+    div_op          reduce using rule 52 (literal_or_identifier -> identifier .)
+    add_op          reduce using rule 52 (literal_or_identifier -> identifier .)
+    sub_op          reduce using rule 52 (literal_or_identifier -> identifier .)
+    semi_colon_statement reduce using rule 52 (literal_or_identifier -> identifier .)
+    left_curl_op    reduce using rule 52 (literal_or_identifier -> identifier .)
+
+
+state 62
+
+    (65) arithmetic_expr -> literal_or_identifier .
+
+    expo_op         reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    mul_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    div_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    add_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    sub_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    semi_colon_statement reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    right_par_op    reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    $end            reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    right_curl_op   reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    colon_statement reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    left_curl_op    reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+
+
+state 63
+
+    (63) arithmetic_expr -> arithmetic_expr arithmetic_op . arithmetic_expr
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    identifier      shift and go to state 48
+    left_par_op     shift and go to state 44
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    arithmetic_expr                shift and go to state 96
+    literal_or_identifier          shift and go to state 62
+    data_literal                   shift and go to state 36
+
+state 64
+
+    (67) arithmetic_op -> expo_op .
+
+    identifier      reduce using rule 67 (arithmetic_op -> expo_op .)
+    left_par_op     reduce using rule 67 (arithmetic_op -> expo_op .)
+    int_literal     reduce using rule 67 (arithmetic_op -> expo_op .)
+    float_literal   reduce using rule 67 (arithmetic_op -> expo_op .)
+    double_literal  reduce using rule 67 (arithmetic_op -> expo_op .)
+    char_literal    reduce using rule 67 (arithmetic_op -> expo_op .)
+    string_literal  reduce using rule 67 (arithmetic_op -> expo_op .)
+
+
+state 65
+
+    (68) arithmetic_op -> mul_op .
+
+    identifier      reduce using rule 68 (arithmetic_op -> mul_op .)
+    left_par_op     reduce using rule 68 (arithmetic_op -> mul_op .)
+    int_literal     reduce using rule 68 (arithmetic_op -> mul_op .)
+    float_literal   reduce using rule 68 (arithmetic_op -> mul_op .)
+    double_literal  reduce using rule 68 (arithmetic_op -> mul_op .)
+    char_literal    reduce using rule 68 (arithmetic_op -> mul_op .)
+    string_literal  reduce using rule 68 (arithmetic_op -> mul_op .)
+
+
+state 66
+
+    (69) arithmetic_op -> div_op .
+
+    identifier      reduce using rule 69 (arithmetic_op -> div_op .)
+    left_par_op     reduce using rule 69 (arithmetic_op -> div_op .)
+    int_literal     reduce using rule 69 (arithmetic_op -> div_op .)
+    float_literal   reduce using rule 69 (arithmetic_op -> div_op .)
+    double_literal  reduce using rule 69 (arithmetic_op -> div_op .)
+    char_literal    reduce using rule 69 (arithmetic_op -> div_op .)
+    string_literal  reduce using rule 69 (arithmetic_op -> div_op .)
+
+
+state 67
+
+    (70) arithmetic_op -> add_op .
+
+    identifier      reduce using rule 70 (arithmetic_op -> add_op .)
+    left_par_op     reduce using rule 70 (arithmetic_op -> add_op .)
+    int_literal     reduce using rule 70 (arithmetic_op -> add_op .)
+    float_literal   reduce using rule 70 (arithmetic_op -> add_op .)
+    double_literal  reduce using rule 70 (arithmetic_op -> add_op .)
+    char_literal    reduce using rule 70 (arithmetic_op -> add_op .)
+    string_literal  reduce using rule 70 (arithmetic_op -> add_op .)
+
+
+state 68
+
+    (71) arithmetic_op -> sub_op .
+
+    identifier      reduce using rule 71 (arithmetic_op -> sub_op .)
+    left_par_op     reduce using rule 71 (arithmetic_op -> sub_op .)
+    int_literal     reduce using rule 71 (arithmetic_op -> sub_op .)
+    float_literal   reduce using rule 71 (arithmetic_op -> sub_op .)
+    double_literal  reduce using rule 71 (arithmetic_op -> sub_op .)
+    char_literal    reduce using rule 71 (arithmetic_op -> sub_op .)
+    string_literal  reduce using rule 71 (arithmetic_op -> sub_op .)
+
+
+state 69
+
+    (28) return_state -> return_statement literal_or_identifier .
+    (54) function_call_statement -> literal_or_identifier . left_par_op function_parameter right_par_op
+    (49) function_declaration_statement -> literal_or_identifier . left_par_op function_parameter right_par_op left_curl_op statement right_curl_op
+    (65) arithmetic_expr -> literal_or_identifier .
+
+  ! reduce/reduce conflict for $end resolved using rule 28 (return_state -> return_statement literal_or_identifier .)
+  ! reduce/reduce conflict for right_curl_op resolved using rule 28 (return_state -> return_statement literal_or_identifier .)
+  ! reduce/reduce conflict for colon_statement resolved using rule 28 (return_state -> return_statement literal_or_identifier .)
+    $end            reduce using rule 28 (return_state -> return_statement literal_or_identifier .)
+    right_curl_op   reduce using rule 28 (return_state -> return_statement literal_or_identifier .)
+    colon_statement reduce using rule 28 (return_state -> return_statement literal_or_identifier .)
+    left_par_op     shift and go to state 52
+    expo_op         reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    mul_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    div_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    add_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    sub_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+
+  ! $end            [ reduce using rule 65 (arithmetic_expr -> literal_or_identifier .) ]
+  ! right_curl_op   [ reduce using rule 65 (arithmetic_expr -> literal_or_identifier .) ]
+  ! colon_statement [ reduce using rule 65 (arithmetic_expr -> literal_or_identifier .) ]
+
+
+state 70
+
+    (29) return_state -> return_statement statement .
+
+    $end            reduce using rule 29 (return_state -> return_statement statement .)
+    right_curl_op   reduce using rule 29 (return_state -> return_statement statement .)
+    colon_statement reduce using rule 29 (return_state -> return_statement statement .)
+
+
+state 71
+
+    (26) printed_statement -> print_statement literal_or_identifier .
+    (27) printed_statement -> print_statement literal_or_identifier . comma_statement identifier
+
+    $end            reduce using rule 26 (printed_statement -> print_statement literal_or_identifier .)
+    right_curl_op   reduce using rule 26 (printed_statement -> print_statement literal_or_identifier .)
+    colon_statement reduce using rule 26 (printed_statement -> print_statement literal_or_identifier .)
+    comma_statement shift and go to state 97
+
+
+state 72
+
+    (35) if_block -> if_statement inequalities . left_curl_op statement right_curl_op
+
+    left_curl_op    shift and go to state 98
+
+
+state 73
+
+    (10) program -> type_declaration main_statement left_curl_op . statement right_curl_op
+    (17) statement -> . function_call_statement
+    (18) statement -> . conditional_statement
+    (19) statement -> . loop_statement
+    (20) statement -> . arithmetic_statement
+    (21) statement -> . break_state
+    (22) statement -> . return_state
+    (23) statement -> . function_declaration_statement
+    (24) statement -> . printed_statement
+    (54) function_call_statement -> . literal_or_identifier left_par_op function_parameter right_par_op
+    (30) conditional_statement -> . if_block
+    (31) conditional_statement -> . if_block elif_block
+    (32) conditional_statement -> . if_block else_block
+    (33) conditional_statement -> . left_par_op inequalities right_par_op
+    (34) conditional_statement -> . left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
+    (55) loop_statement -> . while_statement inequalities left_curl_op statement right_curl_op
+    (56) loop_statement -> . for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
+    (57) loop_statement -> . for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
+    (58) arithmetic_statement -> . arithmetic_expr
+    (59) arithmetic_statement -> . unary_op
+    (25) break_state -> . break_statement
+    (28) return_state -> . return_statement literal_or_identifier
+    (29) return_state -> . return_statement statement
+    (49) function_declaration_statement -> . literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op
+    (26) printed_statement -> . print_statement literal_or_identifier
+    (27) printed_statement -> . print_statement literal_or_identifier comma_statement identifier
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (35) if_block -> . if_statement inequalities left_curl_op statement right_curl_op
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (60) unary_op -> . identifier increment
+    (61) unary_op -> . identifier decrement
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    left_par_op     shift and go to state 6
+    while_statement shift and go to state 28
+    for_statement   shift and go to state 29
+    break_statement shift and go to state 32
+    return_statement shift and go to state 33
+    print_statement shift and go to state 34
+    identifier      shift and go to state 7
+    if_statement    shift and go to state 37
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    statement                      shift and go to state 99
+    function_call_statement        shift and go to state 8
+    conditional_statement          shift and go to state 9
+    loop_statement                 shift and go to state 10
+    arithmetic_statement           shift and go to state 11
+    break_state                    shift and go to state 12
+    return_state                   shift and go to state 13
+    function_declaration_statement shift and go to state 14
+    printed_statement              shift and go to state 15
+    literal_or_identifier          shift and go to state 26
+    if_block                       shift and go to state 27
+    arithmetic_expr                shift and go to state 30
+    unary_op                       shift and go to state 31
+    data_literal                   shift and go to state 36
+
+state 74
+
+    (11) program -> type_declaration main_statement left_par_op . type_declaration identifier right_par_op left_curl_op statement right_curl_op
+    (12) type_declaration -> . int_declaration
+    (13) type_declaration -> . float_declaration
+    (14) type_declaration -> . double_declaration
+    (15) type_declaration -> . string_declaration
+    (16) type_declaration -> . char_declaration
+
+    int_declaration shift and go to state 21
+    float_declaration shift and go to state 22
+    double_declaration shift and go to state 23
+    string_declaration shift and go to state 24
+    char_declaration shift and go to state 25
+
+    type_declaration               shift and go to state 100
+
+state 75
+
+    (33) conditional_statement -> left_par_op inequalities right_par_op .
+    (34) conditional_statement -> left_par_op inequalities right_par_op . question_op left_curl_op statement colon_statement statement right_curl_op
+
+    $end            reduce using rule 33 (conditional_statement -> left_par_op inequalities right_par_op .)
+    right_curl_op   reduce using rule 33 (conditional_statement -> left_par_op inequalities right_par_op .)
+    colon_statement reduce using rule 33 (conditional_statement -> left_par_op inequalities right_par_op .)
+    question_op     shift and go to state 101
+
+
+state 76
+
+    (64) arithmetic_expr -> left_par_op arithmetic_expr right_par_op .
+
+    expo_op         reduce using rule 64 (arithmetic_expr -> left_par_op arithmetic_expr right_par_op .)
+    mul_op          reduce using rule 64 (arithmetic_expr -> left_par_op arithmetic_expr right_par_op .)
+    div_op          reduce using rule 64 (arithmetic_expr -> left_par_op arithmetic_expr right_par_op .)
+    add_op          reduce using rule 64 (arithmetic_expr -> left_par_op arithmetic_expr right_par_op .)
+    sub_op          reduce using rule 64 (arithmetic_expr -> left_par_op arithmetic_expr right_par_op .)
+    $end            reduce using rule 64 (arithmetic_expr -> left_par_op arithmetic_expr right_par_op .)
+    right_par_op    reduce using rule 64 (arithmetic_expr -> left_par_op arithmetic_expr right_par_op .)
+    semi_colon_statement reduce using rule 64 (arithmetic_expr -> left_par_op arithmetic_expr right_par_op .)
+    right_curl_op   reduce using rule 64 (arithmetic_expr -> left_par_op arithmetic_expr right_par_op .)
+    colon_statement reduce using rule 64 (arithmetic_expr -> left_par_op arithmetic_expr right_par_op .)
+    left_curl_op    reduce using rule 64 (arithmetic_expr -> left_par_op arithmetic_expr right_par_op .)
+
+
+state 77
+
+    (38) inequalities -> literal_or_identifier inequalities_sym . literal_or_identifier
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    identifier      shift and go to state 59
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    literal_or_identifier          shift and go to state 102
+    data_literal                   shift and go to state 36
+
+state 78
+
+    (39) inequalities_sym -> equivalent_op .
+
+    identifier      reduce using rule 39 (inequalities_sym -> equivalent_op .)
+    int_literal     reduce using rule 39 (inequalities_sym -> equivalent_op .)
+    float_literal   reduce using rule 39 (inequalities_sym -> equivalent_op .)
+    double_literal  reduce using rule 39 (inequalities_sym -> equivalent_op .)
+    char_literal    reduce using rule 39 (inequalities_sym -> equivalent_op .)
+    string_literal  reduce using rule 39 (inequalities_sym -> equivalent_op .)
+
+
+state 79
+
+    (40) inequalities_sym -> less_or_eq_op .
+
+    identifier      reduce using rule 40 (inequalities_sym -> less_or_eq_op .)
+    int_literal     reduce using rule 40 (inequalities_sym -> less_or_eq_op .)
+    float_literal   reduce using rule 40 (inequalities_sym -> less_or_eq_op .)
+    double_literal  reduce using rule 40 (inequalities_sym -> less_or_eq_op .)
+    char_literal    reduce using rule 40 (inequalities_sym -> less_or_eq_op .)
+    string_literal  reduce using rule 40 (inequalities_sym -> less_or_eq_op .)
+
+
+state 80
+
+    (41) inequalities_sym -> great_or_eq_op .
+
+    identifier      reduce using rule 41 (inequalities_sym -> great_or_eq_op .)
+    int_literal     reduce using rule 41 (inequalities_sym -> great_or_eq_op .)
+    float_literal   reduce using rule 41 (inequalities_sym -> great_or_eq_op .)
+    double_literal  reduce using rule 41 (inequalities_sym -> great_or_eq_op .)
+    char_literal    reduce using rule 41 (inequalities_sym -> great_or_eq_op .)
+    string_literal  reduce using rule 41 (inequalities_sym -> great_or_eq_op .)
+
+
+state 81
+
+    (42) inequalities_sym -> less_op .
+
+    identifier      reduce using rule 42 (inequalities_sym -> less_op .)
+    int_literal     reduce using rule 42 (inequalities_sym -> less_op .)
+    float_literal   reduce using rule 42 (inequalities_sym -> less_op .)
+    double_literal  reduce using rule 42 (inequalities_sym -> less_op .)
+    char_literal    reduce using rule 42 (inequalities_sym -> less_op .)
+    string_literal  reduce using rule 42 (inequalities_sym -> less_op .)
+
+
+state 82
+
+    (43) inequalities_sym -> great_op .
+
+    identifier      reduce using rule 43 (inequalities_sym -> great_op .)
+    int_literal     reduce using rule 43 (inequalities_sym -> great_op .)
+    float_literal   reduce using rule 43 (inequalities_sym -> great_op .)
+    double_literal  reduce using rule 43 (inequalities_sym -> great_op .)
+    char_literal    reduce using rule 43 (inequalities_sym -> great_op .)
+    string_literal  reduce using rule 43 (inequalities_sym -> great_op .)
+
+
+state 83
+
+    (44) inequalities_sym -> and .
+
+    identifier      reduce using rule 44 (inequalities_sym -> and .)
+    int_literal     reduce using rule 44 (inequalities_sym -> and .)
+    float_literal   reduce using rule 44 (inequalities_sym -> and .)
+    double_literal  reduce using rule 44 (inequalities_sym -> and .)
+    char_literal    reduce using rule 44 (inequalities_sym -> and .)
+    string_literal  reduce using rule 44 (inequalities_sym -> and .)
+
+
+state 84
+
+    (45) inequalities_sym -> or .
+
+    identifier      reduce using rule 45 (inequalities_sym -> or .)
+    int_literal     reduce using rule 45 (inequalities_sym -> or .)
+    float_literal   reduce using rule 45 (inequalities_sym -> or .)
+    double_literal  reduce using rule 45 (inequalities_sym -> or .)
+    char_literal    reduce using rule 45 (inequalities_sym -> or .)
+    string_literal  reduce using rule 45 (inequalities_sym -> or .)
+
+
+state 85
+
+    (46) inequalities_sym -> bool_literal .
+
+    identifier      reduce using rule 46 (inequalities_sym -> bool_literal .)
+    int_literal     reduce using rule 46 (inequalities_sym -> bool_literal .)
+    float_literal   reduce using rule 46 (inequalities_sym -> bool_literal .)
+    double_literal  reduce using rule 46 (inequalities_sym -> bool_literal .)
+    char_literal    reduce using rule 46 (inequalities_sym -> bool_literal .)
+    string_literal  reduce using rule 46 (inequalities_sym -> bool_literal .)
+
+
+state 86
+
+    (47) inequalities_sym -> not_equal .
+
+    identifier      reduce using rule 47 (inequalities_sym -> not_equal .)
+    int_literal     reduce using rule 47 (inequalities_sym -> not_equal .)
+    float_literal   reduce using rule 47 (inequalities_sym -> not_equal .)
+    double_literal  reduce using rule 47 (inequalities_sym -> not_equal .)
+    char_literal    reduce using rule 47 (inequalities_sym -> not_equal .)
+    string_literal  reduce using rule 47 (inequalities_sym -> not_equal .)
+
+
+state 87
+
+    (62) arithmetic_expr -> identifier assign_op arithmetic_expr .
+    (63) arithmetic_expr -> arithmetic_expr . arithmetic_op arithmetic_expr
+    (67) arithmetic_op -> . expo_op
+    (68) arithmetic_op -> . mul_op
+    (69) arithmetic_op -> . div_op
+    (70) arithmetic_op -> . add_op
+    (71) arithmetic_op -> . sub_op
+
+    expo_op         reduce using rule 62 (arithmetic_expr -> identifier assign_op arithmetic_expr .)
+    mul_op          reduce using rule 62 (arithmetic_expr -> identifier assign_op arithmetic_expr .)
+    div_op          reduce using rule 62 (arithmetic_expr -> identifier assign_op arithmetic_expr .)
+    add_op          reduce using rule 62 (arithmetic_expr -> identifier assign_op arithmetic_expr .)
+    sub_op          reduce using rule 62 (arithmetic_expr -> identifier assign_op arithmetic_expr .)
+    $end            reduce using rule 62 (arithmetic_expr -> identifier assign_op arithmetic_expr .)
+    right_par_op    reduce using rule 62 (arithmetic_expr -> identifier assign_op arithmetic_expr .)
+    semi_colon_statement reduce using rule 62 (arithmetic_expr -> identifier assign_op arithmetic_expr .)
+    right_curl_op   reduce using rule 62 (arithmetic_expr -> identifier assign_op arithmetic_expr .)
+    colon_statement reduce using rule 62 (arithmetic_expr -> identifier assign_op arithmetic_expr .)
+    left_curl_op    reduce using rule 62 (arithmetic_expr -> identifier assign_op arithmetic_expr .)
+
+  ! expo_op         [ shift and go to state 64 ]
+  ! mul_op          [ shift and go to state 65 ]
+  ! div_op          [ shift and go to state 66 ]
+  ! add_op          [ shift and go to state 67 ]
+  ! sub_op          [ shift and go to state 68 ]
+
+    arithmetic_op                  shift and go to state 63
+
+state 88
+
+    (66) arithmetic_expr -> identifier assign_op function_call_statement .
+
+    expo_op         reduce using rule 66 (arithmetic_expr -> identifier assign_op function_call_statement .)
+    mul_op          reduce using rule 66 (arithmetic_expr -> identifier assign_op function_call_statement .)
+    div_op          reduce using rule 66 (arithmetic_expr -> identifier assign_op function_call_statement .)
+    add_op          reduce using rule 66 (arithmetic_expr -> identifier assign_op function_call_statement .)
+    sub_op          reduce using rule 66 (arithmetic_expr -> identifier assign_op function_call_statement .)
+    $end            reduce using rule 66 (arithmetic_expr -> identifier assign_op function_call_statement .)
+    right_par_op    reduce using rule 66 (arithmetic_expr -> identifier assign_op function_call_statement .)
+    semi_colon_statement reduce using rule 66 (arithmetic_expr -> identifier assign_op function_call_statement .)
+    right_curl_op   reduce using rule 66 (arithmetic_expr -> identifier assign_op function_call_statement .)
+    colon_statement reduce using rule 66 (arithmetic_expr -> identifier assign_op function_call_statement .)
+    left_curl_op    reduce using rule 66 (arithmetic_expr -> identifier assign_op function_call_statement .)
+
+
+state 89
+
+    (65) arithmetic_expr -> literal_or_identifier .
+    (54) function_call_statement -> literal_or_identifier . left_par_op function_parameter right_par_op
+
+    expo_op         reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    mul_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    div_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    add_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    sub_op          reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    $end            reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    right_par_op    reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    semi_colon_statement reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    right_curl_op   reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    colon_statement reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    left_curl_op    reduce using rule 65 (arithmetic_expr -> literal_or_identifier .)
+    left_par_op     shift and go to state 103
+
+
+state 90
+
+    (50) function_parameter -> literal_or_identifier .
+    (51) function_parameter -> literal_or_identifier . comma_statement function_parameter
+
+    right_par_op    reduce using rule 50 (function_parameter -> literal_or_identifier .)
+    comma_statement shift and go to state 104
+
+
+state 91
+
+    (54) function_call_statement -> literal_or_identifier left_par_op function_parameter . right_par_op
+    (49) function_declaration_statement -> literal_or_identifier left_par_op function_parameter . right_par_op left_curl_op statement right_curl_op
+
+    right_par_op    shift and go to state 105
+
+
+state 92
+
+    (37) elif_block -> elif_statement inequalities . left_curl_op statement right_curl_op
+
+    left_curl_op    shift and go to state 106
+
+
+state 93
+
+    (36) else_block -> else_statement left_curl_op . statement right_curl_op
+    (17) statement -> . function_call_statement
+    (18) statement -> . conditional_statement
+    (19) statement -> . loop_statement
+    (20) statement -> . arithmetic_statement
+    (21) statement -> . break_state
+    (22) statement -> . return_state
+    (23) statement -> . function_declaration_statement
+    (24) statement -> . printed_statement
+    (54) function_call_statement -> . literal_or_identifier left_par_op function_parameter right_par_op
+    (30) conditional_statement -> . if_block
+    (31) conditional_statement -> . if_block elif_block
+    (32) conditional_statement -> . if_block else_block
+    (33) conditional_statement -> . left_par_op inequalities right_par_op
+    (34) conditional_statement -> . left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
+    (55) loop_statement -> . while_statement inequalities left_curl_op statement right_curl_op
+    (56) loop_statement -> . for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
+    (57) loop_statement -> . for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
+    (58) arithmetic_statement -> . arithmetic_expr
+    (59) arithmetic_statement -> . unary_op
+    (25) break_state -> . break_statement
+    (28) return_state -> . return_statement literal_or_identifier
+    (29) return_state -> . return_statement statement
+    (49) function_declaration_statement -> . literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op
+    (26) printed_statement -> . print_statement literal_or_identifier
+    (27) printed_statement -> . print_statement literal_or_identifier comma_statement identifier
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (35) if_block -> . if_statement inequalities left_curl_op statement right_curl_op
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (60) unary_op -> . identifier increment
+    (61) unary_op -> . identifier decrement
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    left_par_op     shift and go to state 6
+    while_statement shift and go to state 28
+    for_statement   shift and go to state 29
+    break_statement shift and go to state 32
+    return_statement shift and go to state 33
+    print_statement shift and go to state 34
+    identifier      shift and go to state 7
+    if_statement    shift and go to state 37
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    statement                      shift and go to state 107
+    function_call_statement        shift and go to state 8
+    conditional_statement          shift and go to state 9
+    loop_statement                 shift and go to state 10
+    arithmetic_statement           shift and go to state 11
+    break_state                    shift and go to state 12
+    return_state                   shift and go to state 13
+    function_declaration_statement shift and go to state 14
+    printed_statement              shift and go to state 15
+    literal_or_identifier          shift and go to state 26
+    if_block                       shift and go to state 27
+    arithmetic_expr                shift and go to state 30
+    unary_op                       shift and go to state 31
+    data_literal                   shift and go to state 36
+
+state 94
+
+    (55) loop_statement -> while_statement inequalities left_curl_op . statement right_curl_op
+    (17) statement -> . function_call_statement
+    (18) statement -> . conditional_statement
+    (19) statement -> . loop_statement
+    (20) statement -> . arithmetic_statement
+    (21) statement -> . break_state
+    (22) statement -> . return_state
+    (23) statement -> . function_declaration_statement
+    (24) statement -> . printed_statement
+    (54) function_call_statement -> . literal_or_identifier left_par_op function_parameter right_par_op
+    (30) conditional_statement -> . if_block
+    (31) conditional_statement -> . if_block elif_block
+    (32) conditional_statement -> . if_block else_block
+    (33) conditional_statement -> . left_par_op inequalities right_par_op
+    (34) conditional_statement -> . left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
+    (55) loop_statement -> . while_statement inequalities left_curl_op statement right_curl_op
+    (56) loop_statement -> . for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
+    (57) loop_statement -> . for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
+    (58) arithmetic_statement -> . arithmetic_expr
+    (59) arithmetic_statement -> . unary_op
+    (25) break_state -> . break_statement
+    (28) return_state -> . return_statement literal_or_identifier
+    (29) return_state -> . return_statement statement
+    (49) function_declaration_statement -> . literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op
+    (26) printed_statement -> . print_statement literal_or_identifier
+    (27) printed_statement -> . print_statement literal_or_identifier comma_statement identifier
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (35) if_block -> . if_statement inequalities left_curl_op statement right_curl_op
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (60) unary_op -> . identifier increment
+    (61) unary_op -> . identifier decrement
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    left_par_op     shift and go to state 6
+    while_statement shift and go to state 28
+    for_statement   shift and go to state 29
+    break_statement shift and go to state 32
+    return_statement shift and go to state 33
+    print_statement shift and go to state 34
+    identifier      shift and go to state 7
+    if_statement    shift and go to state 37
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    statement                      shift and go to state 108
+    function_call_statement        shift and go to state 8
+    conditional_statement          shift and go to state 9
+    loop_statement                 shift and go to state 10
+    arithmetic_statement           shift and go to state 11
+    break_state                    shift and go to state 12
+    return_state                   shift and go to state 13
+    function_declaration_statement shift and go to state 14
+    printed_statement              shift and go to state 15
+    literal_or_identifier          shift and go to state 26
+    if_block                       shift and go to state 27
+    arithmetic_expr                shift and go to state 30
+    unary_op                       shift and go to state 31
+    data_literal                   shift and go to state 36
+
+state 95
+
+    (56) loop_statement -> for_statement arithmetic_statement semi_colon_statement . left_curl_op statement right_curl_op
+    (57) loop_statement -> for_statement arithmetic_statement semi_colon_statement . inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
+    (38) inequalities -> . literal_or_identifier inequalities_sym literal_or_identifier
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    left_curl_op    shift and go to state 109
+    identifier      shift and go to state 59
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    inequalities                   shift and go to state 110
+    literal_or_identifier          shift and go to state 58
+    data_literal                   shift and go to state 36
+
+state 96
+
+    (63) arithmetic_expr -> arithmetic_expr arithmetic_op arithmetic_expr .
+    (63) arithmetic_expr -> arithmetic_expr . arithmetic_op arithmetic_expr
+    (67) arithmetic_op -> . expo_op
+    (68) arithmetic_op -> . mul_op
+    (69) arithmetic_op -> . div_op
+    (70) arithmetic_op -> . add_op
+    (71) arithmetic_op -> . sub_op
+
+  ! shift/reduce conflict for expo_op resolved as shift
+  ! shift/reduce conflict for mul_op resolved as shift
+  ! shift/reduce conflict for div_op resolved as shift
+  ! shift/reduce conflict for add_op resolved as shift
+  ! shift/reduce conflict for sub_op resolved as shift
+    $end            reduce using rule 63 (arithmetic_expr -> arithmetic_expr arithmetic_op arithmetic_expr .)
+    right_par_op    reduce using rule 63 (arithmetic_expr -> arithmetic_expr arithmetic_op arithmetic_expr .)
+    semi_colon_statement reduce using rule 63 (arithmetic_expr -> arithmetic_expr arithmetic_op arithmetic_expr .)
+    right_curl_op   reduce using rule 63 (arithmetic_expr -> arithmetic_expr arithmetic_op arithmetic_expr .)
+    colon_statement reduce using rule 63 (arithmetic_expr -> arithmetic_expr arithmetic_op arithmetic_expr .)
+    left_curl_op    reduce using rule 63 (arithmetic_expr -> arithmetic_expr arithmetic_op arithmetic_expr .)
+    expo_op         shift and go to state 64
+    mul_op          shift and go to state 65
+    div_op          shift and go to state 66
+    add_op          shift and go to state 67
+    sub_op          shift and go to state 68
+
+  ! expo_op         [ reduce using rule 63 (arithmetic_expr -> arithmetic_expr arithmetic_op arithmetic_expr .) ]
+  ! mul_op          [ reduce using rule 63 (arithmetic_expr -> arithmetic_expr arithmetic_op arithmetic_expr .) ]
+  ! div_op          [ reduce using rule 63 (arithmetic_expr -> arithmetic_expr arithmetic_op arithmetic_expr .) ]
+  ! add_op          [ reduce using rule 63 (arithmetic_expr -> arithmetic_expr arithmetic_op arithmetic_expr .) ]
+  ! sub_op          [ reduce using rule 63 (arithmetic_expr -> arithmetic_expr arithmetic_op arithmetic_expr .) ]
+
+    arithmetic_op                  shift and go to state 63
+
+state 97
+
+    (27) printed_statement -> print_statement literal_or_identifier comma_statement . identifier
+
+    identifier      shift and go to state 111
+
+
+state 98
+
+    (35) if_block -> if_statement inequalities left_curl_op . statement right_curl_op
+    (17) statement -> . function_call_statement
+    (18) statement -> . conditional_statement
+    (19) statement -> . loop_statement
+    (20) statement -> . arithmetic_statement
+    (21) statement -> . break_state
+    (22) statement -> . return_state
+    (23) statement -> . function_declaration_statement
+    (24) statement -> . printed_statement
+    (54) function_call_statement -> . literal_or_identifier left_par_op function_parameter right_par_op
+    (30) conditional_statement -> . if_block
+    (31) conditional_statement -> . if_block elif_block
+    (32) conditional_statement -> . if_block else_block
+    (33) conditional_statement -> . left_par_op inequalities right_par_op
+    (34) conditional_statement -> . left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
+    (55) loop_statement -> . while_statement inequalities left_curl_op statement right_curl_op
+    (56) loop_statement -> . for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
+    (57) loop_statement -> . for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
+    (58) arithmetic_statement -> . arithmetic_expr
+    (59) arithmetic_statement -> . unary_op
+    (25) break_state -> . break_statement
+    (28) return_state -> . return_statement literal_or_identifier
+    (29) return_state -> . return_statement statement
+    (49) function_declaration_statement -> . literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op
+    (26) printed_statement -> . print_statement literal_or_identifier
+    (27) printed_statement -> . print_statement literal_or_identifier comma_statement identifier
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (35) if_block -> . if_statement inequalities left_curl_op statement right_curl_op
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (60) unary_op -> . identifier increment
+    (61) unary_op -> . identifier decrement
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    left_par_op     shift and go to state 6
+    while_statement shift and go to state 28
+    for_statement   shift and go to state 29
+    break_statement shift and go to state 32
+    return_statement shift and go to state 33
+    print_statement shift and go to state 34
+    identifier      shift and go to state 7
+    if_statement    shift and go to state 37
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    statement                      shift and go to state 112
+    function_call_statement        shift and go to state 8
+    conditional_statement          shift and go to state 9
+    loop_statement                 shift and go to state 10
+    arithmetic_statement           shift and go to state 11
+    break_state                    shift and go to state 12
+    return_state                   shift and go to state 13
+    function_declaration_statement shift and go to state 14
+    printed_statement              shift and go to state 15
+    literal_or_identifier          shift and go to state 26
+    if_block                       shift and go to state 27
+    arithmetic_expr                shift and go to state 30
+    unary_op                       shift and go to state 31
+    data_literal                   shift and go to state 36
+
+state 99
+
+    (10) program -> type_declaration main_statement left_curl_op statement . right_curl_op
+
+    right_curl_op   shift and go to state 113
+
+
+state 100
+
+    (11) program -> type_declaration main_statement left_par_op type_declaration . identifier right_par_op left_curl_op statement right_curl_op
+
+    identifier      shift and go to state 114
+
+
+state 101
+
+    (34) conditional_statement -> left_par_op inequalities right_par_op question_op . left_curl_op statement colon_statement statement right_curl_op
+
+    left_curl_op    shift and go to state 115
+
+
+state 102
+
+    (38) inequalities -> literal_or_identifier inequalities_sym literal_or_identifier .
+
+    right_par_op    reduce using rule 38 (inequalities -> literal_or_identifier inequalities_sym literal_or_identifier .)
+    left_curl_op    reduce using rule 38 (inequalities -> literal_or_identifier inequalities_sym literal_or_identifier .)
+    semi_colon_statement reduce using rule 38 (inequalities -> literal_or_identifier inequalities_sym literal_or_identifier .)
+
+
+state 103
+
+    (54) function_call_statement -> literal_or_identifier left_par_op . function_parameter right_par_op
+    (50) function_parameter -> . literal_or_identifier
+    (51) function_parameter -> . literal_or_identifier comma_statement function_parameter
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    identifier      shift and go to state 59
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    literal_or_identifier          shift and go to state 90
+    function_parameter             shift and go to state 116
+    data_literal                   shift and go to state 36
+
+state 104
+
+    (51) function_parameter -> literal_or_identifier comma_statement . function_parameter
+    (50) function_parameter -> . literal_or_identifier
+    (51) function_parameter -> . literal_or_identifier comma_statement function_parameter
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    identifier      shift and go to state 59
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    literal_or_identifier          shift and go to state 90
+    function_parameter             shift and go to state 117
+    data_literal                   shift and go to state 36
+
+state 105
+
+    (54) function_call_statement -> literal_or_identifier left_par_op function_parameter right_par_op .
+    (49) function_declaration_statement -> literal_or_identifier left_par_op function_parameter right_par_op . left_curl_op statement right_curl_op
+
+    $end            reduce using rule 54 (function_call_statement -> literal_or_identifier left_par_op function_parameter right_par_op .)
+    right_curl_op   reduce using rule 54 (function_call_statement -> literal_or_identifier left_par_op function_parameter right_par_op .)
+    colon_statement reduce using rule 54 (function_call_statement -> literal_or_identifier left_par_op function_parameter right_par_op .)
+    left_curl_op    shift and go to state 118
+
+
+state 106
+
+    (37) elif_block -> elif_statement inequalities left_curl_op . statement right_curl_op
+    (17) statement -> . function_call_statement
+    (18) statement -> . conditional_statement
+    (19) statement -> . loop_statement
+    (20) statement -> . arithmetic_statement
+    (21) statement -> . break_state
+    (22) statement -> . return_state
+    (23) statement -> . function_declaration_statement
+    (24) statement -> . printed_statement
+    (54) function_call_statement -> . literal_or_identifier left_par_op function_parameter right_par_op
+    (30) conditional_statement -> . if_block
+    (31) conditional_statement -> . if_block elif_block
+    (32) conditional_statement -> . if_block else_block
+    (33) conditional_statement -> . left_par_op inequalities right_par_op
+    (34) conditional_statement -> . left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
+    (55) loop_statement -> . while_statement inequalities left_curl_op statement right_curl_op
+    (56) loop_statement -> . for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
+    (57) loop_statement -> . for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
+    (58) arithmetic_statement -> . arithmetic_expr
+    (59) arithmetic_statement -> . unary_op
+    (25) break_state -> . break_statement
+    (28) return_state -> . return_statement literal_or_identifier
+    (29) return_state -> . return_statement statement
+    (49) function_declaration_statement -> . literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op
+    (26) printed_statement -> . print_statement literal_or_identifier
+    (27) printed_statement -> . print_statement literal_or_identifier comma_statement identifier
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (35) if_block -> . if_statement inequalities left_curl_op statement right_curl_op
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (60) unary_op -> . identifier increment
+    (61) unary_op -> . identifier decrement
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    left_par_op     shift and go to state 6
+    while_statement shift and go to state 28
+    for_statement   shift and go to state 29
+    break_statement shift and go to state 32
+    return_statement shift and go to state 33
+    print_statement shift and go to state 34
+    identifier      shift and go to state 7
+    if_statement    shift and go to state 37
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    statement                      shift and go to state 119
+    function_call_statement        shift and go to state 8
+    conditional_statement          shift and go to state 9
+    loop_statement                 shift and go to state 10
+    arithmetic_statement           shift and go to state 11
+    break_state                    shift and go to state 12
+    return_state                   shift and go to state 13
+    function_declaration_statement shift and go to state 14
+    printed_statement              shift and go to state 15
+    literal_or_identifier          shift and go to state 26
+    if_block                       shift and go to state 27
+    arithmetic_expr                shift and go to state 30
+    unary_op                       shift and go to state 31
+    data_literal                   shift and go to state 36
+
+state 107
+
+    (36) else_block -> else_statement left_curl_op statement . right_curl_op
+
+    right_curl_op   shift and go to state 120
+
+
+state 108
+
+    (55) loop_statement -> while_statement inequalities left_curl_op statement . right_curl_op
+
+    right_curl_op   shift and go to state 121
+
+
+state 109
+
+    (56) loop_statement -> for_statement arithmetic_statement semi_colon_statement left_curl_op . statement right_curl_op
+    (17) statement -> . function_call_statement
+    (18) statement -> . conditional_statement
+    (19) statement -> . loop_statement
+    (20) statement -> . arithmetic_statement
+    (21) statement -> . break_state
+    (22) statement -> . return_state
+    (23) statement -> . function_declaration_statement
+    (24) statement -> . printed_statement
+    (54) function_call_statement -> . literal_or_identifier left_par_op function_parameter right_par_op
+    (30) conditional_statement -> . if_block
+    (31) conditional_statement -> . if_block elif_block
+    (32) conditional_statement -> . if_block else_block
+    (33) conditional_statement -> . left_par_op inequalities right_par_op
+    (34) conditional_statement -> . left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
+    (55) loop_statement -> . while_statement inequalities left_curl_op statement right_curl_op
+    (56) loop_statement -> . for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
+    (57) loop_statement -> . for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
+    (58) arithmetic_statement -> . arithmetic_expr
+    (59) arithmetic_statement -> . unary_op
+    (25) break_state -> . break_statement
+    (28) return_state -> . return_statement literal_or_identifier
+    (29) return_state -> . return_statement statement
+    (49) function_declaration_statement -> . literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op
+    (26) printed_statement -> . print_statement literal_or_identifier
+    (27) printed_statement -> . print_statement literal_or_identifier comma_statement identifier
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (35) if_block -> . if_statement inequalities left_curl_op statement right_curl_op
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (60) unary_op -> . identifier increment
+    (61) unary_op -> . identifier decrement
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    left_par_op     shift and go to state 6
+    while_statement shift and go to state 28
+    for_statement   shift and go to state 29
+    break_statement shift and go to state 32
+    return_statement shift and go to state 33
+    print_statement shift and go to state 34
+    identifier      shift and go to state 7
+    if_statement    shift and go to state 37
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    arithmetic_statement           shift and go to state 11
+    statement                      shift and go to state 122
+    function_call_statement        shift and go to state 8
+    conditional_statement          shift and go to state 9
+    loop_statement                 shift and go to state 10
+    break_state                    shift and go to state 12
+    return_state                   shift and go to state 13
+    function_declaration_statement shift and go to state 14
+    printed_statement              shift and go to state 15
+    literal_or_identifier          shift and go to state 26
+    if_block                       shift and go to state 27
+    arithmetic_expr                shift and go to state 30
+    unary_op                       shift and go to state 31
+    data_literal                   shift and go to state 36
+
+state 110
+
+    (57) loop_statement -> for_statement arithmetic_statement semi_colon_statement inequalities . semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
+
+    semi_colon_statement shift and go to state 123
+
+
+state 111
+
+    (27) printed_statement -> print_statement literal_or_identifier comma_statement identifier .
+
+    $end            reduce using rule 27 (printed_statement -> print_statement literal_or_identifier comma_statement identifier .)
+    right_curl_op   reduce using rule 27 (printed_statement -> print_statement literal_or_identifier comma_statement identifier .)
+    colon_statement reduce using rule 27 (printed_statement -> print_statement literal_or_identifier comma_statement identifier .)
+
+
+state 112
+
+    (35) if_block -> if_statement inequalities left_curl_op statement . right_curl_op
+
+    right_curl_op   shift and go to state 124
+
+
+state 113
+
+    (10) program -> type_declaration main_statement left_curl_op statement right_curl_op .
+
+    $end            reduce using rule 10 (program -> type_declaration main_statement left_curl_op statement right_curl_op .)
+
+
+state 114
+
+    (11) program -> type_declaration main_statement left_par_op type_declaration identifier . right_par_op left_curl_op statement right_curl_op
+
+    right_par_op    shift and go to state 125
+
+
+state 115
+
+    (34) conditional_statement -> left_par_op inequalities right_par_op question_op left_curl_op . statement colon_statement statement right_curl_op
+    (17) statement -> . function_call_statement
+    (18) statement -> . conditional_statement
+    (19) statement -> . loop_statement
+    (20) statement -> . arithmetic_statement
+    (21) statement -> . break_state
+    (22) statement -> . return_state
+    (23) statement -> . function_declaration_statement
+    (24) statement -> . printed_statement
+    (54) function_call_statement -> . literal_or_identifier left_par_op function_parameter right_par_op
+    (30) conditional_statement -> . if_block
+    (31) conditional_statement -> . if_block elif_block
+    (32) conditional_statement -> . if_block else_block
+    (33) conditional_statement -> . left_par_op inequalities right_par_op
+    (34) conditional_statement -> . left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
+    (55) loop_statement -> . while_statement inequalities left_curl_op statement right_curl_op
+    (56) loop_statement -> . for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
+    (57) loop_statement -> . for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
+    (58) arithmetic_statement -> . arithmetic_expr
+    (59) arithmetic_statement -> . unary_op
+    (25) break_state -> . break_statement
+    (28) return_state -> . return_statement literal_or_identifier
+    (29) return_state -> . return_statement statement
+    (49) function_declaration_statement -> . literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op
+    (26) printed_statement -> . print_statement literal_or_identifier
+    (27) printed_statement -> . print_statement literal_or_identifier comma_statement identifier
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (35) if_block -> . if_statement inequalities left_curl_op statement right_curl_op
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (60) unary_op -> . identifier increment
+    (61) unary_op -> . identifier decrement
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    left_par_op     shift and go to state 6
+    while_statement shift and go to state 28
+    for_statement   shift and go to state 29
+    break_statement shift and go to state 32
+    return_statement shift and go to state 33
+    print_statement shift and go to state 34
+    identifier      shift and go to state 7
+    if_statement    shift and go to state 37
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    statement                      shift and go to state 126
+    function_call_statement        shift and go to state 8
+    conditional_statement          shift and go to state 9
+    loop_statement                 shift and go to state 10
+    arithmetic_statement           shift and go to state 11
+    break_state                    shift and go to state 12
+    return_state                   shift and go to state 13
+    function_declaration_statement shift and go to state 14
+    printed_statement              shift and go to state 15
+    literal_or_identifier          shift and go to state 26
+    if_block                       shift and go to state 27
+    arithmetic_expr                shift and go to state 30
+    unary_op                       shift and go to state 31
+    data_literal                   shift and go to state 36
+
+state 116
+
+    (54) function_call_statement -> literal_or_identifier left_par_op function_parameter . right_par_op
+
+    right_par_op    shift and go to state 127
+
+
+state 117
+
+    (51) function_parameter -> literal_or_identifier comma_statement function_parameter .
+
+    right_par_op    reduce using rule 51 (function_parameter -> literal_or_identifier comma_statement function_parameter .)
+
+
+state 118
+
+    (49) function_declaration_statement -> literal_or_identifier left_par_op function_parameter right_par_op left_curl_op . statement right_curl_op
+    (17) statement -> . function_call_statement
+    (18) statement -> . conditional_statement
+    (19) statement -> . loop_statement
+    (20) statement -> . arithmetic_statement
+    (21) statement -> . break_state
+    (22) statement -> . return_state
+    (23) statement -> . function_declaration_statement
+    (24) statement -> . printed_statement
+    (54) function_call_statement -> . literal_or_identifier left_par_op function_parameter right_par_op
+    (30) conditional_statement -> . if_block
+    (31) conditional_statement -> . if_block elif_block
+    (32) conditional_statement -> . if_block else_block
+    (33) conditional_statement -> . left_par_op inequalities right_par_op
+    (34) conditional_statement -> . left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
+    (55) loop_statement -> . while_statement inequalities left_curl_op statement right_curl_op
+    (56) loop_statement -> . for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
+    (57) loop_statement -> . for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
+    (58) arithmetic_statement -> . arithmetic_expr
+    (59) arithmetic_statement -> . unary_op
+    (25) break_state -> . break_statement
+    (28) return_state -> . return_statement literal_or_identifier
+    (29) return_state -> . return_statement statement
+    (49) function_declaration_statement -> . literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op
+    (26) printed_statement -> . print_statement literal_or_identifier
+    (27) printed_statement -> . print_statement literal_or_identifier comma_statement identifier
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (35) if_block -> . if_statement inequalities left_curl_op statement right_curl_op
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (60) unary_op -> . identifier increment
+    (61) unary_op -> . identifier decrement
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    left_par_op     shift and go to state 6
+    while_statement shift and go to state 28
+    for_statement   shift and go to state 29
+    break_statement shift and go to state 32
+    return_statement shift and go to state 33
+    print_statement shift and go to state 34
+    identifier      shift and go to state 7
+    if_statement    shift and go to state 37
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    literal_or_identifier          shift and go to state 26
+    statement                      shift and go to state 128
+    function_call_statement        shift and go to state 8
+    conditional_statement          shift and go to state 9
+    loop_statement                 shift and go to state 10
+    arithmetic_statement           shift and go to state 11
+    break_state                    shift and go to state 12
+    return_state                   shift and go to state 13
+    function_declaration_statement shift and go to state 14
+    printed_statement              shift and go to state 15
+    if_block                       shift and go to state 27
+    arithmetic_expr                shift and go to state 30
+    unary_op                       shift and go to state 31
+    data_literal                   shift and go to state 36
+
+state 119
+
+    (37) elif_block -> elif_statement inequalities left_curl_op statement . right_curl_op
+
+    right_curl_op   shift and go to state 129
+
+
+state 120
+
+    (36) else_block -> else_statement left_curl_op statement right_curl_op .
+
+    $end            reduce using rule 36 (else_block -> else_statement left_curl_op statement right_curl_op .)
+    right_curl_op   reduce using rule 36 (else_block -> else_statement left_curl_op statement right_curl_op .)
+    colon_statement reduce using rule 36 (else_block -> else_statement left_curl_op statement right_curl_op .)
+
+
+state 121
+
+    (55) loop_statement -> while_statement inequalities left_curl_op statement right_curl_op .
+
+    $end            reduce using rule 55 (loop_statement -> while_statement inequalities left_curl_op statement right_curl_op .)
+    right_curl_op   reduce using rule 55 (loop_statement -> while_statement inequalities left_curl_op statement right_curl_op .)
+    colon_statement reduce using rule 55 (loop_statement -> while_statement inequalities left_curl_op statement right_curl_op .)
+
+
+state 122
+
+    (56) loop_statement -> for_statement arithmetic_statement semi_colon_statement left_curl_op statement . right_curl_op
+
+    right_curl_op   shift and go to state 130
+
+
+state 123
+
+    (57) loop_statement -> for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement . arithmetic_statement left_curl_op statement right_curl_op
+    (58) arithmetic_statement -> . arithmetic_expr
+    (59) arithmetic_statement -> . unary_op
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (60) unary_op -> . identifier increment
+    (61) unary_op -> . identifier decrement
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    identifier      shift and go to state 61
+    left_par_op     shift and go to state 44
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    arithmetic_statement           shift and go to state 131
+    arithmetic_expr                shift and go to state 30
+    unary_op                       shift and go to state 31
+    literal_or_identifier          shift and go to state 62
+    data_literal                   shift and go to state 36
+
+state 124
+
+    (35) if_block -> if_statement inequalities left_curl_op statement right_curl_op .
+
+    elif_statement  reduce using rule 35 (if_block -> if_statement inequalities left_curl_op statement right_curl_op .)
+    else_statement  reduce using rule 35 (if_block -> if_statement inequalities left_curl_op statement right_curl_op .)
+    $end            reduce using rule 35 (if_block -> if_statement inequalities left_curl_op statement right_curl_op .)
+    right_curl_op   reduce using rule 35 (if_block -> if_statement inequalities left_curl_op statement right_curl_op .)
+    colon_statement reduce using rule 35 (if_block -> if_statement inequalities left_curl_op statement right_curl_op .)
+
+
+state 125
+
+    (11) program -> type_declaration main_statement left_par_op type_declaration identifier right_par_op . left_curl_op statement right_curl_op
+
+    left_curl_op    shift and go to state 132
+
+
+state 126
+
+    (34) conditional_statement -> left_par_op inequalities right_par_op question_op left_curl_op statement . colon_statement statement right_curl_op
+
+    colon_statement shift and go to state 133
+
+
+state 127
+
+    (54) function_call_statement -> literal_or_identifier left_par_op function_parameter right_par_op .
+
+    expo_op         reduce using rule 54 (function_call_statement -> literal_or_identifier left_par_op function_parameter right_par_op .)
+    mul_op          reduce using rule 54 (function_call_statement -> literal_or_identifier left_par_op function_parameter right_par_op .)
+    div_op          reduce using rule 54 (function_call_statement -> literal_or_identifier left_par_op function_parameter right_par_op .)
+    add_op          reduce using rule 54 (function_call_statement -> literal_or_identifier left_par_op function_parameter right_par_op .)
+    sub_op          reduce using rule 54 (function_call_statement -> literal_or_identifier left_par_op function_parameter right_par_op .)
+    $end            reduce using rule 54 (function_call_statement -> literal_or_identifier left_par_op function_parameter right_par_op .)
+    right_par_op    reduce using rule 54 (function_call_statement -> literal_or_identifier left_par_op function_parameter right_par_op .)
+    semi_colon_statement reduce using rule 54 (function_call_statement -> literal_or_identifier left_par_op function_parameter right_par_op .)
+    right_curl_op   reduce using rule 54 (function_call_statement -> literal_or_identifier left_par_op function_parameter right_par_op .)
+    colon_statement reduce using rule 54 (function_call_statement -> literal_or_identifier left_par_op function_parameter right_par_op .)
+    left_curl_op    reduce using rule 54 (function_call_statement -> literal_or_identifier left_par_op function_parameter right_par_op .)
+
+
+state 128
+
+    (49) function_declaration_statement -> literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement . right_curl_op
+
+    right_curl_op   shift and go to state 134
+
+
+state 129
+
+    (37) elif_block -> elif_statement inequalities left_curl_op statement right_curl_op .
+
+    $end            reduce using rule 37 (elif_block -> elif_statement inequalities left_curl_op statement right_curl_op .)
+    right_curl_op   reduce using rule 37 (elif_block -> elif_statement inequalities left_curl_op statement right_curl_op .)
+    colon_statement reduce using rule 37 (elif_block -> elif_statement inequalities left_curl_op statement right_curl_op .)
+
+
+state 130
+
+    (56) loop_statement -> for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op .
+
+    $end            reduce using rule 56 (loop_statement -> for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op .)
+    right_curl_op   reduce using rule 56 (loop_statement -> for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op .)
+    colon_statement reduce using rule 56 (loop_statement -> for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op .)
+
+
+state 131
+
+    (57) loop_statement -> for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement . left_curl_op statement right_curl_op
+
+    left_curl_op    shift and go to state 135
+
+
+state 132
+
+    (11) program -> type_declaration main_statement left_par_op type_declaration identifier right_par_op left_curl_op . statement right_curl_op
+    (17) statement -> . function_call_statement
+    (18) statement -> . conditional_statement
+    (19) statement -> . loop_statement
+    (20) statement -> . arithmetic_statement
+    (21) statement -> . break_state
+    (22) statement -> . return_state
+    (23) statement -> . function_declaration_statement
+    (24) statement -> . printed_statement
+    (54) function_call_statement -> . literal_or_identifier left_par_op function_parameter right_par_op
+    (30) conditional_statement -> . if_block
+    (31) conditional_statement -> . if_block elif_block
+    (32) conditional_statement -> . if_block else_block
+    (33) conditional_statement -> . left_par_op inequalities right_par_op
+    (34) conditional_statement -> . left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
+    (55) loop_statement -> . while_statement inequalities left_curl_op statement right_curl_op
+    (56) loop_statement -> . for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
+    (57) loop_statement -> . for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
+    (58) arithmetic_statement -> . arithmetic_expr
+    (59) arithmetic_statement -> . unary_op
+    (25) break_state -> . break_statement
+    (28) return_state -> . return_statement literal_or_identifier
+    (29) return_state -> . return_statement statement
+    (49) function_declaration_statement -> . literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op
+    (26) printed_statement -> . print_statement literal_or_identifier
+    (27) printed_statement -> . print_statement literal_or_identifier comma_statement identifier
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (35) if_block -> . if_statement inequalities left_curl_op statement right_curl_op
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (60) unary_op -> . identifier increment
+    (61) unary_op -> . identifier decrement
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    left_par_op     shift and go to state 6
+    while_statement shift and go to state 28
+    for_statement   shift and go to state 29
+    break_statement shift and go to state 32
+    return_statement shift and go to state 33
+    print_statement shift and go to state 34
+    identifier      shift and go to state 7
+    if_statement    shift and go to state 37
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    statement                      shift and go to state 136
+    function_call_statement        shift and go to state 8
+    conditional_statement          shift and go to state 9
+    loop_statement                 shift and go to state 10
+    arithmetic_statement           shift and go to state 11
+    break_state                    shift and go to state 12
+    return_state                   shift and go to state 13
+    function_declaration_statement shift and go to state 14
+    printed_statement              shift and go to state 15
+    literal_or_identifier          shift and go to state 26
+    if_block                       shift and go to state 27
+    arithmetic_expr                shift and go to state 30
+    unary_op                       shift and go to state 31
+    data_literal                   shift and go to state 36
+
+state 133
+
+    (34) conditional_statement -> left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement . statement right_curl_op
+    (17) statement -> . function_call_statement
+    (18) statement -> . conditional_statement
+    (19) statement -> . loop_statement
+    (20) statement -> . arithmetic_statement
+    (21) statement -> . break_state
+    (22) statement -> . return_state
+    (23) statement -> . function_declaration_statement
+    (24) statement -> . printed_statement
+    (54) function_call_statement -> . literal_or_identifier left_par_op function_parameter right_par_op
+    (30) conditional_statement -> . if_block
+    (31) conditional_statement -> . if_block elif_block
+    (32) conditional_statement -> . if_block else_block
+    (33) conditional_statement -> . left_par_op inequalities right_par_op
+    (34) conditional_statement -> . left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
+    (55) loop_statement -> . while_statement inequalities left_curl_op statement right_curl_op
+    (56) loop_statement -> . for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
+    (57) loop_statement -> . for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
+    (58) arithmetic_statement -> . arithmetic_expr
+    (59) arithmetic_statement -> . unary_op
+    (25) break_state -> . break_statement
+    (28) return_state -> . return_statement literal_or_identifier
+    (29) return_state -> . return_statement statement
+    (49) function_declaration_statement -> . literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op
+    (26) printed_statement -> . print_statement literal_or_identifier
+    (27) printed_statement -> . print_statement literal_or_identifier comma_statement identifier
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (35) if_block -> . if_statement inequalities left_curl_op statement right_curl_op
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (60) unary_op -> . identifier increment
+    (61) unary_op -> . identifier decrement
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    left_par_op     shift and go to state 6
+    while_statement shift and go to state 28
+    for_statement   shift and go to state 29
+    break_statement shift and go to state 32
+    return_statement shift and go to state 33
+    print_statement shift and go to state 34
+    identifier      shift and go to state 7
+    if_statement    shift and go to state 37
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    statement                      shift and go to state 137
+    function_call_statement        shift and go to state 8
+    conditional_statement          shift and go to state 9
+    loop_statement                 shift and go to state 10
+    arithmetic_statement           shift and go to state 11
+    break_state                    shift and go to state 12
+    return_state                   shift and go to state 13
+    function_declaration_statement shift and go to state 14
+    printed_statement              shift and go to state 15
+    literal_or_identifier          shift and go to state 26
+    if_block                       shift and go to state 27
+    arithmetic_expr                shift and go to state 30
+    unary_op                       shift and go to state 31
+    data_literal                   shift and go to state 36
+
+state 134
+
+    (49) function_declaration_statement -> literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op .
+
+    $end            reduce using rule 49 (function_declaration_statement -> literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op .)
+    right_curl_op   reduce using rule 49 (function_declaration_statement -> literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op .)
+    colon_statement reduce using rule 49 (function_declaration_statement -> literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op .)
+
+
+state 135
+
+    (57) loop_statement -> for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op . statement right_curl_op
+    (17) statement -> . function_call_statement
+    (18) statement -> . conditional_statement
+    (19) statement -> . loop_statement
+    (20) statement -> . arithmetic_statement
+    (21) statement -> . break_state
+    (22) statement -> . return_state
+    (23) statement -> . function_declaration_statement
+    (24) statement -> . printed_statement
+    (54) function_call_statement -> . literal_or_identifier left_par_op function_parameter right_par_op
+    (30) conditional_statement -> . if_block
+    (31) conditional_statement -> . if_block elif_block
+    (32) conditional_statement -> . if_block else_block
+    (33) conditional_statement -> . left_par_op inequalities right_par_op
+    (34) conditional_statement -> . left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op
+    (55) loop_statement -> . while_statement inequalities left_curl_op statement right_curl_op
+    (56) loop_statement -> . for_statement arithmetic_statement semi_colon_statement left_curl_op statement right_curl_op
+    (57) loop_statement -> . for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op
+    (58) arithmetic_statement -> . arithmetic_expr
+    (59) arithmetic_statement -> . unary_op
+    (25) break_state -> . break_statement
+    (28) return_state -> . return_statement literal_or_identifier
+    (29) return_state -> . return_statement statement
+    (49) function_declaration_statement -> . literal_or_identifier left_par_op function_parameter right_par_op left_curl_op statement right_curl_op
+    (26) printed_statement -> . print_statement literal_or_identifier
+    (27) printed_statement -> . print_statement literal_or_identifier comma_statement identifier
+    (52) literal_or_identifier -> . identifier
+    (53) literal_or_identifier -> . data_literal
+    (35) if_block -> . if_statement inequalities left_curl_op statement right_curl_op
+    (62) arithmetic_expr -> . identifier assign_op arithmetic_expr
+    (63) arithmetic_expr -> . arithmetic_expr arithmetic_op arithmetic_expr
+    (64) arithmetic_expr -> . left_par_op arithmetic_expr right_par_op
+    (65) arithmetic_expr -> . literal_or_identifier
+    (66) arithmetic_expr -> . identifier assign_op function_call_statement
+    (60) unary_op -> . identifier increment
+    (61) unary_op -> . identifier decrement
+    (72) data_literal -> . int_literal
+    (73) data_literal -> . float_literal
+    (74) data_literal -> . double_literal
+    (75) data_literal -> . char_literal
+    (76) data_literal -> . string_literal
+
+    left_par_op     shift and go to state 6
+    while_statement shift and go to state 28
+    for_statement   shift and go to state 29
+    break_statement shift and go to state 32
+    return_statement shift and go to state 33
+    print_statement shift and go to state 34
+    identifier      shift and go to state 7
+    if_statement    shift and go to state 37
+    int_literal     shift and go to state 38
+    float_literal   shift and go to state 39
+    double_literal  shift and go to state 40
+    char_literal    shift and go to state 41
+    string_literal  shift and go to state 42
+
+    arithmetic_statement           shift and go to state 11
+    statement                      shift and go to state 138
+    function_call_statement        shift and go to state 8
+    conditional_statement          shift and go to state 9
+    loop_statement                 shift and go to state 10
+    break_state                    shift and go to state 12
+    return_state                   shift and go to state 13
+    function_declaration_statement shift and go to state 14
+    printed_statement              shift and go to state 15
+    literal_or_identifier          shift and go to state 26
+    if_block                       shift and go to state 27
+    arithmetic_expr                shift and go to state 30
+    unary_op                       shift and go to state 31
+    data_literal                   shift and go to state 36
+
+state 136
+
+    (11) program -> type_declaration main_statement left_par_op type_declaration identifier right_par_op left_curl_op statement . right_curl_op
+
+    right_curl_op   shift and go to state 139
+
+
+state 137
+
+    (34) conditional_statement -> left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement . right_curl_op
+
+    right_curl_op   shift and go to state 140
+
+
+state 138
+
+    (57) loop_statement -> for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement . right_curl_op
+
+    right_curl_op   shift and go to state 141
+
+
+state 139
+
+    (11) program -> type_declaration main_statement left_par_op type_declaration identifier right_par_op left_curl_op statement right_curl_op .
+
+    $end            reduce using rule 11 (program -> type_declaration main_statement left_par_op type_declaration identifier right_par_op left_curl_op statement right_curl_op .)
+
+
+state 140
+
+    (34) conditional_statement -> left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op .
+
+    $end            reduce using rule 34 (conditional_statement -> left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op .)
+    right_curl_op   reduce using rule 34 (conditional_statement -> left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op .)
+    colon_statement reduce using rule 34 (conditional_statement -> left_par_op inequalities right_par_op question_op left_curl_op statement colon_statement statement right_curl_op .)
+
+
+state 141
+
+    (57) loop_statement -> for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op .
+
+    $end            reduce using rule 57 (loop_statement -> for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op .)
+    right_curl_op   reduce using rule 57 (loop_statement -> for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op .)
+    colon_statement reduce using rule 57 (loop_statement -> for_statement arithmetic_statement semi_colon_statement inequalities semi_colon_statement arithmetic_statement left_curl_op statement right_curl_op .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for expo_op in state 96 resolved as shift
+WARNING: shift/reduce conflict for mul_op in state 96 resolved as shift
+WARNING: shift/reduce conflict for div_op in state 96 resolved as shift
+WARNING: shift/reduce conflict for add_op in state 96 resolved as shift
+WARNING: shift/reduce conflict for sub_op in state 96 resolved as shift
+WARNING: reduce/reduce conflict in state 69 resolved using rule (return_state -> return_statement literal_or_identifier)
+WARNING: rejected rule (arithmetic_expr -> literal_or_identifier) in state 69

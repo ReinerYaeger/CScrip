@@ -2,56 +2,86 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>CScrip</title>
 </head>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        #container {
-            display: flex;
-            flex-direction: row;
-            height: 90vh;
-            row-gap: 0;
-        }
-        #input-area {
-            flex: 1;
-            padding: 10px 10px;
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        }
-        #output-area {
-            flex: 1;
-            padding: 10px;
-            height: 100vh;
-        }
-        #prompt-area {
-            position: absolute;
-            bottom: 0;
-            width: 49%;
-            padding: 10px;
-        }
-        textarea {
-            width: 100%;
-            height: 90%;
-            padding: 5px;
-            box-sizing: border-box;
-            resize: none;
-        }
-        button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    #container {
+        display: flex;
+        flex-direction: row;
+        height: 90vh;
+        row-gap: 0;
+    }
+
+    #input-area {
+        flex: 1;
+    }
+
+    #output-area {
+        flex: 1;
+        padding: 10px;
+        height: 100vh;
+    }
+
+    #prompt-area {
+        position: absolute;
+        bottom: 0;
+        width: 49%;
+        padding: 10px;
+    }
+
+    textarea {
+        width: 100%;
+        height: 90%;
+        padding: 5px;
+        box-sizing: border-box;
+        resize: none;
+    }
+
+    button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
 <script>
+
+    function compileCode() {
+        const promptText = document.getElementById("input-text").value;
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "{% url 'compile' %}", true);
+        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200) {
+                    const response = JSON.parse(xhr.responseText);
+                    document.getElementById("output-text").value = response.output;
+                } else {
+                    console.error("Error:", xhr.status);
+                }
+            }
+        };
+
+        const formData = new FormData();
+        formData.append('code', promptText);
+
+        xhr.send(formData);
+    }
+
     function sendPrompt() {
         const promptText = document.getElementById("prompt-text").value;
 
@@ -92,18 +122,18 @@
     }
 </script>
 <body>
-    <div id="container">
-        <div id="input-area">
-            <textarea id="input-text" placeholder="Enter your code here"></textarea>
-            <button onclick="compileCode()">Compile</button>
-        </div>
-        <div id="output-area">
-            <textarea id="output-text" readonly></textarea>
-        </div>
-        <div id="prompt-area">
-            <textarea id="prompt-text" placeholder="ChatGPT prompt"></textarea>
-            <button onclick="sendPrompt()">Send</button>
-        </div>
+<div id="container">
+    <div id="input-area">
+        <textarea id="input-text" placeholder="Enter your code here"></textarea>
+        <button onclick="compileCode()">Compile</button>
     </div>
+    <div id="output-area">
+        <textarea id="output-text" readonly></textarea>
+    </div>
+    <div id="prompt-area">
+        <textarea id="prompt-text" placeholder="ChatGPT prompt"></textarea>
+        <button onclick="sendPrompt()">Send</button>
+    </div>
+</div>
 </body>
 </html>
