@@ -1,8 +1,8 @@
 import ply.yacc as yacc
 
 # Tokens from the lexer
-# from lex import tokens, lexer
-from .ply_semantics import semantic_node, semantic_break_statement
+from lex import tokens, lexer
+from ply_semantics import semantic_node
 
 precedence = (
     ('nonassoc', 'left_par_op', 'right_par_op'),  # Parentheses
@@ -80,7 +80,7 @@ def p_statement(p):
 def p_break_statement(p):
     '''break_state : break_statement'''
     p[0] = ('break_statement',)
-    semantic_break_statement(p, loop_stack)
+    # semantic_break_statement(p, loop_stack)
 
 
 def p_printed_statement(p):
@@ -251,28 +251,29 @@ def p_empty(p):
 
 
 def p_error(p):
-    '''error : empty'''
-    return "Syntax error in input!"
+    print("Syntax error at line %d, position %d: Unexpected token '%s'" % (p.lineno, p.lexpos, p.value))
+    raise Exception("Syntax error: Unexpected token '%s' at line %d, position %d" % (p.value, p.lineno, p.lexpos))
 
 
 # # Build the parser
-# parser = yacc.yacc()
+parser = yacc.yacc()
 #
-# while True:
-#     try:
-#         s = input(">>>  ")
-#     except EOFError:
-#         break
-#     if not s:
-#         continue
-#
-#     lexer.input(s)
-#     for token in lexer:
-#         print(token)
-#
-#     parsed_expression = parser.parse(s)
-#     print("Parsed expression:", parsed_expression)
-#
-#     # Pass the root node of the parse tree to the semantic analysis function
-#     ast = semantic_node(parsed_expression, symbol_table)
-#     print("Interpreter result:", ast)
+while True:
+    try:
+        s = input(">>>  ")
+    except EOFError:
+        break
+    if not s:
+        continue
+
+    lexer.input(s)
+    for token in lexer:
+        print(token)
+
+    parsed_expression = parser.parse(s)
+    print("Parsed expression:", parsed_expression)
+    print(symbol_table)
+    # Pass the root node of the parse tree to the semantic analysis function
+    ast = semantic_node(parsed_expression, symbol_table)
+    print("Interpreter result:", ast)
+    print(symbol_table)
