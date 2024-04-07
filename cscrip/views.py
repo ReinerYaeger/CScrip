@@ -22,8 +22,12 @@ async def compile(request):
         code = request.POST.get('code', '')
         content = compiler(code)
 
-        serialized_data = {'content': content}
-        return JsonResponse({'output': serialized_data})
+        if isinstance(content, Response):
+            program = content.text
+            serialized_data = json.dumps({program})
+            return JsonResponse({'output': serialized_data}, safe=False)
+        else:
+            return JsonResponse({'output': str(content)})
     return JsonResponse({'error': 'Invalid request method'})
 
 
