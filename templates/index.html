@@ -120,11 +120,28 @@
         }
         return cookieValue;
     }
+
+    function handleKeyPress(event) {
+        if (event.key === 'Enter' && !event.shiftKey) {
+            event.preventDefault();
+            const textarea = document.getElementById("input-text");
+            const currentValue = textarea.value;
+            const selectionStart = textarea.selectionStart;
+            const selectionEnd = textarea.selectionEnd;
+            textarea.value = currentValue.substring(0, selectionStart) + "\n" + currentValue.substring(selectionEnd);
+            textarea.selectionStart = textarea.selectionEnd = selectionStart + 1;
+            compileCode();
+        }
+
+        var input = document.getElementById("input-text");
+        input.innerHTML += ">>> " + code + "<br>";
+    }
 </script>
 <body>
 <div id="container">
     <div id="input-area">
-        <textarea id="input-text" placeholder="Enter your code here"></textarea>
+        <textarea rows="100" cols="500" onkeydown="handleKeyPress(event)" id="input-text"
+                  placeholder="Enter your code here" style="border: 1px solid black;"></textarea>
         <button onclick="compileCode()">Compile</button>
     </div>
     <div id="output-area">
