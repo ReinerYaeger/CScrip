@@ -65,6 +65,8 @@ tokens = [
              'increment',
              'decrement',
              'identifier',
+             'whitespace',
+             'newline'
 
          ] + list(reserved.values())
 
@@ -124,6 +126,18 @@ t_char_literal = r'[\'a-zA-Z\']'
 t_identifier = r'[a-zA-Z_][a-zA-Z_\d+]*'
 
 
+# Define a rule to ignore whitespace characters
+def t_whitespace(t):
+    r'\s+'
+    pass  # Ignore whitespace
+
+
+# Define a rule to ignore new lines
+def t_newline(t):
+    r'\n+'
+    pass  # Ignore new lines
+
+
 def t_int_literal(t):
     r'\d+'
     t.value = int(t.value)  # Convert the token value to an integer
@@ -136,21 +150,11 @@ def t_reserved(t):
     return t
 
 
-def t_newline(t):
-    r'\n+'
-    t.lexer.lineno += len(t.value)
-
-t_ignore = ' \t\n'
-
-
 # Error handling rule
 def t_error(t):
     print(f"Lexer Error: Illegal character '{t.value[0]}' at line {t.lineno}, position {t.lexpos}")
     t.lexer.skip(1)
     raise Exception(f"Lexer Error: Illegal character '{t.value}' at line {t.lineno}, position {t.lexpos}")
-
-
-
 
 # lexer = lex.lex()
 # content = ""

@@ -10,9 +10,11 @@ Unused terminals:
     goto_statement
     in_statement
     left_square_op
+    newline
     right_square_op
     single_quotes
     true_literal
+    whitespace
 
 Grammar
 
@@ -142,6 +144,7 @@ less_or_eq_op        : 40
 list                 : 9
 main_statement       : 10 11
 mul_op               : 68
+newline              : 
 not_equal            : 47
 or                   : 45
 print_statement      : 26 27
@@ -158,6 +161,7 @@ struct               : 5
 sub_op               : 71
 true_literal         : 
 while_statement      : 55
+whitespace           : 
 
 Nonterminals, with rules where they appear
 

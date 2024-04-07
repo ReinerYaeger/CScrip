@@ -22,6 +22,8 @@ async def compile(request):
         code = request.POST.get('code', '')
         content = compiler(code)
 
+
+
         if isinstance(content, Response):
             program = content.text
             serialized_data = json.dumps({program})
