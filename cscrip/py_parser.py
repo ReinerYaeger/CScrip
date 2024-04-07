@@ -1,8 +1,8 @@
 import ply.yacc as yacc
 
 # Tokens from the lexer
-from lex import tokens, lexer
-from ply_semantics import semantic_node
+# from lex import tokens, lexer
+# from ply_semantics import semantic_node
 
 precedence = (
     ('nonassoc', 'left_par_op', 'right_par_op'),  # Parentheses
@@ -215,13 +215,16 @@ def p_arithmetic_expr(p):
                        | arithmetic_expr arithmetic_op arithmetic_expr
                        | left_par_op arithmetic_expr right_par_op
                        | literal_or_identifier
-                       | identifier assign_op function_call_statement'''
+                       | identifier assign_op function_call_statement
+                       | identifier assign_op left_par_op arithmetic_expr right_par_op'''
     if len(p) == 4:  # Handle assignment
-        p[0] = ('arithmetic_expr', p[2], p[1], p[3])
+        p[0] = ('arithmetic_expr', p[1], p[2], p[3])
         if p[1] not in symbol_table:
             symbol_table[p[1]] = None
     elif len(p) == 2:
         p[0] = (p[1])
+    elif len(p) == 6:
+        p[0] = p[1], p[2], p[3], p[4], p[5]
     else:
         p[0] = p[2], p[1], p[3]
 
@@ -255,25 +258,25 @@ def p_error(p):
     raise Exception("Syntax error: Unexpected token '%s' at line %d, position %d" % (p.value, p.lineno, p.lexpos))
 
 
-# # Build the parser
-parser = yacc.yacc()
+# # # Build the parser
+# parser = yacc.yacc()
+# #
+# while True:
+#     try:
+#         s = input(">>>  ")
+#     except EOFError:
+#         break
+#     if not s:
+#         continue
 #
-while True:
-    try:
-        s = input(">>>  ")
-    except EOFError:
-        break
-    if not s:
-        continue
-
-    lexer.input(s)
-    for token in lexer:
-        print(token)
-
-    parsed_expression = parser.parse(s)
-    print("Parsed expression:", parsed_expression)
-    print(symbol_table)
-    # Pass the root node of the parse tree to the semantic analysis function
-    ast = semantic_node(parsed_expression, symbol_table)
-    print("Interpreter result:", ast)
-    print(symbol_table)
+#     lexer.input(s)
+#     for token in lexer:
+#         print(token)
+#
+#     parsed_expression = parser.parse(s)
+#     print("Parsed expression:", parsed_expression)
+#     print(symbol_table)
+#     # Pass the root node of the parse tree to the semantic analysis function
+#     ast = semantic_node(parsed_expression, symbol_table)
+#     print("Interpreter result:", ast)
+#     print(symbol_table)

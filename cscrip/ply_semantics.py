@@ -333,7 +333,7 @@ def semantic_arithmetic_expr(p, symbol_table):
                     return f"Error: Variable {p[0]} is not defined."
             else:
                 return semantic_arithmetic_expr(p[0], symbol_table)
-        if len(p) == 5:
+        if len(p) == 4:
             result = None
             assign_op = p[2][2]
             if assign_op == '+':
@@ -376,8 +376,8 @@ def semantic_arithmetic_expr(p, symbol_table):
                 else:
                     return "Error: Non-numeric operands for division:", left_number, right_number
             elif assign_op == '**':  # power
-                left_number = semantic_node(p[1], symbol_table)
-                right_number = semantic_node(p[3], symbol_table)
+                left_number = semantic_node(p[2][1], symbol_table)
+                right_number = semantic_node(p[2][3], symbol_table)
                 if isinstance(left_number, (int, float)) and isinstance(right_number, (int, float)):
                     result = left_number ** right_number
                     if isinstance(p[1], str) and p[1] in symbol_table:

@@ -6,14 +6,11 @@ from .ply_semantics import semantic_node
 
 
 def compiler(input_code="x=1"):
-
     lexer = lex.lex()
     content = ""
 
-        # Build the parser
+    # Build the parser
     parser = yacc.yacc()
-
-
 
     lexer.input(input_code)
     for token in lexer:

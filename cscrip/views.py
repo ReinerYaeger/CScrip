@@ -21,7 +21,7 @@ async def compile(request):
     if request.method == 'POST':
         code = request.POST.get('code', '')
         content = compiler(code)
-
+        #content = content.strip('\n', ' ')
 
 
         if isinstance(content, Response):
