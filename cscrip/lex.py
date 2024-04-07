@@ -15,7 +15,7 @@ reserved = {
     'break': 'break_statement',
     'return': 'return_statement',
     'bool': 'bool_declaration',
-    'Class': 'class',
+    'class': 'class',
     'struct': 'struct',
     'main': 'main_statement',
     'goto': 'goto_statement',
