@@ -33,7 +33,6 @@ def compile(request):
     return JsonResponse({'error': 'Invalid request method'})
 
 @csrf_exempt
-
 async def process_prompt(request):
     if request.method == 'POST':
         prompt_text = request.POST.get('prompt', '')
