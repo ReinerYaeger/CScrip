@@ -24,8 +24,11 @@ SECRET_KEY = 'django-insecure-nk=h7&xe_szer$#++q**ier+a_aqyb#-01h%8u1g=1*&y$4u0e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
-
+ALLOWED_HOSTS = ['*',' https://9f9c-96-43-175-18.ngrok-free.app ']
+CSRF_TRUSTED_ORIGINS = ['https://*',' https://9f9c-96-43-175-18.ngrok-free.app ']
+CORS_ORIGIN_WHITELIST = [
+    'https://9f9c-96-43-175-18.ngrok-free.app',
+]
 # Application definition
 
 INSTALLED_APPS = [
@@ -117,3 +120,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
