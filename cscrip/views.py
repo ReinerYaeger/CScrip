@@ -2,6 +2,7 @@
 import json
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from httpcore import Response
 from .cscrip_complier import compiler
 import cscrip
@@ -16,8 +17,8 @@ def index(request):
     }
     return render(request, "index.html", context)
 
-
-async def compile(request):
+@csrf_exempt
+def compile(request):
     if request.method == 'POST':
         code = request.POST.get('code', '')
         content = compiler(code)
@@ -31,6 +32,7 @@ async def compile(request):
             return JsonResponse({'output': str(content)})
     return JsonResponse({'error': 'Invalid request method'})
 
+@csrf_exempt
 
 async def process_prompt(request):
     if request.method == 'POST':
